@@ -22,7 +22,7 @@
         
         if(this.type && !standalone && !this.getCookie('sb-closed') && !this.getCookie('sb-installed')){
             var meta = $(this.type=='android' ? 'meta[name="google-play-app"]' : 'meta[name="apple-itunes-app"]').attr('content')
-            this.appId = /app-id=(\S+)/.exec(meta)[1]
+            this.appId = /app-id=([^\s,]+)/.exec(meta)[1]
             
             this.title = this.options.title ? this.options.title : $('title').text().replace(/\s*[|\-·].*$/, '')
             this.author = this.options.author ? this.options.author : window.location.hostname
