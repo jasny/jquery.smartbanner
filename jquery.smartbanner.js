@@ -109,19 +109,19 @@
     }
 
     $.fn.smartbanner = function(option) {
-        var $this = $(this)
-        , data = $this.data('typeahead')
+        var $window = $(window)
+        , data = $window.data('typeahead')
         , options = typeof option == 'object' && option
-      if (!data) $this.data('typeahead', (data = new SmartBanner(options)))
+      if (!data) $window.data('typeahead', (data = new SmartBanner(options)))
       if (typeof option == 'string') data[option]()
     }
     
     // override these globally if you like (they are all optional)
     $.fn.smartbanner.defaults = {
         title: null, // What the title of the app should be in the banner (defaults to apple-touch-icon)
-        author: null, // What the author of the app should be in the banner (defaults to domain name)
+        author: null, // What the author of the app should be in the banner (defaults to hostname)
         price: 'Free', // Price of the app
-        inAppStore: 'In de App Store', // Text of price for iOS
+        inAppStore: 'In the App Store', // Text of price for iOS
         inGooglePlay: 'In Google Play', // Text of price for Android
         icon: null, // The URL of the icon (defaults to <link>)
         iconGloss: null, // Force gloss effect for iOS even for precomposed
