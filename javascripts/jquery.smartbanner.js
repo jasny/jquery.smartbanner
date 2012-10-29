@@ -126,10 +126,10 @@
     }
 
     $.fn.smartbanner = function(option) {
-        var $this = $(this)
-        , data = $this.data('typeahead')
+        var $window = $(window)
+        , data = $window.data('typeahead')
         , options = typeof option == 'object' && option
-      if (!data) $this.data('typeahead', (data = new SmartBanner(options)))
+      if (!data) $window.data('typeahead', (data = new SmartBanner(options)))
       if (typeof option == 'string') data[option]()
     }
     
