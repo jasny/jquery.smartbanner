@@ -84,13 +84,19 @@ header h2 {
   line-height: 1.3;
 }
 
+header .back {
+  float: right;
+  margin-top: 18px;
+}
+
 #container {
   background: transparent url(../images/highlight-bg.jpg) 50% 0 no-repeat;
   min-height: 595px;
 }
 
 .inner {
-  width: 620px;
+  background: transparent url(../images/logo-emboss.png) right top no-repeat;
+  width: 780px;
   margin: 0 auto;
 }
 
@@ -166,7 +172,7 @@ a.button span {
 }
 
 code, pre {
-  font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal;
+  font-family: 'Bitstream Vera Sans Mono', 'Courier New', monospace;
   color: #222;
   margin-bottom: 30px;
   font-size: 14px;
@@ -336,6 +342,10 @@ footer a:hover {
 .clearfix {display: inline-block;}
 * html .clearfix {height: 1%;}
 .clearfix {display: block;}
+
+.theme-toggle { display: inline-block; width: 250px; border:1px solid #bfbfbf; padding:4px 21px; font-size:1.2em; text-align:center; font-weight:bold; color:#6a6a6a; background:-webkit-linear-gradient(top, #efefef 0%,#dcdcdc 100%); text-decoration:none; text-shadow:0 1px 0 rgba(255,255,255,0.8); border-radius:3px; box-shadow:0 1px 0 rgba(255,255,255,0.6),0 1px 0 rgba(255,255,255,0.7) inset; }
+.theme-toggle:hover{ color:#7c7c7c; background:-webkit-linear-gradient(top, #fdfdfd 0%,#dcdcdc 100%); }
+.theme-toggle:active { color:#444; background:-webkit-linear-gradient(top, #dcdcdc 0%,#efefef 100%); }
 
 /* #Media Queries
 ================================================== */
