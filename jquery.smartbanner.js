@@ -25,7 +25,7 @@
             this.appId = /app-id=([^\s,]+)/.exec(meta)[1]
             
             this.title = this.options.title ? this.options.title : $('title').text().replace(/\s*[|\-·].*$/, '')
-            this.author = this.options.author ? this.options.author : window.location.hostname
+            this.author = this.options.author ? this.options.author : ($('meta[name="author"]') ? $('meta[name="author"]').attr('content') : window.location.hostname)
             
             this.create()
             this.show()
@@ -39,7 +39,7 @@
     
       , create: function() {
             var iconURL
-              , link=(this.type=='android' ? 'https://play.google.com/store/apps/details?id=' : 'https://itunes.apple.com/nl/app/myradio/id') + this.appId
+              , link=(this.type=='android' ? 'market://details?id=' : 'https://itunes.apple.com/nl/app/myradio/id') + this.appId
               , inStore=this.options.price ? this.options.price + ' - ' + (this.type=='android' ? this.options.inGooglePlay : this.options.inAppStore) + ' <span class="sb-arrow">&rsaquo;</span>' : ''
               , gloss=this.options.iconGloss === null ? (this.type=='ios') : this.options.iconGloss
 

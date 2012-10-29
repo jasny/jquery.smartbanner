@@ -8,8 +8,10 @@ brings this feature to older iOS versions and Android devices.
     <html>
       <head>
         <title>YouTube</title>
+        <meta name="author" content="Google, Inc.">
         <meta name="apple-itunes-app" content="app-id=544007664">
         <meta name="google-play-app" content="app-id=com.google.android.youtube">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
         <link rel="stylesheet" href="jquery.smartbanner.css" type="text/css" media="screen">
         <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -27,9 +29,9 @@ brings this feature to older iOS versions and Android devices.
 ## Options ##
     $().smartbanner({
         title: null, // What the title of the app should be in the banner (defaults to apple-touch-icon)
-        author: null, // What the author of the app should be in the banner (defaults to domain name)
+        author: null, // What the author of the app should be in the banner (defaults to author meta or hostname)
         price: 'Free', // Price of the app
-        inAppStore: 'In de App Store', // Text of price for iOS
+        inAppStore: 'In the App Store', // Text of price for iOS
         inGooglePlay: 'In Google Play', // Text of price for Android
         icon: null, // The URL of the icon (defaults to <link>)
         iconGloss: null, // Force gloss effect for iOS even for precomposed
