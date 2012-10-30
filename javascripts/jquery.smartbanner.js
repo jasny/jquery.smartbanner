@@ -47,7 +47,7 @@
       , create: function() {
             var iconURL
               , link=(this.type=='android' ? 'market://details?id=' : 'https://itunes.apple.com/nl/app/myradio/id') + this.appId
-              , inStore=this.options.price ? this.options.price + ' - ' + (this.type=='android' ? this.options.inGooglePlay : this.options.inAppStore) + ' <span class="sb-arrow">&rsaquo;</span>' : ''
+              , inStore=this.options.price ? this.options.price + ' - ' + (this.type=='android' ? this.options.inGooglePlay : this.options.inAppStore) : ''
               , gloss=this.options.iconGloss === null ? (this.type=='ios') : this.options.iconGloss
 
             $('body').append('<div id="smartbanner" class="'+this.type+'"><div class="sb-container"><a href="#" class="sb-close">&times;</a><span class="sb-icon"></span><div class="sb-info"><strong>'+this.title+'</strong><span>'+this.author+'</span><span>'+inStore+'</span></div><a href="'+link+'" class="sb-button"><span>'+this.options.button+'</span></a></div></div>')

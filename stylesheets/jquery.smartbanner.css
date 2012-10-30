@@ -8,7 +8,6 @@
 #smartbanner #smartbanner.no-icon .sb-info { left:34px; }
 #smartbanner .sb-info strong { display:block; font-size:13px; color:#4d4d4d; line-height: 18px; }
 #smartbanner .sb-info > span { display:block; }
-#smartbanner .sb-info .sb-arrow { font-size:18px; vertical-align:-2px; }
 #smartbanner .sb-info em { font-style:normal; text-transform:uppercase; }
 #smartbanner .sb-button { position:absolute; right:20px; top:24px; border:1px solid #bfbfbf; padding: 0 10px; min-width: 10%; height:24px; font-size:14px; line-height:24px; text-align:center; font-weight:bold; color:#6a6a6a; background:-webkit-linear-gradient(top, #efefef 0%,#dcdcdc 100%); text-transform:uppercase; text-decoration:none; text-shadow:0 1px 0 rgba(255,255,255,0.8); border-radius:3px; box-shadow:0 1px 0 rgba(255,255,255,0.6),0 1px 0 rgba(255,255,255,0.7) inset; }
 #smartbanner .sb-button:active, #smartbanner .sb-button:hover { background:-webkit-linear-gradient(top, #dcdcdc 0%,#efefef 100%); }
