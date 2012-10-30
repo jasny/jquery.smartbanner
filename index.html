@@ -69,7 +69,7 @@ brings this feature to older iOS versions and Android devices.</p>
 
 <h2>Options</h2>
 
-<pre><code>$().smartbanner({
+<pre><code>$.smartbanner({
     title: null, // What the title of the app should be in the banner (defaults to apple-touch-icon)
     author: null, // What the author of the app should be in the banner (defaults to hostname)
     price: 'Free', // Price of the app
@@ -97,7 +97,7 @@ brings this feature to older iOS versions and Android devices.</p>
     <script src="javascripts/main.js"></script>
     <script src="javascripts/jquery.smartbanner.js"></script>
     <script type="text/javascript">
-      $().smartbanner({
+      $.smartbanner({
         title: 'YouTube',
         author: 'Google, Inc.',
         icon: 'http://a5.mzstatic.com/us/r1000/075/Features/v4/db/46/90/db4690bd-efd7-7146-ccda-2907d6412e25/mza_2095397568113465042.175x175-75.jpg',
@@ -108,7 +108,7 @@ brings this feature to older iOS versions and Android devices.</p>
       
       $('.theme-toggle').on('click', function(e) {
         e.preventDefault();
-        $().smartbanner('switchType')
+        $.smartbanner('switchType')
         $(this).text($(this).text() == 'Preview Android' ? 'Preview iOS' : 'Preview Android')
       })
     </script>

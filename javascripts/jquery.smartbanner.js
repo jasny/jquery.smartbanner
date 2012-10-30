@@ -6,7 +6,7 @@
 !function($) {
     var SmartBanner = function(options) {
         this.origHtmlMargin = parseFloat($('html').css('margin-top')) // Get the original margin-top of the HTML element so we can take that into account
-        this.options = $.extend({}, $.fn.smartbanner.defaults, options)
+        this.options = $.extend({}, $.smartbanner.defaults, options)
         
         var standalone = navigator.standalone // Check if it's already a standalone web app or running within a webui view of an app (not mobile safari)
 
@@ -145,7 +145,7 @@
         }
     }
 
-    $.fn.smartbanner = function(option) {
+    $.smartbanner = function(option) {
         var $window = $(window)
         , data = $window.data('typeahead')
         , options = typeof option == 'object' && option
@@ -154,7 +154,7 @@
     }
     
     // override these globally if you like (they are all optional)
-    $.fn.smartbanner.defaults = {
+    $.smartbanner.defaults = {
         title: null, // What the title of the app should be in the banner (defaults to apple-touch-icon)
         author: null, // What the author of the app should be in the banner (defaults to hostname)
         price: 'Free', // Price of the app
@@ -171,6 +171,6 @@
         force: null // Choose 'ios' or 'android'. Don't do a browser check, just always show this banner
     }
     
-    $.fn.smartbanner.Constructor = SmartBanner
+    $.smartbanner.Constructor = SmartBanner
 
 }(window.jQuery);
