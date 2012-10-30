@@ -14,7 +14,7 @@
         if (this.options.force) {
             this.type = this.options.force
         } else if (navigator.userAgent.match(/iPad|iPhone/i) != null) {
-            if (window.Number(navigator.userAgent.substr(navigator.userAgent.indexOf('OS ') + 3, 3).replace( '_', '.' )) < 6) this.type = 'ios' // Check native smart banner support (iOS 6+)
+            if (navigator.userAgent.match(/Safari/i) != null && window.Number(navigator.userAgent.substr(navigator.userAgent.indexOf('OS ') + 3, 3).replace('_', '.')) < 6) this.type = 'ios' // Check webview and native smart banner support (iOS 6+)
         } else if (navigator.userAgent.match(/Android/i) != null) {
             this.type = 'android'
         }
@@ -29,10 +29,12 @@
         if (this.scale < 1) this.scale = 1
 
         // Get info from meta data
-        var meta = $(this.type=='android' ? 'meta[name="google-play-app"]' : 'meta[name="apple-itunes-app"]').attr('content')
-        this.appId = /app-id=([^\s,]+)/.exec(meta)[1]
+        var meta = $(this.type=='android' ? 'meta[name="google-play-app"]' : 'meta[name="apple-itunes-app"]')
+        if (meta.length == 0) return
+        
+        this.appId = /app-id=([^\s,]+)/.exec(meta.attr('content'))[1]
         this.title = this.options.title ? this.options.title : $('title').text().replace(/\s*[|\-·].*$/, '')
-        this.author = this.options.author ? this.options.author : ($('meta[name="author"]') ? $('meta[name="author"]').attr('content') : window.location.hostname)
+        this.author = this.options.author ? this.options.author : ($('meta[name="author"]').length ? $('meta[name="author"]').attr('content') : window.location.hostname)
 
         // Create banner
         this.create()
@@ -86,14 +88,14 @@
             $('#smartbanner .sb-button').on('click',$.proxy(this.install, this))
         }
         
-      , show: function() {
+      , show: function(callback) {
             $('#smartbanner').stop().animate({top:0},this.options.speedIn).addClass('shown')
-            $('html').animate({marginTop:this.origHtmlMargin+this.bannerHeight},this.options.speedIn)
+            $('html').animate({marginTop:this.origHtmlMargin+(this.bannerHeight*this.scale)},this.options.speedIn,'swing',callback)
         }
         
-      , hide: function() {
-            $('#smartbanner').stop().animate({top:-1 * this.bannerHeight * this.scale},this.options.speedOut).removeClass('shown')
-            $('html').animate({marginTop:this.origHtmlMargin},this.options.speedOut)
+      , hide: function(callback) {
+            $('#smartbanner').stop().animate({top:-1*this.bannerHeight*this.scale},this.options.speedOut).removeClass('shown')
+            $('html').animate({marginTop:this.origHtmlMargin},this.options.speedOut,'swing',callback)
         }
       
       , close: function(e) {
@@ -131,14 +133,12 @@
       , switchType: function() {
           var that = this
           
-          $('#smartbanner').stop().animate({top:-1 * this.bannerHeight * this.scale},this.options.speedOut).removeClass('shown')
-          
-          $('html').animate({marginTop:this.origHtmlMargin},this.options.speedOut,'swing',function() {
+          this.hide(function() {
             that.type = that.type=='android' ? 'ios' : 'android'
             var meta = $(that.type=='android' ? 'meta[name="google-play-app"]' : 'meta[name="apple-itunes-app"]').attr('content')
             that.appId = /app-id=([^\s,]+)/.exec(meta)[1]
             
-            $('#smartbanner').replaceWith('')
+            $('#smartbanner').detach()
             that.create()
             that.show()
           })
@@ -155,12 +155,12 @@
     
     // override these globally if you like (they are all optional)
     $.smartbanner.defaults = {
-        title: null, // What the title of the app should be in the banner (defaults to apple-touch-icon)
-        author: null, // What the author of the app should be in the banner (defaults to hostname)
+        title: null, // What the title of the app should be in the banner (defaults to <title>)
+        author: null, // What the author of the app should be in the banner (defaults to <meta name="author"> or hostname)
         price: 'Free', // Price of the app
         inAppStore: 'In the App Store', // Text of price for iOS
         inGooglePlay: 'In Google Play', // Text of price for Android
-        icon: null, // The URL of the icon (defaults to <link>)
+        icon: null, // The URL of the icon (defaults to <meta name="apple-touch-icon">)
         iconGloss: null, // Force gloss effect for iOS even for precomposed
         button: 'VIEW', // Text for the install button
         scale: 'auto', // Scale based on viewport size (set to 1 to disable)
