@@ -29,10 +29,12 @@
         if (this.scale < 1) this.scale = 1
 
         // Get info from meta data
-        var meta = $(this.type=='android' ? 'meta[name="google-play-app"]' : 'meta[name="apple-itunes-app"]').attr('content')
-        this.appId = /app-id=([^\s,]+)/.exec(meta)[1]
+        var meta = $(this.type=='android' ? 'meta[name="google-play-app"]' : 'meta[name="apple-itunes-app"]')
+        if (meta.length == 0) return
+        
+        this.appId = /app-id=([^\s,]+)/.exec(meta.attr('content'))[1]
         this.title = this.options.title ? this.options.title : $('title').text().replace(/\s*[|\-·].*$/, '')
-        this.author = this.options.author ? this.options.author : ($('meta[name="author"]') ? $('meta[name="author"]').attr('content') : window.location.hostname)
+        this.author = this.options.author ? this.options.author : ($('meta[name="author"]').length ? $('meta[name="author"]').attr('content') : window.location.hostname)
 
         // Create banner
         this.create()
@@ -155,12 +157,12 @@
     
     // override these globally if you like (they are all optional)
     $.fn.smartbanner.defaults = {
-        title: null, // What the title of the app should be in the banner (defaults to apple-touch-icon)
-        author: null, // What the author of the app should be in the banner (defaults to hostname)
+        title: null, // What the title of the app should be in the banner (defaults to <title>)
+        author: null, // What the author of the app should be in the banner (defaults to <meta name="author"> or hostname)
         price: 'Free', // Price of the app
         inAppStore: 'In the App Store', // Text of price for iOS
         inGooglePlay: 'In Google Play', // Text of price for Android
-        icon: null, // The URL of the icon (defaults to <link>)
+        icon: null, // The URL of the icon (defaults to <meta name="apple-touch-icon">)
         iconGloss: null, // Force gloss effect for iOS even for precomposed
         button: 'VIEW', // Text for the install button
         scale: 'auto', // Scale based on viewport size (set to 1 to disable)
