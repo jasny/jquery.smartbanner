@@ -88,14 +88,14 @@
             $('#smartbanner .sb-button').on('click',$.proxy(this.install, this))
         }
         
-      , show: function() {
+      , show: function(callback) {
             $('#smartbanner').stop().animate({top:0},this.options.speedIn).addClass('shown')
-            $('html').animate({marginTop:this.origHtmlMargin+this.bannerHeight},this.options.speedIn)
+            $('html').animate({marginTop:this.origHtmlMargin+(this.bannerHeight*this.scale)},this.options.speedIn,'swing',callback)
         }
         
-      , hide: function() {
-            $('#smartbanner').stop().animate({top:-1 * this.bannerHeight * this.scale},this.options.speedOut).removeClass('shown')
-            $('html').animate({marginTop:this.origHtmlMargin},this.options.speedOut)
+      , hide: function(callback) {
+            $('#smartbanner').stop().animate({top:-1*this.bannerHeight*this.scale},this.options.speedOut).removeClass('shown')
+            $('html').animate({marginTop:this.origHtmlMargin},this.options.speedOut,'swing',callback)
         }
       
       , close: function(e) {
@@ -133,14 +133,12 @@
       , switchType: function() {
           var that = this
           
-          $('#smartbanner').stop().animate({top:-1 * this.bannerHeight * this.scale},this.options.speedOut).removeClass('shown')
-          
-          $('html').animate({marginTop:this.origHtmlMargin},this.options.speedOut,'swing',function() {
+          this.hide(function() {
             that.type = that.type=='android' ? 'ios' : 'android'
             var meta = $(that.type=='android' ? 'meta[name="google-play-app"]' : 'meta[name="apple-itunes-app"]').attr('content')
             that.appId = /app-id=([^\s,]+)/.exec(meta)[1]
             
-            $('#smartbanner').replaceWith('')
+            $('#smartbanner').detach()
             that.create()
             that.show()
           })
