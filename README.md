@@ -27,7 +27,7 @@ brings this feature to older iOS versions and Android devices.
     </html>
 
 ## Options ##
-    $().smartbanner({
+    $.smartbanner({
       title: null, // What the title of the app should be in the banner (defaults to <title>)
       author: null, // What the author of the app should be in the banner (defaults to <meta name="author"> or hostname)
       price: 'Free', // Price of the app
