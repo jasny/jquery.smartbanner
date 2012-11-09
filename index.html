@@ -101,7 +101,7 @@ brings this feature to older iOS versions and Android devices.</p>
         title: 'YouTube',
         author: 'Google, Inc.',
         icon: 'http://a5.mzstatic.com/us/r1000/075/Features/v4/db/46/90/db4690bd-efd7-7146-ccda-2907d6412e25/mza_2095397568113465042.175x175-75.jpg',
-        force: 'ios',
+        force: location.href.match(/#android$/) ? 'android' : 'ios',
         daysHidden: 0,
         daysReminder: 0
       });
@@ -111,6 +111,8 @@ brings this feature to older iOS versions and Android devices.</p>
         $.smartbanner('switchType')
         $(this).text($(this).text() == 'Preview Android' ? 'Preview iOS' : 'Preview Android')
       })
+      
+      if (location.href.match(/#android$/)) $('.theme-toggle').text('Preview iOS');
     </script>
 
                   <script type="text/javascript">
