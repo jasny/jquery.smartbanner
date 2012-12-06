@@ -73,8 +73,8 @@
 
             if (this.scale > 1) {
                 $('#smartbanner')
-                    .css('top', $('#smartbanner').css('top') * this.scale)
-                    .css('height', $('#smartbanner').css('height') * this.scale)
+                    .css('top', parseFloat($('#smartbanner').css('top')) * this.scale)
+                    .css('height', parseFloat($('#smartbanner').css('height')) * this.scale)
                 $('#smartbanner .sb-container')
                     .css('-webkit-transform', 'scale('+this.scale+')')
                     .css('-msie-transform', 'scale('+this.scale+')')
