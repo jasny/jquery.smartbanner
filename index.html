@@ -3,6 +3,7 @@
   <head>
     <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
     <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
@@ -98,11 +99,12 @@ brings this feature to older iOS versions and Android devices.</p>
     <script src="javascripts/main.js"></script>
     <script src="javascripts/jquery.smartbanner.js"></script>
     <script type="text/javascript">
+      var android = location.href.match(/#android$/) || navigator.userAgent.match(/Android/i) != null;
       $.smartbanner({
         title: 'YouTube',
         author: 'Google, Inc.',
         icon: 'http://a5.mzstatic.com/us/r1000/075/Features/v4/db/46/90/db4690bd-efd7-7146-ccda-2907d6412e25/mza_2095397568113465042.175x175-75.jpg',
-        force: location.href.match(/#android$/) ? 'android' : 'ios',
+        force: android ? 'android' : 'ios',
         daysHidden: 0,
         daysReminder: 0
       });
@@ -113,7 +115,7 @@ brings this feature to older iOS versions and Android devices.</p>
         $(this).text($(this).text() == 'Preview Android' ? 'Preview iOS' : 'Preview Android')
       })
       
-      if (location.href.match(/#android$/)) $('.theme-toggle').text('Preview iOS');
+      if (android) $('.theme-toggle').text('Preview iOS');
     </script>
 
                   <script type="text/javascript">
