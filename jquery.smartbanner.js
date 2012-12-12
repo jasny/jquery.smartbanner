@@ -48,7 +48,7 @@
     
       , create: function() {
             var iconURL
-              , link=(this.type=='android' ? 'market://details?id=' : 'https://itunes.apple.com/nl/app/myradio/id') + this.appId
+              , link=(this.type=='android' ? 'market://details?id=' : ('https://itunes.apple.com/' + this.options.appStoreLanguage + '/app/myradio/id')) + this.appId
               , inStore=this.options.price ? this.options.price + ' - ' + (this.type=='android' ? this.options.inGooglePlay : this.options.inAppStore) : ''
               , gloss=this.options.iconGloss === null ? (this.type=='ios') : this.options.iconGloss
 
@@ -158,6 +158,7 @@
         title: null, // What the title of the app should be in the banner (defaults to <title>)
         author: null, // What the author of the app should be in the banner (defaults to <meta name="author"> or hostname)
         price: 'FREE', // Price of the app
+        appStoreLanguage: 'us', // Language code for App Store
         inAppStore: 'On the App Store', // Text of price for iOS
         inGooglePlay: 'In Google Play', // Text of price for Android
         icon: null, // The URL of the icon (defaults to <meta name="apple-touch-icon">)
