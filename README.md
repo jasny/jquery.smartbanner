@@ -30,8 +30,9 @@ brings this feature to older iOS versions and Android devices.
     $.smartbanner({
       title: null, // What the title of the app should be in the banner (defaults to <title>)
       author: null, // What the author of the app should be in the banner (defaults to <meta name="author"> or hostname)
-      price: 'Free', // Price of the app
-      inAppStore: 'In the App Store', // Text of price for iOS
+      price: 'FREE', // Price of the app
+      appStoreLanguage: 'us', // Language code for App Store
+      inAppStore: 'On the App Store', // Text of price for iOS
       inGooglePlay: 'In Google Play', // Text of price for Android
       icon: null, // The URL of the icon (defaults to <meta name="apple-touch-icon">)
       iconGloss: null, // Force gloss effect for iOS even for precomposed
