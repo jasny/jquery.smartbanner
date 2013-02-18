@@ -34,6 +34,7 @@ brings this feature to older iOS versions, Android devices and for Windows Store
       appStoreLanguage: 'us', // Language code for App Store
       inAppStore: 'On the App Store', // Text of price for iOS
       inGooglePlay: 'In Google Play', // Text of price for Android
+	  inWindowsStore: 'In the Windows Store', // Text of price for Windows
       icon: null, // The URL of the icon (defaults to <meta name="apple-touch-icon">)
       iconGloss: null, // Force gloss effect for iOS even for precomposed
       button: 'VIEW', // Text for the install button
@@ -42,7 +43,7 @@ brings this feature to older iOS versions, Android devices and for Windows Store
       speedOut: 400, // Close animation speed of the banner
       daysHidden: 15, // Duration to hide the banner after being closed (0 = always show banner)
       daysReminder: 90, // Duration to hide the banner after "VIEW" is clicked *separate from when the close button is clicked* (0 = always show banner)
-      force: null // Choose 'ios' or 'android'. Don't do a browser check, just always show this banner
+      force: null // Choose 'ios', 'android' or 'windows'. Don't do a browser check, just always show this banner
     })
 
   [1]: http://developer.apple.com/library/ios/#documentation/AppleApplications/Reference/SafariWebContent/PromotingAppswithAppBanners/PromotingAppswithAppBanners.html
