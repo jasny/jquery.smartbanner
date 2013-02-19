@@ -48,7 +48,7 @@
     
       , create: function() {
             var iconURL
-              , link=(this.type=='android' ? 'market://details?id=' : ('https://itunes.apple.com/' + this.options.appStoreLanguage + '/app/id')) + this.appId
+              , link=(this.options.url ? this.options.url : (this.type=='android' ? 'market://details?id=' : ('https://itunes.apple.com/' + this.options.appStoreLanguage + '/app/id')) + this.appId)
               , inStore=this.options.price ? this.options.price + ' - ' + (this.type=='android' ? this.options.inGooglePlay : this.options.inAppStore) : ''
               , gloss=this.options.iconGloss === null ? (this.type=='ios') : this.options.iconGloss
 
@@ -164,6 +164,7 @@
         icon: null, // The URL of the icon (defaults to <meta name="apple-touch-icon">)
         iconGloss: null, // Force gloss effect for iOS even for precomposed
         button: 'VIEW', // Text for the install button
+        url: null, // The URL for the button. Keep null if you want the button to link to the app store.
         scale: 'auto', // Scale based on viewport size (set to 1 to disable)
         speedIn: 300, // Show animation speed of the banner
         speedOut: 400, // Close animation speed of the banner
