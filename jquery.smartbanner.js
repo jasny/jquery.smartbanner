@@ -35,8 +35,8 @@
         if (meta.length == 0) return
         
         this.appId = /app-id=([^\s,]+)/.exec(meta.attr('content'))[1]
-        this.title = this.options.title ? this.options.title : $('title').text().replace(/\s*[|\-·].*$/, '')
-        this.author = this.options.author ? this.options.author : ($('meta[name="author"]').length ? $('meta[name="author"]').attr('content') : window.location.hostname)
+        this.title = this.options.title ? this.options.title : meta.data('title') || $('title').text().replace(/\s*[|\-·].*$/, '')
+        this.author = this.options.author ? this.options.author : meta.data('author') || ($('meta[name="author"]').length ? $('meta[name="author"]').attr('content') : window.location.hostname)
 
         // Create banner
         this.create()
