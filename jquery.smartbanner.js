@@ -37,6 +37,7 @@
         this.appId = /app-id=([^\s,]+)/.exec(meta.attr('content'))[1]
         this.title = this.options.title ? this.options.title : meta.data('title') || $('title').text().replace(/\s*[|\-·].*$/, '')
         this.author = this.options.author ? this.options.author : meta.data('author') || ($('meta[name="author"]').length ? $('meta[name="author"]').attr('content') : window.location.hostname)
+        this.iconUrl = meta.data('icon-url');
 
         // Create banner
         this.create()
@@ -58,6 +59,8 @@
             
             if (this.options.icon) {
                 iconURL = this.options.icon
+            } else if(this.iconUrl) {
+                iconURL = this.iconUrl;
             } else if ($('link[rel="apple-touch-icon-precomposed"]').length > 0) {
                 iconURL = $('link[rel="apple-touch-icon-precomposed"]').attr('href')
                 if (this.options.iconGloss === null) gloss = false
