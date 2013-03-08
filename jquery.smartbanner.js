@@ -35,8 +35,10 @@
         if (meta.length == 0) return
         
         this.appId = /app-id=([^\s,]+)/.exec(meta.attr('content'))[1]
-        this.title = this.options.title ? this.options.title : $('title').text().replace(/\s*[|\-·].*$/, '')
-        this.author = this.options.author ? this.options.author : ($('meta[name="author"]').length ? $('meta[name="author"]').attr('content') : window.location.hostname)
+        this.title = this.options.title ? this.options.title : meta.data('title') || $('title').text().replace(/\s*[|\-·].*$/, '')
+        this.author = this.options.author ? this.options.author : meta.data('author') || ($('meta[name="author"]').length ? $('meta[name="author"]').attr('content') : window.location.hostname)
+        this.iconUrl = meta.data('icon-url');
+        this.price = meta.data('price');
 
         // Create banner
         this.create()
@@ -51,13 +53,16 @@
       , create: function() {
             var iconURL
               , link=(this.options.url ? this.options.url : (this.type=='android' ? 'market://details?id=' : ('https://itunes.apple.com/' + this.options.appStoreLanguage + '/app/id')) + this.appId)
-              , inStore=this.options.price ? this.options.price + ' - ' + (this.type=='android' ? this.options.inGooglePlay : this.options.inAppStore) : ''
+              , price = this.price || this.options.price
+              , inStore = price ? price + ' - ' + (this.type=='android' ? this.options.inGooglePlay : this.options.inAppStore) : ''
               , gloss=this.options.iconGloss === null ? (this.type=='ios') : this.options.iconGloss
 
             $('body').append('<div id="smartbanner" class="'+this.type+'"><div class="sb-container"><a href="#" class="sb-close">&times;</a><span class="sb-icon"></span><div class="sb-info"><strong>'+this.title+'</strong><span>'+this.author+'</span><span>'+inStore+'</span></div><a href="'+link+'" class="sb-button"><span>'+this.options.button+'</span></a></div></div>')
             
             if (this.options.icon) {
                 iconURL = this.options.icon
+            } else if(this.iconUrl) {
+                iconURL = this.iconUrl;
             } else if ($('link[rel="apple-touch-icon-precomposed"]').length > 0) {
                 iconURL = $('link[rel="apple-touch-icon-precomposed"]').attr('href')
                 if (this.options.iconGloss === null) gloss = false
