@@ -34,6 +34,7 @@ brings this feature to older iOS versions and Android devices.
       appStoreLanguage: 'us', // Language code for App Store
       inAppStore: 'On the App Store', // Text of price for iOS
       inGooglePlay: 'In Google Play', // Text of price for Android
+      GooglePlayParams: null, // Aditional parameters for the market
       icon: null, // The URL of the icon (defaults to <meta name="apple-touch-icon">)
       iconGloss: null, // Force gloss effect for iOS even for precomposed
       button: 'VIEW', // Text for the install button
