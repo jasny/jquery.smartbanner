@@ -50,9 +50,19 @@
     
       , create: function() {
             var iconURL
-              , link=(this.options.url ? this.options.url : (this.type=='android' ? 'market://details?id=' : ('https://itunes.apple.com/' + this.options.appStoreLanguage + '/app/id')) + this.appId)
               , inStore=this.options.price ? this.options.price + ' - ' + (this.type=='android' ? this.options.inGooglePlay : this.options.inAppStore) : ''
               , gloss=this.options.iconGloss === null ? (this.type=='ios') : this.options.iconGloss
+            if(this.options.url)
+              link = this.options.url
+            else {
+              if(this.type=='android') {
+                link = 'market://details?id=' + this.appId
+                if(this.options.GooglePlayParams)
+                  link = link + '&referrer=' + this.options.GooglePlayParams
+              }
+              else
+              link = 'https://itunes.apple.com/' + this.options.appStoreLanguage + '/app/id' + this.appId
+            }
 
             $('body').append('<div id="smartbanner" class="'+this.type+'"><div class="sb-container"><a href="#" class="sb-close">&times;</a><span class="sb-icon"></span><div class="sb-info"><strong>'+this.title+'</strong><span>'+this.author+'</span><span>'+inStore+'</span></div><a href="'+link+'" class="sb-button"><span>'+this.options.button+'</span></a></div></div>')
             
@@ -163,6 +173,7 @@
         appStoreLanguage: 'us', // Language code for App Store
         inAppStore: 'On the App Store', // Text of price for iOS
         inGooglePlay: 'In Google Play', // Text of price for Android
+        GooglePlayParams: null, // Aditional parameters for the market
         icon: null, // The URL of the icon (defaults to <meta name="apple-touch-icon">)
         iconGloss: null, // Force gloss effect for iOS even for precomposed
         button: 'VIEW', // Text for the install button
