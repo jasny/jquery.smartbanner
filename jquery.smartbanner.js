@@ -7,7 +7,7 @@
     var SmartBanner = function(options) {
         this.origHtmlMargin = parseFloat($('html').css('margin-top')) // Get the original margin-top of the HTML element so we can take that into account
         this.options = $.extend({}, $.smartbanner.defaults, options)
-        
+
         var standalone = navigator.standalone // Check if it's already a standalone web app or running within a webui view of an app (not mobile safari)
 
         // Detect banner type (iOS or Android)
@@ -20,12 +20,12 @@
         } else if (navigator.userAgent.match(/Android/i) != null) {
             this.type = 'android'
         }
-        
+
         // Don't show banner if device isn't iOS or Android, website is loaded in app or user dismissed banner
         if (!this.type || standalone || this.getCookie('sb-closed') || this.getCookie('sb-installed')) {
             return
         }
-        
+
         // Calculate scale
         this.scale = this.options.scale == 'auto' ? $(window).width() / window.screen.width : this.options.scale
         if (this.scale < 1) this.scale = 1
@@ -33,7 +33,7 @@
         // Get info from meta data
         var meta = $(this.type=='android' ? 'meta[name="google-play-app"]' : 'meta[name="apple-itunes-app"]')
         if (meta.length == 0) return
-        
+
         this.appId = /app-id=([^\s,]+)/.exec(meta.attr('content'))[1]
         this.title = this.options.title ? this.options.title : $('title').text().replace(/\s*[|\-·].*$/, '')
         this.author = this.options.author ? this.options.author : ($('meta[name="author"]').length ? $('meta[name="author"]').attr('content') : window.location.hostname)
@@ -43,11 +43,11 @@
         this.show()
         this.listen()
     }
-        
+
     SmartBanner.prototype = {
 
         constructor: SmartBanner
-    
+
       , create: function() {
             var iconURL
               , link=(this.options.url ? this.options.url : (this.type=='android' ? 'market://details?id=' : ('https://itunes.apple.com/' + this.options.appStoreLanguage + '/app/id')) + this.appId)
@@ -55,7 +55,7 @@
               , gloss=this.options.iconGloss === null ? (this.type=='ios') : this.options.iconGloss
 
             $('body').append('<div id="smartbanner" class="'+this.type+'"><div class="sb-container"><a href="#" class="sb-close">&times;</a><span class="sb-icon"></span><div class="sb-info"><strong>'+this.title+'</strong><span>'+this.author+'</span><span>'+inStore+'</span></div><a href="'+link+'" class="sb-button"><span>'+this.options.button+'</span></a></div></div>')
-            
+
             if (this.options.icon) {
                 iconURL = this.options.icon
             } else if ($('link[rel="apple-touch-icon-precomposed"]').length > 0) {
@@ -84,40 +84,42 @@
                     .css('width', $(window).width() / this.scale)
             }
         }
-        
+
       , listen: function () {
             $('#smartbanner .sb-close').on('click',$.proxy(this.close, this))
             $('#smartbanner .sb-button').on('click',$.proxy(this.install, this))
         }
-        
+
       , show: function(callback) {
             $('#smartbanner').stop().animate({top:0},this.options.speedIn).addClass('shown')
             $('html').animate({marginTop:this.origHtmlMargin+(this.bannerHeight*this.scale)},this.options.speedIn,'swing',callback)
         }
-        
+
       , hide: function(callback) {
             $('#smartbanner').stop().animate({top:-1*this.bannerHeight*this.scale},this.options.speedOut).removeClass('shown')
             $('html').animate({marginTop:this.origHtmlMargin},this.options.speedOut,'swing',callback)
         }
-      
+
       , close: function(e) {
             e.preventDefault()
             this.hide()
             this.setCookie('sb-closed','true',this.options.daysHidden)
+            this.options.onClose();
         }
-       
+
       , install: function(e) {
             this.hide()
             this.setCookie('sb-installed','true',this.options.daysReminder)
+            this.options.onInstall();
         }
-       
+
       , setCookie: function(name, value, exdays) {
             var exdate = new Date()
             exdate.setDate(exdate.getDate()+exdays)
             value=escape(value)+((exdays==null)?'':'; expires='+exdate.toUTCString())
             document.cookie=name+'='+value+'; path=/;'
         }
-        
+
       , getCookie: function(name) {
             var i,x,y,ARRcookies = document.cookie.split(";")
             for(i=0;i<ARRcookies.length;i++) {
@@ -130,16 +132,16 @@
             }
             return null
         }
-      
+
       // Demo only
       , switchType: function() {
           var that = this
-          
+
           this.hide(function() {
             that.type = that.type=='android' ? 'ios' : 'android'
             var meta = $(that.type=='android' ? 'meta[name="google-play-app"]' : 'meta[name="apple-itunes-app"]').attr('content')
             that.appId = /app-id=([^\s,]+)/.exec(meta)[1]
-            
+
             $('#smartbanner').detach()
             that.create()
             that.show()
@@ -154,7 +156,7 @@
       if (!data) $window.data('typeahead', (data = new SmartBanner(options)))
       if (typeof option == 'string') data[option]()
     }
-    
+
     // override these globally if you like (they are all optional)
     $.smartbanner.defaults = {
         title: null, // What the title of the app should be in the banner (defaults to <title>)
@@ -172,9 +174,11 @@
         speedOut: 400, // Close animation speed of the banner
         daysHidden: 15, // Duration to hide the banner after being closed (0 = always show banner)
         daysReminder: 90, // Duration to hide the banner after "VIEW" is clicked *separate from when the close button is clicked* (0 = always show banner)
-        force: null // Choose 'ios' or 'android'. Don't do a browser check, just always show this banner
+        force: null, // Choose 'ios' or 'android'. Don't do a browser check, just always show this banner
+        onClose: function(){}, // Additional onClose Callback
+        onInstall: function(){} // Additional onInstall Callback
     }
-    
+
     $.smartbanner.Constructor = SmartBanner
 
 }(window.jQuery);
