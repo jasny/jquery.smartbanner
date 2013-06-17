@@ -1,4 +1,5 @@
-#smartbanner { position:absolute; left:0; top:-82px; border-bottom:1px solid #e8e8e8; width:100%; height:78px; font-family:'Helvetica Neue',sans-serif; background:-webkit-linear-gradient(top, #f4f4f4 0%,#cdcdcd 100%); box-shadow:0 1px 2px rgba(0,0,0,0.5); z-index:9998; -webkit-font-smoothing:antialiased; overflow:hidden; -webkit-text-size-adjust:none; }
+#smartbanner { position:absolute; left:0; top:-82px; border-bottom:1px solid #e8e8e8; width:100%; height:78px; font-family:'Helvetica Neue',sans-serif; background:-webkit-linear-gradient(top, #f4f4f4 0%,#cdcdcd 100%); box-shadow:0 1px 2px rgba(0,0,0,0.5); z-index:9998; -webkit-font-smoothing:antialiased; overflow:hidden; -webkit-text-size-adjust:none}
+#smartbanner, html.sb-animation {-webkit-transition: all .3s ease;}
 #smartbanner .sb-container { margin: 0 auto; }
 #smartbanner .sb-close { position:absolute; left:5px; top:5px; display:block; border:2px solid #fff; width:14px; height:14px; font-family:'ArialRoundedMTBold',Arial; font-size:15px; line-height:15px; text-align:center; color:#fff; background:#070707; text-decoration:none; text-shadow:none; border-radius:14px; box-shadow:0 2px 3px rgba(0,0,0,0.4); -webkit-font-smoothing:subpixel-antialiased; }
 #smartbanner .sb-close:active { font-size:13px; color:#aaa; }
