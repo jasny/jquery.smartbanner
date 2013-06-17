@@ -91,19 +91,33 @@
         }
         
       , show: function(callback) {
-            $('#smartbanner').stop().animate({top:0},this.options.speedIn).addClass('shown')
-            $('html').animate({marginTop:this.origHtmlMargin+(this.bannerHeight*this.scale)},this.options.speedIn,'swing',callback)
+            $('#smartbanner').stop().animate({top:0},this.options.speedIn).addClass('shown');
+            var transitionCallback = function() {
+                $('html').removeClass('sb-animation');
+                if (callback) {
+                    callback();
+                } 
+            };
+            $('html').addClass('sb-animation').transitionEnd(transitionCallback).css('margin-top', this.origHtmlMargin+(this.bannerHeight*this.scale));
+//            $('html').animate({marginTop:this.origHtmlMargin+(this.bannerHeight*this.scale)},this.options.speedIn,'swing',callback)
         }
         
       , hide: function(callback) {
-            $('#smartbanner').stop().animate({top:-1*this.bannerHeight*this.scale},this.options.speedOut).removeClass('shown')
-            $('html').animate({marginTop:this.origHtmlMargin},this.options.speedOut,'swing',callback)
+            $('#smartbanner').stop().css('top', -1*this.bannerHeight*this.scale).removeClass('shown');
+            var transitionCallback = function() {
+                $('html').removeClass('sb-animation');
+                if (callback) {
+                    callback();
+                }
+            };
+            $('html').addClass('sb-animation').transitionEnd(transitionCallback).css('margin-top', this.origHtmlMargin);
+//            $('html').animate({marginTop:this.origHtmlMargin},this.options.speedOut,'swing',callback)
         }
       
       , close: function(e) {
             e.preventDefault()
             this.hide()
-            this.setCookie('sb-closed','true',this.options.daysHidden)
+            this.setCookie('sb-closed','true',this.options.daysHidden);
         }
        
       , install: function(e) {
@@ -149,9 +163,9 @@
 
     $.smartbanner = function(option) {
         var $window = $(window)
-        , data = $window.data('typeahead')
+        , data = $window.data('smartbanner')
         , options = typeof option == 'object' && option
-      if (!data) $window.data('typeahead', (data = new SmartBanner(options)))
+      if (!data) $window.data('smartbanner', (data = new SmartBanner(options)))
       if (typeof option == 'string') data[option]()
     }
     
@@ -175,6 +189,13 @@
         force: null // Choose 'ios' or 'android'. Don't do a browser check, just always show this banner
     }
     
-    $.smartbanner.Constructor = SmartBanner
-
+    $.smartbanner.Constructor = SmartBanner;
+    //used by bootstrap. You can find sources here https://github.com/twitter/bootstrap/blob/master/js/bootstrap-transition.js
+    $.fn.transitionEnd = function(callback) {
+        if ($.support.transition && $.support.transition.end) {
+            this.one($.support.transition.end, callback);
+        }
+        //do not break fluent interface
+        return this;
+    }
 }(window.jQuery);
