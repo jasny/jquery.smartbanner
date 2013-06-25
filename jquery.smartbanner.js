@@ -13,7 +13,7 @@
         // Detect banner type (iOS or Android)
         if (this.options.force) {
             this.type = this.options.force
-        } else if (navigator.userAgent.match(/iPad|iPhone|iPod/i) != null) {
+        } else if (navigator.userAgent.match(/iPhone|iPod/i) != null || (navigator.userAgent.match(/iPad/) && this.options.iOSUniversalApp)) {
             if (navigator.userAgent.match(/Safari/i) != null &&
                (navigator.userAgent.match(/CriOS/i) != null ||
                window.Number(navigator.userAgent.substr(navigator.userAgent.indexOf('OS ') + 3, 3).replace('_', '.')) < 6)) this.type = 'ios' // Check webview and native smart banner support (iOS 6+)
@@ -188,7 +188,8 @@
         speedOut: 400, // Close animation speed of the banner
         daysHidden: 15, // Duration to hide the banner after being closed (0 = always show banner)
         daysReminder: 90, // Duration to hide the banner after "VIEW" is clicked *separate from when the close button is clicked* (0 = always show banner)
-        force: null // Choose 'ios', 'android' or 'windows'. Don't do a browser check, just always show this banner
+        force: null, // Choose 'ios', 'android' or 'windows'. Don't do a browser check, just always show this banner
+        iOSUniversalApp: true // If the iOS App is a universal app for both iPad and iPhone, display Smart Banner to iPad users, too.
     }
 
     $.smartbanner.Constructor = SmartBanner
