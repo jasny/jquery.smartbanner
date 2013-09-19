@@ -8,9 +8,8 @@
         this.origHtmlMargin = parseFloat($('html').css('margin-top')) // Get the original margin-top of the HTML element so we can take that into account
         this.options = $.extend({}, $.smartbanner.defaults, options)
 
-        var standalone = navigator.standalone // Check if it's already a standalone web app or running within a webui view of an app (not mobile safari)
-          , UA = navigator.userAgent
-          
+        var UA = navigator.userAgent
+
         // Detect banner type (iOS or Android)
         if (this.options.force) {
             this.type = this.options.force
@@ -24,8 +23,7 @@
             this.type = 'windows'
         }
 
-        // Don't show banner if device isn't iOS or Android, website is loaded in app or user dismissed banner
-        if (!this.type || standalone || this.getCookie('sb-closed') || this.getCookie('sb-installed')) {
+        if (!this.isAvailable()) {
             return
         }
 
@@ -51,7 +49,9 @@
 
         // Create banner
         this.create()
-        this.show()
+        if ( this.options.showAtStart ) {
+            this.show()
+        }
         this.listen()
     }
 
@@ -107,15 +107,51 @@
         }
         
       , show: function(callback) {
+            if ( this.shown ) return;
+            this.shown = true;
+            $(window).trigger("smartbanner:beforeShow");
             $('#smartbanner').stop().animate({top:0},this.options.speedIn).addClass('shown')
-            $('html').animate({marginTop:this.origHtmlMargin+(this.bannerHeight*this.scale)},this.options.speedIn,'swing',callback)
+            $('html').animate({marginTop:this.origHtmlMargin+(this.bannerHeight*this.scale)},this.options.speedIn,'swing',function() {
+                $(window).trigger("smartbanner:afterShow");
+                if ( $.isFunction(callback) ) {
+                    callback();
+                }
+            })
         }
-        
+
+      , resume: function(callback) {
+            if ( this.isAvailable() ) {
+                this.show(callback);
+            }
+            this.suspended = false;
+        }
+
       , hide: function(callback) {
+            if ( !this.shown ) return;
+            this.shown = false;
+            $(window).trigger("smartbanner:beforeHide");
             $('#smartbanner').stop().animate({top:-1*this.bannerHeight*this.scale},this.options.speedOut).removeClass('shown')
-            $('html').animate({marginTop:this.origHtmlMargin},this.options.speedOut,'swing',callback)
+            $('html').animate({marginTop:this.origHtmlMargin},this.options.speedOut,'swing',function() {
+                $(window).trigger("smartbanner:afterHide");
+                if ( $.isFunction(callback) ) {
+                    callback();
+                }
+            })
         }
-      
+
+      , suspend: function(callback) {
+            this.hide(callback);
+            this.suspended = true;
+        }
+
+      , isSuspended: function() {
+            return this.suspended;
+        }
+
+      , isShown: function() {
+            return !!this.shown;
+        }
+
       , close: function(e) {
             e.preventDefault()
             this.hide()
@@ -126,7 +162,17 @@
             this.hide()
             this.setCookie('sb-installed','true',this.options.daysReminder)
         }
-       
+
+      , getType: function() {
+            return this.type
+        }
+
+      , isAvailable: function() {
+            // Don't show banner if device isn't iOS or Android, website is loaded in app or user dismissed banner
+            var standalone = navigator.standalone // Check if it's already a standalone web app or running within a webui view of an app (not mobile safari)
+            return !!(this.type && !standalone && !this.getCookie('sb-closed') && !this.getCookie('sb-installed'));
+        }
+
       , setCookie: function(name, value, exdays) {
             var exdate = new Date()
             exdate.setDate(exdate.getDate()+exdays)
@@ -168,7 +214,7 @@
         , data = $window.data('typeahead')
         , options = typeof option == 'object' && option
         if (!data) $window.data('typeahead', (data = new SmartBanner(options)))
-        if (typeof option == 'string') data[option]()
+        if (typeof option == 'string') return data[option]()
     }
 
     // override these globally if you like (they are all optional)
@@ -189,7 +235,8 @@
         speedOut: 400, // Close animation speed of the banner
         daysHidden: 15, // Duration to hide the banner after being closed (0 = always show banner)
         daysReminder: 90, // Duration to hide the banner after "VIEW" is clicked *separate from when the close button is clicked* (0 = always show banner)
-        force: null // Choose 'ios', 'android' or 'windows'. Don't do a browser check, just always show this banner
+        force: null, // Choose 'ios', 'android' or 'windows'. Don't do a browser check, just always show this banner
+        showAtStart: true // Set to false to avoid showing banner at start. Use API method 'show' later in your script
     }
 
     $.smartbanner.Constructor = SmartBanner
