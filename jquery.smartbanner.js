@@ -49,7 +49,9 @@
 
         // Create banner
         this.create()
-        this.show()
+        if ( this.options.showAtStart ) {
+            this.show()
+        }
         this.listen()
     }
 
@@ -233,7 +235,8 @@
         speedOut: 400, // Close animation speed of the banner
         daysHidden: 15, // Duration to hide the banner after being closed (0 = always show banner)
         daysReminder: 90, // Duration to hide the banner after "VIEW" is clicked *separate from when the close button is clicked* (0 = always show banner)
-        force: null // Choose 'ios', 'android' or 'windows'. Don't do a browser check, just always show this banner
+        force: null, // Choose 'ios', 'android' or 'windows'. Don't do a browser check, just always show this banner
+        showAtStart: true // Set to false to avoid showing banner at start. Use API method 'show' later in your script
     }
 
     $.smartbanner.Constructor = SmartBanner
