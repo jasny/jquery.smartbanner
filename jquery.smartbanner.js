@@ -9,17 +9,18 @@
         this.options = $.extend({}, $.smartbanner.defaults, options)
 
         var standalone = navigator.standalone // Check if it's already a standalone web app or running within a webui view of an app (not mobile safari)
-
+          , UA = navigator.userAgent
+          
         // Detect banner type (iOS or Android)
         if (this.options.force) {
             this.type = this.options.force
-        } else if (navigator.userAgent.match(/iPad|iPhone|iPod/i) != null) {
-            if (navigator.userAgent.match(/Safari/i) != null &&
-               (navigator.userAgent.match(/CriOS/i) != null ||
+        } else if (UA.match(/iPad|iPhone|iPod/i) != null) {
+            if (UA.match(/Safari/i) != null &&
+               (UA.match(/CriOS/i) != null ||
                window.Number(navigator.userAgent.substr(navigator.userAgent.indexOf('OS ') + 3, 3).replace('_', '.')) < 6)) this.type = 'ios' // Check webview and native smart banner support (iOS 6+)
-        } else if (navigator.userAgent.match(/Android/i) != null) {
+        } else if (UA.match(/Android/i) != null) {
             this.type = 'android'
-        } else if (navigator.userAgent.match(/Windows NT 6.2/i) != null) {
+        } else if (UA.match(/Windows NT 6.2/i) != null && UA.match(/Touch/i) !== null) {
             this.type = 'windows'
         }
 
