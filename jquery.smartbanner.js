@@ -107,8 +107,14 @@
       , show: function(callback) {
             if ( this.shown ) return;
             this.shown = true;
+            $(window).trigger("smartbanner:beforeShow");
             $('#smartbanner').stop().animate({top:0},this.options.speedIn).addClass('shown')
-            $('html').animate({marginTop:this.origHtmlMargin+(this.bannerHeight*this.scale)},this.options.speedIn,'swing',callback)
+            $('html').animate({marginTop:this.origHtmlMargin+(this.bannerHeight*this.scale)},this.options.speedIn,'swing',function() {
+                $(window).trigger("smartbanner:afterShow");
+                if ( $.isFunction(callback) ) {
+                    callback();
+                }
+            })
         }
 
       , resume: function(callback) {
@@ -121,8 +127,14 @@
       , hide: function(callback) {
             if ( !this.shown ) return;
             this.shown = false;
+            $(window).trigger("smartbanner:beforeHide");
             $('#smartbanner').stop().animate({top:-1*this.bannerHeight*this.scale},this.options.speedOut).removeClass('shown')
-            $('html').animate({marginTop:this.origHtmlMargin},this.options.speedOut,'swing',callback)
+            $('html').animate({marginTop:this.origHtmlMargin},this.options.speedOut,'swing',function() {
+                $(window).trigger("smartbanner:afterHide");
+                if ( $.isFunction(callback) ) {
+                    callback();
+                }
+            })
         }
 
       , suspend: function(callback) {
