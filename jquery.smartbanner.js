@@ -105,15 +105,23 @@
         }
         
       , show: function(callback) {
+            if ( this.shown ) return;
+            this.shown = true;
             $('#smartbanner').stop().animate({top:0},this.options.speedIn).addClass('shown')
             $('html').animate({marginTop:this.origHtmlMargin+(this.bannerHeight*this.scale)},this.options.speedIn,'swing',callback)
         }
         
       , hide: function(callback) {
+            if ( !this.shown ) return;
+            this.shown = false;
             $('#smartbanner').stop().animate({top:-1*this.bannerHeight*this.scale},this.options.speedOut).removeClass('shown')
             $('html').animate({marginTop:this.origHtmlMargin},this.options.speedOut,'swing',callback)
         }
-      
+
+      , isShown: function() {
+            return !!this.shown;
+        }
+
       , close: function(e) {
             e.preventDefault()
             this.hide()
