@@ -126,7 +126,11 @@
             this.hide()
             this.setCookie('sb-installed','true',this.options.daysReminder)
         }
-       
+
+      , getType: function() {
+            return this.type
+        }
+
       , setCookie: function(name, value, exdays) {
             var exdate = new Date()
             exdate.setDate(exdate.getDate()+exdays)
@@ -168,7 +172,7 @@
         , data = $window.data('typeahead')
         , options = typeof option == 'object' && option
         if (!data) $window.data('typeahead', (data = new SmartBanner(options)))
-        if (typeof option == 'string') data[option]()
+        if (typeof option == 'string') return data[option]()
     }
 
     // override these globally if you like (they are all optional)
