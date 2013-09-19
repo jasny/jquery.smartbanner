@@ -8,9 +8,8 @@
         this.origHtmlMargin = parseFloat($('html').css('margin-top')) // Get the original margin-top of the HTML element so we can take that into account
         this.options = $.extend({}, $.smartbanner.defaults, options)
 
-        var standalone = navigator.standalone // Check if it's already a standalone web app or running within a webui view of an app (not mobile safari)
-          , UA = navigator.userAgent
-          
+        var UA = navigator.userAgent
+
         // Detect banner type (iOS or Android)
         if (this.options.force) {
             this.type = this.options.force
@@ -24,8 +23,7 @@
             this.type = 'windows'
         }
 
-        // Don't show banner if device isn't iOS or Android, website is loaded in app or user dismissed banner
-        if (!this.type || standalone || this.getCookie('sb-closed') || this.getCookie('sb-installed')) {
+        if (!this.isAvailable()) {
             return
         }
 
@@ -129,6 +127,12 @@
 
       , getType: function() {
             return this.type
+        }
+
+      , isAvailable: function() {
+            // Don't show banner if device isn't iOS or Android, website is loaded in app or user dismissed banner
+            var standalone = navigator.standalone // Check if it's already a standalone web app or running within a webui view of an app (not mobile safari)
+            return !!(this.type && !standalone && !this.getCookie('sb-closed') && !this.getCookie('sb-installed'));
         }
 
       , setCookie: function(name, value, exdays) {
