@@ -110,12 +110,28 @@
             $('#smartbanner').stop().animate({top:0},this.options.speedIn).addClass('shown')
             $('html').animate({marginTop:this.origHtmlMargin+(this.bannerHeight*this.scale)},this.options.speedIn,'swing',callback)
         }
-        
+
+      , resume: function(callback) {
+            if ( this.isAvailable() ) {
+                this.show(callback);
+            }
+            this.suspended = false;
+        }
+
       , hide: function(callback) {
             if ( !this.shown ) return;
             this.shown = false;
             $('#smartbanner').stop().animate({top:-1*this.bannerHeight*this.scale},this.options.speedOut).removeClass('shown')
             $('html').animate({marginTop:this.origHtmlMargin},this.options.speedOut,'swing',callback)
+        }
+
+      , suspend: function(callback) {
+            this.hide(callback);
+            this.suspended = true;
+        }
+
+      , isSuspended: function() {
+            return this.suspended;
         }
 
       , isShown: function() {
