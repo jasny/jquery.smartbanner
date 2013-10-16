@@ -43,7 +43,9 @@ brings this feature to older iOS versions, Android devices and for Windows Store
       speedOut: 400, // Close animation speed of the banner
       daysHidden: 15, // Duration to hide the banner after being closed (0 = always show banner)
       daysReminder: 90, // Duration to hide the banner after "VIEW" is clicked *separate from when the close button is clicked* (0 = always show banner)
-      force: null // Choose 'ios', 'android' or 'windows'. Don't do a browser check, just always show this banner
+      force: null, // Choose 'ios', 'android' or 'windows'. Don't do a browser check, just always show this banner
+      onShow: function() {}, // fired when banner is displayed
+      onHide: function() {}, // fired when banner is closed
     })
 
   [1]: http://developer.apple.com/library/ios/#documentation/AppleApplications/Reference/SafariWebContent/PromotingAppswithAppBanners/PromotingAppswithAppBanners.html

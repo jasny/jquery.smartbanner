@@ -109,11 +109,13 @@
       , show: function(callback) {
             $('#smartbanner').stop().animate({top:0},this.options.speedIn).addClass('shown')
             $('html').animate({marginTop:this.origHtmlMargin+(this.bannerHeight*this.scale)},this.options.speedIn,'swing',callback)
+            this.options.onShow()
         }
         
       , hide: function(callback) {
             $('#smartbanner').stop().animate({top:-1*this.bannerHeight*this.scale},this.options.speedOut).removeClass('shown')
             $('html').animate({marginTop:this.origHtmlMargin},this.options.speedOut,'swing',callback)
+            this.options.onHide()
         }
       
       , close: function(e) {
@@ -189,7 +191,9 @@
         speedOut: 400, // Close animation speed of the banner
         daysHidden: 15, // Duration to hide the banner after being closed (0 = always show banner)
         daysReminder: 90, // Duration to hide the banner after "VIEW" is clicked *separate from when the close button is clicked* (0 = always show banner)
-        force: null // Choose 'ios', 'android' or 'windows'. Don't do a browser check, just always show this banner
+        force: null, // Choose 'ios', 'android' or 'windows'. Don't do a browser check, just always show this banner
+        onShow: function() {}, // fired when banner is displayed
+        onHide: function() {}, // fired when banner is closed
     }
 
     $.smartbanner.Constructor = SmartBanner
