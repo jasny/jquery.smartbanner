@@ -1,0 +1,252 @@
+#smartbanner {
+  position:absolute;
+  left:0;
+  top:0;
+  border-bottom:2px solid #e8e8e8;
+  width:100%;
+  height:80px;
+  font-family:'Helvetica Neue',sans-serif;
+  background: #fff;
+  z-index:9998;
+  -webkit-font-smoothing:antialiased;
+  overflow:hidden;
+  -webkit-text-size-adjust:none;
+  box-sizing: border-box;
+}
+#smartbanner .sb-container {
+  margin: 0 auto;
+}
+#smartbanner .sb-close {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: block;
+  text-align: center;
+  text-decoration: none;
+  -webkit-font-smoothing: subpixel-antialiased;
+  border: 0;
+  width: 17px;
+  height: 100%;
+  line-height: 25px;
+  color: #999 !important;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  text-shadow: none;
+  font-size: 25px;
+  padding: 2px 5px;
+}
+#smartbanner .sb-close:active {
+  color:#aaa;
+}
+#smartbanner .sb-icon {
+  position:absolute;
+  left:30px;
+  top:10px;
+  display:block;
+  width:55px;
+  height:55px;
+  background-size:cover;
+}
+#smartbanner.no-icon .sb-icon {
+  display:none;
+}
+#smartbanner .sb-info {
+  position:absolute;
+  left:98px;
+  top:18px;
+  width:44%;
+  font-size:12px;
+  line-height:1.2em;
+  color:#6a6a6a;
+  text-shadow:0 1px 0 rgba(255,255,255,0.8);
+}
+#smartbanner #smartbanner.no-icon .sb-info {
+  left:34px;
+}
+#smartbanner .sb-info strong {
+  display:block;
+  font-size:13px;
+  color:#000;
+  line-height: 18px;
+}
+#smartbanner .sb-info > span {
+  display:block;
+}
+#smartbanner .sb-info em {
+  font-style:normal;
+  text-transform:uppercase;
+}
+#smartbanner .sb-button {
+  position:absolute;
+  right:20px;
+  top:24px;
+  border:1px solid #bfbfbf;
+  padding: 0 10px;
+  min-width: 10%;
+  height:24px;
+  font-size:14px;
+  line-height:24px;
+  text-align:center;
+  font-weight:bold;
+  color:#6a6a6a !important;
+  background: #fff;
+  text-transform:uppercase;
+  text-decoration:none;
+  text-shadow:0 1px 0 rgba(255,255,255,0.8);
+  border-radius:3px;
+  box-shadow:0 1px 0 rgba(255,255,255,0.6),0 1px 0 rgba(255,255,255,0.7) inset;
+}
+
+#smartbanner .sb-icon.gloss:after {
+  content:'';
+  position:absolute;
+  left:0;
+  top:-1px;
+  border-top:1px solid rgba(255,255,255,0.8);
+  width:100%;
+  height:50%;
+  background:-webkit-linear-gradient(top, rgba(255,255,255,0.7) 0%,rgba(255,255,255,0.2) 100%);
+  border-radius:10px 10px 12px 12px;
+}
+
+/* iOS*/
+#smartbanner.ios .sb-icon {
+  border-radius: 9px;
+}
+#smartbanner.ios .sb-close {
+  color: #999 !important;
+  padding: 7px;
+}
+#smartbanner.ios .sb-button {
+  background-color: #fff;
+  color: #007AFF !important;
+  border: 1px solid #007AFF;
+}
+/* Android */
+#smartbanner.android {
+  border-color: #ccc;
+  border-top: 5px solid rgb(179, 200, 51);
+  border-bottom: 2px solid #d6d6d6;
+  background: #f5f5f5;
+  box-shadow: none;
+  font-family: "Roboto",Arial,sans-serif;
+  font-size: 13px;
+  font-weight: normal;
+  color: #8d8d8d;
+}
+#smartbanner.android .sb-close {
+  color: #999 !important;
+  padding: 5px;
+}
+#smartbanner.android .sb-close:active {
+  color:#eee;
+}
+#smartbanner.android .sb-info {
+  text-shadow: none;
+  font-weight: normal;
+}
+#smartbanner.android .sb-info strong {
+  color: #333;
+}
+#smartbanner.android .sb-button {
+  min-width: 12%;
+  border: 2px solid transparent;
+  padding: 0;
+  color: #fff !important;
+  border-radius: 2px;
+  box-shadow: 0 1px 0 rgba(0,0,0,.2);
+  background: #b3c833;
+}
+#smartbanner.android .sb-button span {
+  display: block;
+  padding: 0 10px;
+  text-transform: none;
+  text-shadow: none;
+}
+#smartbanner.android .sb-button:active, #smartbanner.android .sb-button:hover {
+  box-shadow: 0 1px 0 rgba(0,0,0,.4);
+}
+#smartbanner.android .sb-button:active span, #smartbanner.android .sb-button:hover span {
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+/* Windows RT */
+#smartbanner.windows {
+  background: #464646;
+  border-bottom: 8px solid #2a2a2a;
+  font-family: "wf_SegoeUI","Segoe UI","Segoe","Segoe WP","Tahoma","Verdana","Arial","sans-serif";
+  font-size: 14px;
+  -webkit-font-smoothing: antialiased;
+}
+#smartbanner.windows .sb-container {
+  height: 100%;
+  box-sizing: border-box;
+  border-bottom: 1px solid #00bcf2;
+}
+#smartbanner.windows .sb-icon {
+  border-radius: 0px;
+}
+#smartbanner.windows .sb-info {
+  color: #fff;
+  text-shadow: none;
+  font-weight: normal;
+}
+#smartbanner.windows .sb-info strong {
+  color: #00bcf2;
+  text-shadow: 0 0 2px #222;
+}
+#smartbanner.windows .sb-button {
+  border-radius: 0;
+  background: #00bcf2;
+  color: #fff !important;
+  border: 2px solid #00bcf2;
+  box-shadow: none;
+  text-shadow: none;
+}
+#smartbanner.windows .sb-button:hover {
+  border: 2px solid rgba(0,0,0,0.2);
+}
+#smartbanner.windows .sb-close {
+  color: #999 !important;
+}
+
+/* Windows Phone */
+#smartbanner.windows-phone {
+  background: #464646;
+  border-bottom: 8px solid #2a2a2a;
+  font-family: "wf_SegoeUI","Segoe UI","Segoe","Segoe WP","Tahoma","Verdana","Arial","sans-serif";
+  font-size: 14px;
+  -webkit-font-smoothing: antialiased;
+}
+#smartbanner.windows-phone .sb-container {
+  height: 100%;
+  box-sizing: border-box;
+  border-bottom: 1px solid #9B4F96;
+}
+#smartbanner.windows-phone .sb-icon {
+  border-radius: 0px;
+}
+#smartbanner.windows-phone .sb-info {
+  color: #fff;
+  text-shadow: none;
+  font-weight: normal;
+}
+#smartbanner.windows-phone .sb-info strong {
+  color: #9B4F96;
+  text-shadow: 0 0 2px #222;
+}
+#smartbanner.windows-phone .sb-button {
+  border-radius: 0;
+  background: #9B4F96;
+  color: #fff !important;
+  border: 2px solid #9B4F96;
+  box-shadow: none;
+  text-shadow: none;
+}
+#smartbanner.windows-phone .sb-button:hover {
+  border: 2px solid rgba(0,0,0,0.2);
+}
+#smartbanner.windows-phone .sb-close {
+  color: #999 !important;
+}
