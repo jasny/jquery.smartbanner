@@ -79,7 +79,7 @@
       , create: function () {
           var iconURL
             , link = (this.type == 'windows' || this.type == 'windows-phone') ? 'ms-windows-store:PDP?PFN=' + this.pfn : (this.type == 'android' ? 'market://details?id=' : 'https://itunes.apple.com/' + this.options.appStoreLanguage + '/app/id') + this.appId
-            , inStore = this.options.price ? this.options.price + ' ' + (this.type == 'android' ? this.options.inGooglePlay : this.type == 'ios' ? this.options.inAppStore : this.options.inWindowsStore) : ''
+            , inStore = this.options.price ? '<span class="price">'+ this.options.price + '</span> ' + (this.type == 'android' ? this.options.inGooglePlay : this.type == 'ios' ? this.options.inAppStore : this.options.inWindowsStore) : ''
             , gloss = this.options.iconGloss;
 
         switch(this.type){
