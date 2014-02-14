@@ -152,7 +152,7 @@
 #smartbanner.android .sb-info strong {
   color: #333;
 }
-#smartbanner .sb-info .sb-price {
+#smartbanner.android .sb-info .sb-price {
   color: #8d8d8d;
 }
 #smartbanner.android .sb-button {
@@ -202,7 +202,7 @@
   color: #00bcf2;
   text-shadow: 0 0 2px #222;
 }
-#smartbanner .sb-info .sb-price {
+#smartbanner.windows .sb-info .sb-price {
   color: #00bcf2;
 }
 #smartbanner.windows .sb-button {
@@ -245,7 +245,7 @@
   color: #9B4F96;
   text-shadow: 0 0 2px #222;
 }
- #smartbanner .sb-info .sb-price {
+ #smartbanner.windows-phone .sb-info .sb-price {
    color: #9B4F96;
  }
 #smartbanner.windows-phone .sb-button {
