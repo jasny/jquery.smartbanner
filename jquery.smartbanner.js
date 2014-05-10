@@ -82,8 +82,9 @@
               link = 'https://itunes.apple.com/' + this.options.appStoreLanguage + '/app/id' + this.appId
             }
 
-            $('body').append('<div id="smartbanner" class="'+this.type+'"><div class="sb-container"><a href="#" class="sb-close">&times;</a><span class="sb-icon"></span><div class="sb-info"><strong>'+this.title+'</strong><span>'+this.author+'</span><span>'+inStore+'</span></div><a href="'+link+'" class="sb-button"><span>'+this.options.button+'</span></a></div></div>')
-            
+            var banner = '<div id="smartbanner" class="'+this.type+'"><div class="sb-container"><a href="#" class="sb-close">&times;</a><span class="sb-icon"></span><div class="sb-info"><strong>'+this.title+'</strong><span>'+this.author+'</span><span>'+inStore+'</span></div><a href="'+link+'" class="sb-button"><span>'+this.options.button+'</span></a></div></div>';
+            (this.options.layer) ? $('body').append(banner) : $('body').prepend(banner);
+
             if (this.options.icon) {
                 iconURL = this.options.icon
             } else if(this.iconUrl) {
@@ -112,12 +113,14 @@
                 $('#smartbanner')
                     .css('top', parseFloat($('#smartbanner').css('top')) * this.scale)
                     .css('height', parseFloat($('#smartbanner').css('height')) * this.scale)
+                    .hide()
                 $('#smartbanner .sb-container')
                     .css('-webkit-transform', 'scale('+this.scale+')')
                     .css('-msie-transform', 'scale('+this.scale+')')
                     .css('-moz-transform', 'scale('+this.scale+')')
                     .css('width', $(window).width() / this.scale)
             }
+            $('#smartbanner').css('position', (this.options.layer) ? 'absolute' : 'static')
         }
         
       , listen: function () {
@@ -125,14 +128,26 @@
             $('#smartbanner .sb-button').on('click',$.proxy(this.install, this))
         }
         
-      , show: function(callback) {
-            $('#smartbanner').stop().animate({top:0},this.options.speedIn).addClass('shown')
-            $('html').animate({marginTop:this.origHtmlMargin+(this.bannerHeight*this.scale)},this.options.speedIn,'swing',callback)
+      , show: function (callback) {
+            var banner = $('#smartbanner');
+            banner.stop();
+            if (this.options.layer) {
+                banner.animate({top: 0, display: 'block'}, this.options.speedIn).addClass('shown').show();
+                $('html').animate({marginTop: this.origHtmlMargin + (this.bannerHeight * this.scale)}, this.options.speedIn, 'swing', callback);
+            } else {
+                banner.slideDown(this.options.speedIn).addClass('shown');
+            }
         }
         
-      , hide: function(callback) {
-            $('#smartbanner').stop().animate({top:-1*this.bannerHeight*this.scale},this.options.speedOut).removeClass('shown')
-            $('html').animate({marginTop:this.origHtmlMargin},this.options.speedOut,'swing',callback)
+      , hide: function (callback) {
+            var banner = $('#smartbanner');
+            banner.stop();
+            if (this.options.layer) {
+                banner.animate({top: -1 * this.bannerHeight * this.scale}, this.options.speedOut).removeClass('shown').hide();
+                $('html').animate({marginTop: this.origHtmlMargin}, this.options.speedOut, 'swing', callback);
+            } else {
+                banner.slideUp(this.options.speedOut).removeClass('shown');
+            }
         }
       
       , close: function(e) {
@@ -151,7 +166,7 @@
       , setCookie: function(name, value, exdays) {
             var exdate = new Date()
             exdate.setDate(exdate.getDate()+exdays)
-            value=escape(value)+((exdays==null)?'':'; expires='+exdate.toUTCString())
+            value=encodeURI(value)+((exdays==null)?'':'; expires='+exdate.toUTCString())
             document.cookie=name+'='+value+'; path=/;'
         }
         
@@ -162,7 +177,7 @@
                 y = ARRcookies[i].substr(ARRcookies[i].indexOf("=")+1)
                 x = x.replace(/^\s+|\s+$/g,"")
                 if (x==name) {
-                    return unescape(y)
+                    return decodeURI(y)
                 }
             }
             return null
@@ -213,7 +228,8 @@
         daysHidden: 15, // Duration to hide the banner after being closed (0 = always show banner)
         daysReminder: 90, // Duration to hide the banner after "VIEW" is clicked *separate from when the close button is clicked* (0 = always show banner)
         force: null, // Choose 'ios', 'android' or 'windows'. Don't do a browser check, just always show this banner
-		hideOnInstall: true // Hide the banner after "VIEW" is clicked.
+        hideOnInstall: true, // Hide the banner after "VIEW" is clicked.
+        layer: false // Display as overlay layer or slide down the page
     }
 
     $.smartbanner.Constructor = SmartBanner
