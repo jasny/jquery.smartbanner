@@ -14,10 +14,10 @@
         // Detect banner type (iOS or Android)
         if (this.options.force) {
             this.type = this.options.force
-        } else if (UA.match(/iPad|iPhone|iPod/i) != null) {
+        } else if (UA.match(/iPhone|iPod/i) != null || (UA.match(/iPad/) && this.options.iOSUniversalApp)) {
             if (UA.match(/Safari/i) != null &&
                (UA.match(/CriOS/i) != null ||
-               window.Number(navigator.userAgent.substr(navigator.userAgent.indexOf('OS ') + 3, 3).replace('_', '.')) < 6)) this.type = 'ios' // Check webview and native smart banner support (iOS 6+)
+               window.Number(UA.substr(UA.indexOf('OS ') + 3, 3).replace('_', '.')) < 6)) this.type = 'ios' // Check webview and native smart banner support (iOS 6+)
         } else if (UA.match(/\bSilk\/(.*\bMobile Safari\b)?/) || UA.match(/\bKF\w/) || UA.match('Kindle Fire')) {
             this.type = 'kindle'
         } else if (UA.match(/Android/i) != null) {
@@ -253,7 +253,8 @@
         daysReminder: 90, // Duration to hide the banner after "VIEW" is clicked *separate from when the close button is clicked* (0 = always show banner)
         force: null, // Choose 'ios', 'android' or 'windows'. Don't do a browser check, just always show this banner
         hideOnInstall: true, // Hide the banner after "VIEW" is clicked.
-        layer: false // Display as overlay layer or slide down the page
+        layer: false, // Display as overlay layer or slide down the page
+        iOSUniversalApp: true // If the iOS App is a universal app for both iPad and iPhone, display Smart Banner to iPad users, too.
     }
     
     $.smartbanner.Constructor = SmartBanner;
