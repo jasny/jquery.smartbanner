@@ -123,7 +123,9 @@
         }
        
       , install: function(e) {
-            this.hide()
+			if (this.options.hideOnInstall) {
+				this.hide()
+			}
             this.setCookie('sb-installed','true',this.options.daysReminder)
         }
        
@@ -189,7 +191,8 @@
         speedOut: 400, // Close animation speed of the banner
         daysHidden: 15, // Duration to hide the banner after being closed (0 = always show banner)
         daysReminder: 90, // Duration to hide the banner after "VIEW" is clicked *separate from when the close button is clicked* (0 = always show banner)
-        force: null // Choose 'ios', 'android' or 'windows'. Don't do a browser check, just always show this banner
+        force: null, // Choose 'ios', 'android' or 'windows'. Don't do a browser check, just always show this banner
+		hideOnInstall: true // Hide the banner after "VIEW" is clicked.
     }
 
     $.smartbanner.Constructor = SmartBanner
