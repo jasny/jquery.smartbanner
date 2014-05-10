@@ -18,6 +18,8 @@
             if (UA.match(/Safari/i) != null &&
                (UA.match(/CriOS/i) != null ||
                window.Number(navigator.userAgent.substr(navigator.userAgent.indexOf('OS ') + 3, 3).replace('_', '.')) < 6)) this.type = 'ios' // Check webview and native smart banner support (iOS 6+)
+        } else if (UA.match(/\bSilk\/(.*\bMobile Safari\b)?/) || UA.match(/\bKF\w/) || UA.match('Kindle Fire')) {
+            this.type = 'kindle'
         } else if (UA.match(/Android/i) != null) {
             this.type = 'android'
         } else if (UA.match(/Windows NT 6.2/i) != null && UA.match(/Touch/i) !== null) {
@@ -35,7 +37,8 @@
 
         // Get info from meta data
         var meta = $(this.type == 'android' ? 'meta[name="google-play-app"]' :
-            this.type == 'ios' ? 'meta[name="apple-itunes-app"]' : 'meta[name="msApplication-ID"]');
+            this.type == 'ios' ? 'meta[name="apple-itunes-app"]' : 
+            this.type == 'kindle' ? 'meta[name="kindle-fire-app"]' : 'meta[name="msApplication-ID"]');
         if (meta.length == 0) return
 
         // For Windows Store apps, get the PackageFamilyName for protocol launch
@@ -61,8 +64,8 @@
     
       , create: function() {
             var iconURL
-              , link=(this.options.url ? this.options.url : (this.type == 'windows' ? 'ms-windows-store:PDP?PFN=' + this.pfn : (this.type == 'android' ? 'market://details?id=' : 'https://itunes.apple.com/' + this.options.appStoreLanguage + '/app/id')) + this.appId)
-              , inStore=this.options.price ? this.options.price + ' - ' + (this.type == 'android' ? this.options.inGooglePlay : this.type == 'ios' ? this.options.inAppStore : this.options.inWindowsStore) : ''
+              , link=(this.options.url ? this.options.url : (this.type == 'windows' ? 'ms-windows-store:PDP?PFN=' + this.pfn : (this.type == 'android' ? 'market://details?id=' : (this.type == 'kindle' ? 'amzn://apps/android?asin=' : 'https://itunes.apple.com/' + this.options.appStoreLanguage + '/app/id'))) + this.appId)
+              , inStore=this.options.price ? this.options.price + ' - ' + (this.type == 'android' ? this.options.inGooglePlay : this.type == 'kindle' ? this.options.inAmazonAppStore : this.type == 'ios' ? this.options.inAppStore : this.options.inWindowsStore) : ''
               , gloss=this.options.iconGloss === null ? (this.type=='ios') : this.options.iconGloss
 
             $('body').append('<div id="smartbanner" class="'+this.type+'"><div class="sb-container"><a href="#" class="sb-close">&times;</a><span class="sb-icon"></span><div class="sb-info"><strong>'+this.title+'</strong><span>'+this.author+'</span><span>'+inStore+'</span></div><a href="'+link+'" class="sb-button"><span>'+this.options.button+'</span></a></div></div>')
@@ -181,6 +184,7 @@
         appStoreLanguage: 'us', // Language code for App Store
         inAppStore: 'On the App Store', // Text of price for iOS
         inGooglePlay: 'In Google Play', // Text of price for Android
+        inAmazonAppStore: 'In the Amazon Appstore',
         inWindowsStore: 'In the Windows Store', //Text of price for Windows
         icon: null, // The URL of the icon (defaults to <meta name="apple-touch-icon">)
         iconGloss: null, // Force gloss effect for iOS even for precomposed
