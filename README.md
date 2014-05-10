@@ -34,7 +34,8 @@ brings this feature to older iOS versions, Android devices and for Windows Store
       appStoreLanguage: 'us', // Language code for App Store
       inAppStore: 'On the App Store', // Text of price for iOS
       inGooglePlay: 'In Google Play', // Text of price for Android
-	  inWindowsStore: 'In the Windows Store', // Text of price for Windows
+      inWindowsStore: 'In the Windows Store', // Text of price for Windows
+      GooglePlayParams: null, // Aditional parameters for the market
       icon: null, // The URL of the icon (defaults to <meta name="apple-touch-icon">)
       iconGloss: null, // Force gloss effect for iOS even for precomposed
       button: 'VIEW', // Text for the install button
