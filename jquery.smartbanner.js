@@ -128,32 +128,56 @@
             $('#smartbanner .sb-button').on('click',$.proxy(this.install, this))
         }
         
-      , show: function (callback) {
+      , show: function(callback) {
             var banner = $('#smartbanner');
             banner.stop();
+            
             if (this.options.layer) {
                 banner.animate({top: 0, display: 'block'}, this.options.speedIn).addClass('shown').show();
                 $('html').animate({marginTop: this.origHtmlMargin + (this.bannerHeight * this.scale)}, this.options.speedIn, 'swing', callback);
             } else {
-                banner.slideDown(this.options.speedIn).addClass('shown');
+                if ($.support.transition) {
+                    banner.animate({top:0},this.options.speedIn).addClass('shown');
+                    var transitionCallback = function() {
+                        $('html').removeClass('sb-animation');
+                        if (callback) {
+                            callback();
+                        } 
+                    };
+                    $('html').addClass('sb-animation').one($.support.transition.end, transitionCallback).emulateTransitionEnd(this.options.speedIn).css('margin-top', this.origHtmlMargin+(this.bannerHeight*this.scale));
+                } else {
+                    banner.slideDown(this.options.speedIn).addClass('shown');
+                }
             }
         }
         
-      , hide: function (callback) {
+      , hide: function(callback) {
             var banner = $('#smartbanner');
             banner.stop();
+            
             if (this.options.layer) {
-                banner.animate({top: -1 * this.bannerHeight * this.scale}, this.options.speedOut).removeClass('shown').hide();
-                $('html').animate({marginTop: this.origHtmlMargin}, this.options.speedOut, 'swing', callback);
+                banner.animate({top: 0, display: 'block'}, this.options.speedIn).addClass('shown').show();
+                $('html').animate({marginTop: this.origHtmlMargin + (this.bannerHeight * this.scale)}, this.options.speedIn, 'swing', callback);
             } else {
-                banner.slideUp(this.options.speedOut).removeClass('shown');
+                if ($.support.transition) {
+                    banner.css('top', -1*this.bannerHeight*this.scale).removeClass('shown');
+                    var transitionCallback = function() {
+                        $('html').removeClass('sb-animation');
+                        if (callback) {
+                            callback();
+                        }
+                    };
+                    $('html').addClass('sb-animation').one($.support.transition.end, transitionCallback).emulateTransitionEnd(this.options.speedOut).css('margin-top', this.origHtmlMargin);
+                } else {
+                    banner.slideUp(this.options.speedOut).removeClass('shown');
+                }
             }
         }
       
       , close: function(e) {
             e.preventDefault()
             this.hide()
-            this.setCookie('sb-closed','true',this.options.daysHidden)
+            this.setCookie('sb-closed','true',this.options.daysHidden);
         }
        
       , install: function(e) {
@@ -201,9 +225,9 @@
 
     $.smartbanner = function (option) {
         var $window = $(window)
-        , data = $window.data('typeahead')
+        , data = $window.data('smartbanner')
         , options = typeof option == 'object' && option
-        if (!data) $window.data('typeahead', (data = new SmartBanner(options)))
+        if (!data) $window.data('smartbanner', (data = new SmartBanner(options)))
         if (typeof option == 'string') data[option]()
     }
 
@@ -231,7 +255,53 @@
         hideOnInstall: true, // Hide the banner after "VIEW" is clicked.
         layer: false // Display as overlay layer or slide down the page
     }
+    
+    $.smartbanner.Constructor = SmartBanner;
 
-    $.smartbanner.Constructor = SmartBanner
+
+    // ============================================================
+    // Bootstrap transition
+    // Copyright 2011-2014 Twitter, Inc.
+    // Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+
+    function transitionEnd() {
+        var el = document.createElement('smartbanner')
+
+        var transEndEventNames = {
+            WebkitTransition: 'webkitTransitionEnd',
+            MozTransition: 'transitionend',
+            OTransition: 'oTransitionEnd otransitionend',
+            transition: 'transitionend'
+        }
+
+        for (var name in transEndEventNames) {
+            if (el.style[name] !== undefined) {
+                return {end: transEndEventNames[name]}
+            }
+        }
+
+        return false // explicit for ie8 (  ._.)
+    }
+
+    if ($.support.transition !== undefined)
+        return  // Prevent conflict with Twitter Bootstrap
+
+    // http://blog.alexmaccaw.com/css-transitions
+    $.fn.emulateTransitionEnd = function(duration) {
+        var called = false, $el = this
+        $(this).one($.support.transition.end, function() {
+            called = true
+        })
+        var callback = function() {
+            if (!called) $($el).trigger($.support.transition.end)
+        }
+        setTimeout(callback, duration)
+        return this
+    }
+
+    $(function() {
+        $.support.transition = transitionEnd()
+    })
+    // ============================================================
 
 }(window.jQuery);
