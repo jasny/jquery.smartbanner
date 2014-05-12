@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>jQuery Smart Banner by Jasny · web development</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+        <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css' />
+        <!--[if lt IE 9]>
+        <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+        <link rel="stylesheet" href="jquery.smartbanner.css" type="text/css" media="screen">
+
+        <meta name="apple-itunes-app" content="app-id=544007664">
+        <meta name="google-play-app" content="app-id=com.google.android.youtube">
+    </head>
+
+    <body>
+        <div id="wrapper">
+
+            <div class="menu-main-container">
+                <ul id="menu-main" class="menu">
+                    <li id="menu-item-794" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-794"><a href="http://www.jasny.net/">Home</a></li>
+                    <li id="menu-item-795" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-795"><a href="http://www.jasny.net/portfolio/">Portfolio</a></li>
+                    <li id="menu-item-796" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-796"><a href="http://jasny.github.com/">Open source projects</a></li>
+                    <li id="menu-item-797" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-797"><a href="http://www.jasny.net/articles">Blog</a></li>
+                </ul>
+            </div>
+
+            <div id="header">
+                <h1><a href="http://www.jasny.net/">Jasny <small>· web development</small></a></h1>
+                <p class="description">Helping you out with PHP, MySQL &amp; Javascript</p>
+            </div><!-- close:header -->
+            
+            <div id="content">
+                <div id="main-content">
+                    <div class="post">
+                        <div class="entry">
+                            <section id="downloads" class="clearfix">
+                                <a href="https://github.com/jasny/jquery.smartbanner/zipball/master" id="download-zip" class="button" onclick="pageTracker._trackEvent('Downloads', 'Download', 'Download zip');"><span>Download .zip</span></a>
+                                <a href="https://github.com/jasny/jquery.smartbanner/tarball/master" id="download-tar-gz" class="button" onclick="pageTracker._trackEvent('Downloads', 'Download', 'Download%20tar.html');"><span>Download .tar.gz</span></a>
+                                <a href="https://github.com/jasny/jquery.smartbanner" id="view-on-github" class="button" onclick="pageTracker._trackEvent('Downloads', 'View on GitHub', 'View on GitHub');"><span>View on GitHub</span></a>
+                            </section>
+
+                            <hr>
+
+                            <section id="main_content">
+                                <h2>jQuery Smart Banner</h2>
+
+                                <p><a href="http://developer.apple.com/library/ios/#documentation/AppleApplications/Reference/SafariWebContent/PromotingAppswithAppBanners/PromotingAppswithAppBanners.html">Smart Banners</a> are a new feature in iOS 6 to promote apps on the App Store from a website. This jQuery plugin
+                                    brings this feature to older iOS versions and Android devices.</p>
+
+                                <div style="margin: 1em 0"><a href="javascript:void()" class="theme-toggle">Preview Android</a></div>
+
+                                <p>Tip: Try this out using the <a id="bookmarklet" href="#">Responsive Design Bookmarklet</a> to preview iPhone &amp; iPad sizes.</p>
+
+                                <h2>Usage</h2>
+
+                                <pre><code>&lt;html&gt;
+  &lt;head&gt;
+    &lt;title&gt;YouTube&lt;/title&gt;
+    &lt;meta name="author" content="Google, Inc."&gt;
+    &lt;meta name="apple-itunes-app" content="app-id=544007664"&gt;
+    &lt;meta name="google-play-app" content="app-id=com.google.android.youtube"&gt;
+
+    &lt;link rel="stylesheet" href="jquery.smartbanner.css" type="text/css" media="screen"&gt;
+    &lt;link rel="apple-touch-icon" href="apple-touch-icon.png"&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    ...
+    &lt;script src="//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"&gt;&lt;/script&gt;
+    &lt;script src="jquery.smartbanner.js"&gt;&lt;/script&gt;
+    &lt;script type="text/javascript"&gt;
+      $().smartbanner();
+    &lt;/script&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+                                <h2>Options</h2>
+
+                                <pre><code>$.smartbanner({
+    title: null, // What the title of the app should be in the banner (defaults to &lt;title&gt;)
+    author: null, // What the author of the app should be in the banner (defaults to &lt;meta name="author"&gt; or hostname)
+    price: 'FREE', // Price of the app
+    appStoreLanguage: 'us', // Language code for App Store
+    inAppStore: 'On the App Store', // Text of price for iOS
+    inGooglePlay: 'In Google Play', // Text of price for Android
+    icon: null, // The URL of the icon (defaults to &lt;link&gt;)
+    iconGloss: null, // Force gloss effect for iOS even for precomposed (true or false)
+    button: 'VIEW', // Text on the install button
+    scale: 'auto', // Scale based on viewport size (set to 1 to disable)
+    speedIn: 300, // Show animation speed of the banner
+    speedOut: 400, // Close animation speed of the banner
+    daysHidden: 15, // Duration to hide the banner after being closed (0 = always show banner)
+    daysReminder: 90, // Duration to hide the banner after "VIEW" is clicked (0 = always show banner)
+    force: null // Choose 'ios' or 'android'. Don't do a browser check, just always show this banner
+})
+</code></pre>
+                               <p>jquery.smartbanner is based on <a href="http://kurtzenisek.com/p/smart-web-banner/">Smart Web App Banner</a> by Kurt Zenisek.</p>
+                            </section>
+
+                            <div class="shr-publisher-876"></div><!-- Start Shareaholic LikeButtonSetBottom Automatic --><!-- End Shareaholic LikeButtonSetBottom Automatic -->
+                            <div class="wp-about-author-containter-top" style="background-color:#fff;"><div class="wp-about-author-pic"><img alt='' src='http://0.gravatar.com/avatar/0bba82e8b2a9d2cf9645cb07ea54766f?s=100&amp;d=http%3A%2F%2F0.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D100&amp;r=G' class='avatar avatar-100 photo' height='100' width='100' /></div><div class="wp-about-author-text"><h3><a href='http://www.jasny.net/articles/author/admin/' title='Arnold Daniels'>Arnold Daniels</a></h3><p>I've spend a big part of my life behind a computer, learning about databases (MySQL), programming (PHP) and system administration (Linux). Currently I playing with HTML5, jquery and node.js.</p><p class="wpa-social wpa-nomargin"><a class='wpa-social-icons' href='mailto:arnold@jasny.net' title='Send me an e-mail'><img src='images/mail.png' alt='E-mail'/></a><a class='wpa-social-icons' href='http://www.twitter.com/ArnoldDaniels' title='Follow me on Twitter'><img src='images/twitter.png' alt='Twitter'/></a><a class='wpa-social-icons' href='http://www.linkedin.com/in/arnolddaniels' title='Connect with me on LinkedIn'><img src='images/linkedin.png' alt='LinkedIn'/></a><a class='wpa-social-icons' href='http://www.github.com/jasny' title='Follow me on Github'><img src='images/github.png' alt='Github'/></a><a class='wpa-social-icons' href='http://www.gittip.com/ArnoldDaniels' title='Buy me a beer on Gittip'><img src='images/gittip.png' alt='Gittip'/></a></p></div></div>                  </div>
+                    </div>
+                </div>
+                <div id="footer">
+                    <a href="jquery.smartbanner#" class="alignright">Back to top &UpArrow;</a>
+                    <p><a href="http://www.jasny.net/">Jasny · web development</a> proudly powered by <a href="http://www.github.com/" >GitHub</a></p>
+                </div><!-- close:footer -->
+            </div><!-- close:wrapper -->
+
+            <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+            <script type='text/javascript' src='js/jquery.shareaholic.js'></script>
+            <script type="text/javascript">var SHRSB_Settings = {"shr-publisher-876":{"link":"http://jasny.github.com/jquery.smartbanner","shortener":"bitly","title":"jQuery Smart Banner","notes":"jQuery Smart Banner brings the smart banner feature to older iOS versions and Android devices.","service":"7,5,102,38,2,3,40,88,201","apikey":"8afa39428933be41f8afdb8ea21a495c","expand":"false","src":"http:\/\/www.jasny.net\/wp-content\/uploads\/shareaholic\/spritegen","localize":true,"share_src":"http:\/\/www.shareaholic.com","rel":"nofollow","target":"_blank","bgimg":"http:\/\/www.jasny.net\/wp-content\/plugins\/sexybookmarks\/images\/sharing-shr.png","bgimg_padding":"28px 0 0 10px","twitter_template":"%24%7Btitle%7D+-+%24%7Bshort_link%7D+%28via+%40ArnoldDaniels%29","mode":"inject","designer_toolTips":"1","tip_bg_color":"#000000","tip_text_color":"#ffffff"}};</script>
+
+            <script type='text/javascript' src='jquery.smartbanner.js'></script>
+            <script type="text/javascript">
+                var android = location.href.match(/#android$/) || navigator.userAgent.match(/Android/i) != null;
+                $.smartbanner({
+                    title: 'YouTube',
+                    author: 'Google, Inc.',
+                    icon: 'http://a5.mzstatic.com/us/r1000/075/Features/v4/db/46/90/db4690bd-efd7-7146-ccda-2907d6412e25/mza_2095397568113465042.175x175-75.jpg',
+                    force: android ? 'android' : 'ios',
+                    daysHidden: 0,
+                    daysReminder: 0,
+                    layer: true
+                });
+      
+                $('.theme-toggle').on('click', function(e) {
+                    e.preventDefault();
+                    $.smartbanner('switchType')
+                    $(this).text($(this).text() == 'Preview Android' ? 'Preview iOS' : 'Preview Android')
+                })
+      
+                if (android) $('.theme-toggle').text('Preview iOS');
+            </script>
+
+            <script type="text/javascript" src="http://www.google-analytics.com/ga.js"></script>
+            <script type="text/javascript">
+                try {
+                    var pageTracker = _gat._getTracker("UA-32388850-5");
+                    pageTracker._trackPageview();
+                } catch(err) {}
+            </script>
+    </body>
+</html>
