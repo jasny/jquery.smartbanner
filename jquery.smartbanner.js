@@ -265,7 +265,7 @@
         hideOnInstall: true, // Hide the banner after "VIEW" is clicked.
         layer: false, // Display as overlay layer or slide down the page
         iOSUniversalApp: true, // If the iOS App is a universal app for both iPad and iPhone, display Smart Banner to iPad users, too.
-        margin: false // If the iOS App is a universal app for both iPad and iPhone, display Smart Banner to iPad users, too.
+        margin: true // If set to false, no margin-top is added on the body.
     }
 
     $.smartbanner.Constructor = SmartBanner;
