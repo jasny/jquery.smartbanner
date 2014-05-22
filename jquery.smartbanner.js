@@ -34,25 +34,12 @@
         // Calculate scale
         this.scale = this.options.scale == 'auto' ? $(window).width() / window.screen.width : this.options.scale
         if (this.scale < 1) this.scale = 1
-
-        // Get info from meta data
-        var meta = $(this.type == 'android' ? 'meta[name="google-play-app"]' :
-            this.type == 'ios' ? 'meta[name="apple-itunes-app"]' : 
-            this.type == 'kindle' ? 'meta[name="kindle-fire-app"]' : 'meta[name="msApplication-ID"]');
-        if (meta.length == 0) return
-
-        // For Windows Store apps, get the PackageFamilyName for protocol launch
-        if (this.type == 'windows') {
-            this.pfn = $('meta[name="msApplication-PackageFamilyName"]').attr('content');
-            this.appId = meta.attr('content')[1]
-        } else {
-            this.appId = /app-id=([^\s,]+)/.exec(meta.attr('content'))[1]
-        }
-
-        this.title = this.options.title ? this.options.title : meta.data('title') || $('title').text().replace(/\s*[|\-·].*$/, '')
-        this.author = this.options.author ? this.options.author : meta.data('author') || ($('meta[name="author"]').length ? $('meta[name="author"]').attr('content') : window.location.hostname)
-        this.iconUrl = meta.data('icon-url');
-        this.price = meta.data('price');
+        
+        this.parseMetaTags();
+        this.parseAppLinkTags();
+        
+        this.title = this.options.title || this.title || $('title').text().replace(/\s*[|\-·].*$/, '')
+        this.author = this.options.author || this.author || ($('meta[name="author"]').length ? $('meta[name="author"]').attr('content') : window.location.hostname)
 
         // Create banner
         this.create()
@@ -205,6 +192,56 @@
                 }
             }
             return null
+        }
+        
+      , parseMetaTags: function() {
+            var meta = $(this.type == 'android' ? 'meta[name="google-play-app"]' :
+                this.type == 'ios' ? 'meta[name="apple-itunes-app"]' : 
+                this.type == 'kindle' ? 'meta[name="kindle-fire-app"]' : 'meta[name="msApplication-ID"]');
+            if (meta.length == 0) return
+            
+	        // For Windows Store apps, get the PackageFamilyName for protocol launch
+	        if (this.type == 'windows') {
+	            this.pfn = $('meta[name="msApplication-PackageFamilyName"]').attr('content');
+	            this.appId = meta.attr('content')[1]
+	        } else {
+	            this.appId = /app-id=([^\s,]+)/.exec(meta.attr('content'))[1]
+	        }
+	        
+            this.title = meta.data('title');
+            this.author = meta.data('author');
+	        this.iconUrl = meta.data('icon-url');
+            this.price = meta.data('price');
+        }
+        
+      , parseAppLinkTags: function() {
+            function appLinkContent(device, prop) {
+                return $("meta[property=al\\:"+device+"\\:"+prop+"]").attr("content");
+            }
+            
+            var id, name;
+            if (this.type == "ios") {
+                if (navigator.userAgent.match(/iPad/)) {
+                    id = appLinkContent("ipad", "app_store_id") || appLinkContent("ios", "app_store_id");
+                    name = appLinkContent("ipad", "app_name") || appLinkContent("ios", "app_name");
+                } else {
+                    id = appLinkContent("iphone", "app_store_id") || appLinkContent("ios", "app_store_id");
+                    name = appLinkContent("iphone", "app_name") || appLinkContent("ios", "app_name");
+                }
+            } else if (this.type == "android") {
+                id = appLinkContent("android", "package");
+                name = appLinkContent("android", "app_name");
+            } else if (this.type == "windows") {
+                id = appLinkContent("windows", "app_id");
+                name = appLinkContent("windows", "app_name");
+            }
+            
+            if (id && !this.appId) {
+                this.appId = id;
+            }
+            if (name && !this.title) {
+                this.title = name;
+            }
         }
       
       // Demo only
