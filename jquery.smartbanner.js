@@ -156,8 +156,8 @@
             banner.stop();
             
             if (this.options.layer) {
-                banner.animate({top: 0, display: 'block'}, this.options.speedIn).addClass('shown').show();
-                $('html').animate({marginTop: this.origHtmlMargin + (this.bannerHeight * this.scale)}, this.options.speedIn, 'swing', callback);
+                banner.animate({top: -1 * this.bannerHeight * this.scale, display: 'block'}, this.options.speedIn).removeClass('shown');
+                $('html').animate({marginTop: this.origHtmlMargin}, this.options.speedIn, 'swing', callback);
             } else {
                 if ($.support.transition) {
                     banner.css('top', -1*this.bannerHeight*this.scale).removeClass('shown');
