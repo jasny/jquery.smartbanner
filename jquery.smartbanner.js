@@ -10,7 +10,7 @@
 
         var standalone = navigator.standalone // Check if it's already a standalone web app or running within a webui view of an app (not mobile safari)
           , UA = navigator.userAgent
-          
+
         // Detect banner type (iOS or Android)
         if (this.options.force) {
             this.type = this.options.force
@@ -37,7 +37,7 @@
 
         // Get info from meta data
         var meta = $(this.type == 'android' ? 'meta[name="google-play-app"]' :
-            this.type == 'ios' ? 'meta[name="apple-itunes-app"]' : 
+            this.type == 'ios' ? 'meta[name="apple-itunes-app"]' :
             this.type == 'kindle' ? 'meta[name="kindle-fire-app"]' : 'meta[name="msApplication-ID"]');
         if (meta.length == 0) return
 
@@ -63,7 +63,7 @@
     SmartBanner.prototype = {
 
         constructor: SmartBanner
-    
+
       , create: function() {
             var iconURL
               , link=(this.options.url ? this.options.url : (this.type == 'windows' ? 'ms-windows-store:PDP?PFN=' + this.pfn : (this.type == 'android' ? 'market://details?id=' : (this.type == 'kindle' ? 'amzn://apps/android?asin=' : 'https://itunes.apple.com/' + this.options.appStoreLanguage + '/app/id'))) + this.appId)
@@ -99,7 +99,7 @@
             } else if ($('meta[name="msapplication-TileImage"]').length > 0) { /* redundant because ms docs show two case usages */
               iconURL = $('meta[name="msapplication-TileImage"]').attr('content')
             }
-            
+
             if (iconURL) {
                 $('#smartbanner .sb-icon').css('background-image','url('+iconURL+')')
                 if (gloss) $('#smartbanner .sb-icon').addClass('gloss')
@@ -122,16 +122,16 @@
             }
             $('#smartbanner').css('position', (this.options.layer) ? 'absolute' : 'static')
         }
-        
+
       , listen: function () {
             $('#smartbanner .sb-close').on('click',$.proxy(this.close, this))
             $('#smartbanner .sb-button').on('click',$.proxy(this.install, this))
         }
-        
+
       , show: function(callback) {
             var banner = $('#smartbanner');
             banner.stop();
-            
+
             if (this.options.layer) {
                 banner.animate({top: 0, display: 'block'}, this.options.speedIn).addClass('shown').show();
                 $('html').animate({marginTop: this.origHtmlMargin + (this.bannerHeight * this.scale)}, this.options.speedIn, 'swing', callback);
@@ -142,7 +142,7 @@
                         $('html').removeClass('sb-animation');
                         if (callback) {
                             callback();
-                        } 
+                        }
                     };
                     $('html').addClass('sb-animation').one($.support.transition.end, transitionCallback).emulateTransitionEnd(this.options.speedIn).css('margin-top', this.origHtmlMargin+(this.bannerHeight*this.scale));
                 } else {
@@ -150,11 +150,11 @@
                 }
             }
         }
-        
+
       , hide: function(callback) {
             var banner = $('#smartbanner');
             banner.stop();
-            
+
             if (this.options.layer) {
                 banner.animate({top: -1 * this.bannerHeight * this.scale, display: 'block'}, this.options.speedIn).removeClass('shown');
                 $('html').animate({marginTop: this.origHtmlMargin}, this.options.speedIn, 'swing', callback);
@@ -173,27 +173,27 @@
                 }
             }
         }
-      
+
       , close: function(e) {
             e.preventDefault()
             this.hide()
             this.setCookie('sb-closed','true',this.options.daysHidden);
         }
-       
+
       , install: function(e) {
 			if (this.options.hideOnInstall) {
 				this.hide()
 			}
             this.setCookie('sb-installed','true',this.options.daysReminder)
         }
-       
+
       , setCookie: function(name, value, exdays) {
             var exdate = new Date()
             exdate.setDate(exdate.getDate()+exdays)
             value=encodeURI(value)+((exdays==null)?'':'; expires='+exdate.toUTCString())
             document.cookie=name+'='+value+'; path=/;'
         }
-        
+
       , getCookie: function(name) {
             var i,x,y,ARRcookies = document.cookie.split(";")
             for(i=0;i<ARRcookies.length;i++) {
@@ -206,7 +206,7 @@
             }
             return null
         }
-      
+
       // Demo only
       , switchType: function() {
           var that = this
@@ -254,7 +254,7 @@
         force: null, // Choose 'ios', 'android' or 'windows'. Don't do a browser check, just always show this banner
         hideOnInstall: true, // Hide the banner after "VIEW" is clicked.
         layer: false, // Display as overlay layer or slide down the page
-        iOSUniversalApp: true // If the iOS App is a universal app for both iPad and iPhone, display Smart Banner to iPad users, too.
+        iOSUniversalApp: true, // If the iOS App is a universal app for both iPad and iPhone, display Smart Banner to iPad users, too.
         appendToSelector: 'body' //Append the banner to a specific selector
     }
 
