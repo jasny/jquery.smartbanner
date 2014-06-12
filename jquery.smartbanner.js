@@ -17,7 +17,7 @@
         } else if (UA.match(/iPhone|iPod/i) != null || (UA.match(/iPad/) && this.options.iOSUniversalApp)) {
             if (UA.match(/Safari/i) != null &&
                (UA.match(/CriOS/i) != null ||
-               window.Number(UA.substr(UA.indexOf('OS ') + 3, 3).replace('_', '.')) < 8)) this.type = 'ios' // Check webview and native smart banner support (iOS 6+)
+               window.Number(UA.substr(UA.indexOf('OS ') + 3, 3).replace('_', '.')) < 6)) this.type = 'ios' // Check webview and native smart banner support (iOS 6+)
         } else if (UA.match(/\bSilk\/(.*\bMobile Safari\b)?/) || UA.match(/\bKF\w/) || UA.match('Kindle Fire')) {
             this.type = 'kindle'
         } else if (UA.match(/Android/i) != null) {
