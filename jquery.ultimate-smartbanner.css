@@ -69,9 +69,12 @@
   font-size:13px;
   color:#000;
   line-height: 18px;
+  font-weight: bold;
 }
 #smartbanner .sb-info > span {
   display:block;
+}
+#smartbanner .sb-info .sb-price {
 }
 #smartbanner .sb-info em {
   font-style:normal;
@@ -149,6 +152,9 @@
 #smartbanner.android .sb-info strong {
   color: #333;
 }
+#smartbanner.android .sb-info .sb-price {
+  color: #b3c833;
+}
 #smartbanner.android .sb-button {
   min-width: 12%;
   border: 2px solid transparent;
@@ -196,6 +202,9 @@
   color: #00bcf2;
   text-shadow: 0 0 2px #222;
 }
+#smartbanner.windows .sb-info .sb-price {
+  color: #00bcf2;
+}
 #smartbanner.windows .sb-button {
   border-radius: 0;
   background: #00bcf2;
@@ -236,6 +245,9 @@
   color: #9B4F96;
   text-shadow: 0 0 2px #222;
 }
+ #smartbanner.windows-phone .sb-info .sb-price {
+   color: #9B4F96;
+ }
 #smartbanner.windows-phone .sb-button {
   border-radius: 0;
   background: #9B4F96;
