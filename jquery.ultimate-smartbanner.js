@@ -13,8 +13,12 @@
         // Detect banner type (iOS, Android or Windows)
         if (this.options.force) {
             this.type = this.options.force
-        } else if (navigator.userAgent.match(/iPad|iPhone|iPod/i) != null) {
-            if (navigator.userAgent.match(/Safari/i) != null && window.Number(navigator.userAgent.substr(navigator.userAgent.indexOf('OS ') + 3, 3).replace('_', '.')) < 6) this.type = 'ios' // Check webview and native smart banner support (iOS 6+)
+        } else if (navigator.userAgent.match(/iPad|iPhone|iPod/i) != null && navigator.userAgent.match(/Safari/i) != null) {
+            if (
+              (window.Number(navigator.userAgent.substr(navigator.userAgent.indexOf('OS ') + 3, 3).replace('_', '.')) < 6)
+                || navigator.userAgent.match(/Version/i) == null
+            )
+              this.type = 'ios' // Check webview and native smart banner support (iOS 6+)
         } else if (navigator.userAgent.match(/Android/i) != null) {
             this.type = 'android'
         } else if (navigator.userAgent.match(/Windows NT 6.2/i) != null) {
