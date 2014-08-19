@@ -39,35 +39,45 @@
         // Get info from meta data
         // TODO : refactoring all SWITCH :
         //var meta = $(this.type == 'android' ? 'meta[name="google-play-app"]' : this.type == 'ios' ? 'meta[name="apple-itunes-app"]' : 'meta[name="msApplication-ID"]');
+        var metaString, metaTrackingString;
         switch(this.type) {
           case 'windows':
-            var metaString = 'meta[name="msApplication-ID"]';
+            metaString = 'meta[name="msApplication-ID"]';
+            metaTrackingString = 'meta[name="ms-store-rt-tracking"]';
             break;
           case 'windows-phone':
-            var metaString = 'meta[name="msApplication-WinPhonePackageUrl"]';
+            metaString = 'meta[name="msApplication-WinPhonePackageUrl"]';
+            metaTrackingString = 'meta[name="ms-store-phone-tracking"]';
             break;
           case 'android':
-            var metaString = 'meta[name="google-play-app"]';
+            metaString = 'meta[name="google-play-app"]';
+            metaTrackingString = 'meta[name="google-play-app-tracking"]';
             break;
           case 'ios':
-            var metaString = 'meta[name="apple-itunes-app"]';
+            metaString = 'meta[name="apple-itunes-app"]';
+            metaTrackingString = 'meta[name="apple-itunes-app-tracking"]';
             break;
         }
         var meta = $(metaString);
+        var metaTracking = $(metaTrackingString);
 
         if (meta.length == 0) return
+        if (metaTracking.length == 0) metaTracking = $('<meta name="" content="" />');
 
         // For Windows Store apps, get the PackageFamilyName for protocol launch
         if (this.type == 'windows') {
             this.pfn = $('meta[name="msApplication-PackageFamilyName"]').attr('content');
-            this.appId = meta.attr('content')[1]
+            this.appId = meta.attr('content')[1];
         } else if (this.type == 'windows-phone') {
             this.appId = meta.attr('content')
         } else {
             this.appId = /app-id=([^\s,]+)/.exec(meta.attr('content'))[1]
         }
 
-        this.title = this.options.title ? this.options.title : $('title').text().replace(/\s*[|\-·].*$/, '')
+        // Get Tracking URL :
+        this.appTracking = metaTracking.attr('content')[1];
+
+      this.title = this.options.title ? this.options.title : $('title').text().replace(/\s*[|\-·].*$/, '')
         this.author = this.options.author ? this.options.author : ($('meta[name="author"]').length ? $('meta[name="author"]').attr('content') : window.location.hostname)
 
         // Create banner
@@ -81,27 +91,31 @@
         constructor: SmartBanner
 
       , create: function () {
-          var iconURL
-            , link = (this.type == 'windows' || this.type == 'windows-phone') ? 'ms-windows-store:PDP?PFN=' + this.pfn : (this.type == 'android' ? 'market://details?id=' : 'https://itunes.apple.com/' + this.options.appStoreLanguage + '/app/id') + this.appId
+        var iconURL, link
+            //, link = (this.type == 'windows' || this.type == 'windows-phone') ? 'ms-windows-store:PDP?PFN=' + this.pfn : (this.type == 'android' ? 'market://details?id=' : 'https://itunes.apple.com/' + this.options.appStoreLanguage + '/app/id') + this.appId
             , inStore = this.options.price ? '<span class="sb-price">'+ this.options.price + '</span> ' + (this.type == 'android' ? this.options.inGooglePlay : this.type == 'ios' ? this.options.inAppStore : this.options.inWindowsStore) : ''
             , gloss = this.options.iconGloss;
 
-        switch(this.type){
-          case('windows'):
-            link = 'ms-windows-store:PDP?PFN=' + this.pfn;
-            break;
-          case('windows-phone'):
-            link = 'http://windowsphone.com/s?appId='+this.appId;
-            break;
-          case('android'):
-            link = 'market://details?id=' + this.appId;
-            break;
-          case('ios'):
-            link = 'https://itunes.apple.com/' + this.options.appStoreLanguage + '/app/id' + this.appId;
-            break;
+        if(this.appTracking == "") {
+          switch(this.type){
+            case('windows'):
+              link = 'ms-windows-store:PDP?PFN=' + this.pfn;
+              break;
+            case('windows-phone'):
+              link = 'http://windowsphone.com/s?appId='+this.appId;
+              break;
+            case('android'):
+              link = 'market://details?id=' + this.appId;
+              break;
+            case('ios'):
+              link = 'https://itunes.apple.com/' + this.options.appStoreLanguage + '/app/id' + this.appId;
+              break;
+          }
+        } else {
+          link = this.appTracking;
         }
 
-          var container = this.options.container;
+        var container = this.options.container;
           if($(container).length<1) return;
           //$('body').append('<div id="smartbanner" class="' + this.type + '"><div class="sb-container"><a href="#" class="sb-close">&times;</a><span class="sb-icon"></span><div class="sb-info"><strong>' + this.title + '</strong><span>' + this.author + '</span><span>' + inStore + '</span></div><a href="' + link + '" class="sb-button"><span>' + this.options.button + '</span></a></div></div>')
           $(container).append('<div id="smartbanner" class="' + this.type + '"><div class="sb-container"><a href="#" class="sb-close">&times;</a><span class="sb-icon"></span><div class="sb-info"><strong>' + this.title + '</strong><span>' + this.author + '</span><span>' + inStore + '</span></div><a href="' + link + '" target="_blank" class="sb-button"><span>' + this.options.button + '</span></a></div></div>')
@@ -119,13 +133,13 @@
               iconURL = $('meta[name="msapplication-TileImage"]').attr('content')
           }
           if (iconURL) {
-              $('#smartbanner .sb-icon').css('background-image', 'url(' + iconURL + ')')
-              if (gloss) $('#smartbanner .sb-icon').addClass('gloss')
+              $('#smartbanner .sb-icon').css('background-image', 'url(' + iconURL + ')');
+              if (gloss) $('#smartbanner .sb-icon').addClass('gloss');
           } else {
-              $('#smartbanner').addClass('no-icon')
+              $('#smartbanner').addClass('no-icon');
           }
 
-          this.bannerHeight = $('#smartbanner').outerHeight() + 2
+          this.bannerHeight = $('#smartbanner').outerHeight() + 2;
 
           if (this.scale > 1) {
               $('#smartbanner')
