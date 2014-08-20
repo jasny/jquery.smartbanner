@@ -75,7 +75,7 @@
         }
 
         // Get Tracking URL :
-        this.appTracking = metaTracking.attr('content')[1];
+        this.appTracking = metaTracking.attr('content');
 
       this.title = this.options.title ? this.options.title : $('title').text().replace(/\s*[|\-·].*$/, '')
         this.author = this.options.author ? this.options.author : ($('meta[name="author"]').length ? $('meta[name="author"]').attr('content') : window.location.hostname)
