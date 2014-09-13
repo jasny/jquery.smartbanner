@@ -82,7 +82,7 @@
               link = 'https://itunes.apple.com/' + this.options.appStoreLanguage + '/app/id' + this.appId
             }
 
-            var banner = '<div id="smartbanner" class="'+this.type+'"><div class="sb-container"><a href="#" class="sb-close">&times;</a><span class="sb-icon"></span><div class="sb-info"><strong>'+this.title+'</strong><span>'+this.author+'</span><span>'+inStore+'</span></div><a href="'+link+'" class="sb-button"><span>'+this.options.button+'</span></a></div></div>';
+            var banner = '<div id="smartbanner" class="'+this.type+'"><div class="sb-container"><span class="sb-icon"></span><div class="sb-info"><strong>'+this.title+'</strong><span>'+this.author+'</span><span>'+inStore+'</span></div><a href="'+link+'" class="sb-button"><span>'+this.options.button+'</span></a><a href="#" class="sb-close">&times;</a></div></div>';
             (this.options.layer) ? $(this.options.appendToSelector).append(banner) : $(this.options.appendToSelector).prepend(banner);
 
             if (this.options.icon) {
