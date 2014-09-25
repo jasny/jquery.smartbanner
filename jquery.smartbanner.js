@@ -46,7 +46,14 @@
             this.pfn = $('meta[name="msApplication-PackageFamilyName"]').attr('content');
             this.appId = meta.attr('content')[1]
         } else {
-            this.appId = /app-id=([^\s,]+)/.exec(meta.attr('content'))[1]
+            // Try to pull the appId out of the meta tag and store the result
+            var parsedMetaContent = /app-id=([^\s,]+)/.exec(meta.attr('content'));
+
+            if(parsedMetaContent) {
+              this.appId = parsedTagContent[1];
+            } else {
+              return;
+            }
         }
 
         this.title = this.options.title ? this.options.title : meta.data('title') || $('title').text().replace(/\s*[|\-·].*$/, '')
