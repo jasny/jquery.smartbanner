@@ -50,7 +50,7 @@
             var parsedMetaContent = /app-id=([^\s,]+)/.exec(meta.attr('content'));
 
             if(parsedMetaContent) {
-              this.appId = parsedTagContent[1];
+              this.appId = parsedMetaContent[1];
             } else {
               return;
             }
