@@ -50,4 +50,9 @@ brings this feature to older iOS versions, Android devices and for Windows Store
       appendToSelector: 'body' //Append the banner to a specific selector
     })
 
+## Contributors
+
+[![Arnold Daniels](https://avatars3.githubusercontent.com/u/100821?v=2&s=64)](https://github.com/jasny)
+[![Thomas De Laet](https://avatars1.githubusercontent.com/u/5644283?v=2&s=64)](https://github.com/delaetthomas)
+
   [1]: http://developer.apple.com/library/ios/#documentation/AppleApplications/Reference/SafariWebContent/PromotingAppswithAppBanners/PromotingAppswithAppBanners.html
