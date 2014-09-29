@@ -37,24 +37,37 @@
     this.scale = this.options.scale == 'auto' ? $(window).width() / window.screen.width : this.options.scale;
     if (this.scale < 1) this.scale = 1;
 
+    /*
+     iphoneConfig: null,
+     ipadConfig: null,
+     androidConfig: null,
+     androidTabsConfig: null,
+     windowsPhoneConfig: null,
+     windowsRtConfig: null
+     */
+
     // Get info from meta data
-    var metaString, metaTrackingString;
+    var metaString, metaTrackingString, specificDeviceOption;
     switch(this.type) {
       case 'windows':
         metaString = 'meta[name="msApplication-ID"]';
         metaTrackingString = 'meta[name="ms-store-rt-tracking"]';
+        specificDeviceOption = this.options.windowsRtConfig || null;
         break;
       case 'windows-phone':
         metaString = 'meta[name="msApplication-WinPhonePackageUrl"]';
         metaTrackingString = 'meta[name="ms-store-phone-tracking"]';
+        specificDeviceOption = this.options.windowsPhoneConfig || null;
         break;
       case 'android':
         metaString = 'meta[name="google-play-app"]';
         metaTrackingString = 'meta[name="google-play-app-tracking"]';
+        specificDeviceOption = this.options.androidConfig || null;
         break;
       case 'ios':
         metaString = 'meta[name="apple-itunes-app"]';
         metaTrackingString = 'meta[name="apple-itunes-app-tracking"]';
+        specificDeviceOption = this.options.iphoneConfig || null;
         break;
     }
     var meta = $(metaString);
@@ -76,8 +89,14 @@
     // Get Tracking URL :
     this.appTracking = metaTracking.attr('content');
 
+
+    // Get Device Configuration Specific :
+    if(specificDeviceOption)  $.extend(this.options, specificDeviceOption);
+
+    // Get default Title and Author :
     this.title = this.options.title ? this.options.title : $('title').text().replace(/\s*[|\-·].*$/, '');
     this.author = this.options.author ? this.options.author : ($('meta[name="author"]').length ? $('meta[name="author"]').attr('content') : window.location.hostname);
+
 
     // Create banner
     this.create();
@@ -257,7 +276,7 @@
     button: 'View in Store', // Text for the install button
     appStoreLanguage: 'us', // Language code for App Store
 
-    // Deprecated - replaced by 'priceText' and 'Device Config' section :
+    // Deprecated - replaced by 'priceText' and 'Device Configuration Specific' section :
     inAppStore: 'On the App Store', // Text of price for iOS - iPhone
     inGooglePlay: 'In Google Play', // Text of price for Android Phone
     inWindowsStore: 'In the Windows Store', //Text of price for Windows Phone
@@ -270,7 +289,7 @@
     container: 'body', // Container where the banner will be injected
     force: null, // Choose 'ios', 'android' or 'windows'. Don't do a browser check, just always show this banner
 
-    // Device Config - Use JSON similar to the 'defaultDeviceConfig' variable :
+    // Device Configuration Specific - Use JSON similar to the 'defaultDeviceConfig' variable :
     iphoneConfig: null,
     ipadConfig: null,
     androidConfig: null,
@@ -285,7 +304,7 @@
     price: 'FREE', // Price of the app
     icon: null, // The URL of the icon (defaults to <meta name="apple-touch-icon">)
     button: 'View in Store', // Text for the install button
-    storeLanguage: 'us' // Language code for App Store
+    storeLanguage: 'us' // iOS Only : Language code for App Store
   };
 
   $.smartbanner.Constructor = SmartBanner;
