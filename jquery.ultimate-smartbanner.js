@@ -1,6 +1,7 @@
 /*!
  * jQuery Smart Banner
- * Copyright (c) 2012 Arnold Daniels <arnold@jasny.net>
+ * Copyright (c) 2014 Nicolas KOKLA
+ * Forked from the Copyrighted project 'jquery.smartbanner' [Copyright (c) 2012 Arnold Daniels <arnold@jasny.net>]
  * Based on 'jQuery Smart Web App Banner' by Kurt Zenisek @ kzeni.com
  */
 !function ($) {
@@ -8,9 +9,9 @@
         this.origHtmlMargin = parseFloat($('html').css('margin-top')) // Get the original margin-top of the HTML element so we can take that into account
         this.options = $.extend({}, $.smartbanner.defaults, options)
 
-        var standalone = navigator.standalone // Check if it's already a standalone web app or running within a webui view of an app (not mobile safari)
+        var standalone = navigator.standalone; // Check if it's already a standalone web app or running within a webui view of an app (not mobile safari)
 
-        // Detect banner type (iOS, Android or Windows)
+        // Detect banner type (iOS, Android, Windows Phone or Windows RT)
         if (this.options.force) {
             this.type = this.options.force
         } else if (navigator.userAgent.match(/iPad|iPhone|iPod/i) != null && navigator.userAgent.match(/Safari/i) != null) {
@@ -18,7 +19,7 @@
               (window.Number(navigator.userAgent.substr(navigator.userAgent.indexOf('OS ') + 3, 3).replace('_', '.')) < 6)
                 || navigator.userAgent.match(/Version/i) == null
             )
-              this.type = 'ios' // Check webview and native smart banner support (iOS 6+)
+              this.type = 'ios'; // Check webview and native smart banner support (iOS 6+)
         } else if (navigator.userAgent.match(/Android/i) != null) {
             this.type = 'android'
         } else if (navigator.userAgent.match(/Windows NT 6.2/i) != null) {
@@ -33,12 +34,10 @@
         }
 
         // Calculate scale
-        this.scale = this.options.scale == 'auto' ? $(window).width() / window.screen.width : this.options.scale
-        if (this.scale < 1) this.scale = 1
+        this.scale = this.options.scale == 'auto' ? $(window).width() / window.screen.width : this.options.scale;
+        if (this.scale < 1) this.scale = 1;
 
         // Get info from meta data
-        // TODO : refactoring all SWITCH :
-        //var meta = $(this.type == 'android' ? 'meta[name="google-play-app"]' : this.type == 'ios' ? 'meta[name="apple-itunes-app"]' : 'meta[name="msApplication-ID"]');
         var metaString, metaTrackingString;
         switch(this.type) {
           case 'windows':
@@ -61,7 +60,7 @@
         var meta = $(metaString);
         var metaTracking = $(metaTrackingString);
 
-        if (meta.length == 0) return
+        if (meta.length == 0) return;
         if (metaTracking.length == 0) metaTracking = $('<meta name="" content="" />');
 
         // For Windows Store apps, get the PackageFamilyName for protocol launch
@@ -77,13 +76,13 @@
         // Get Tracking URL :
         this.appTracking = metaTracking.attr('content');
 
-      this.title = this.options.title ? this.options.title : $('title').text().replace(/\s*[|\-·].*$/, '')
-        this.author = this.options.author ? this.options.author : ($('meta[name="author"]').length ? $('meta[name="author"]').attr('content') : window.location.hostname)
+        this.title = this.options.title ? this.options.title : $('title').text().replace(/\s*[|\-·].*$/, '');
+        this.author = this.options.author ? this.options.author : ($('meta[name="author"]').length ? $('meta[name="author"]').attr('content') : window.location.hostname);
 
         // Create banner
-        this.create()
-        this.show()
-        this.listen()
+        this.create();
+        this.show();
+        this.listen();
     }
 
     SmartBanner.prototype = {
@@ -92,7 +91,6 @@
 
       , create: function () {
         var iconURL, link
-            //, link = (this.type == 'windows' || this.type == 'windows-phone') ? 'ms-windows-store:PDP?PFN=' + this.pfn : (this.type == 'android' ? 'market://details?id=' : 'https://itunes.apple.com/' + this.options.appStoreLanguage + '/app/id') + this.appId
             , inStore = this.options.price ? '<span class="sb-price">'+ this.options.price + '</span> ' + (this.type == 'android' ? this.options.inGooglePlay : this.type == 'ios' ? this.options.inAppStore : this.options.inWindowsStore) : ''
             , gloss = this.options.iconGloss;
 
@@ -117,34 +115,41 @@
 
         var container = this.options.container;
           if($(container).length<1) return;
-          //$('body').append('<div id="smartbanner" class="' + this.type + '"><div class="sb-container"><a href="#" class="sb-close">&times;</a><span class="sb-icon"></span><div class="sb-info"><strong>' + this.title + '</strong><span>' + this.author + '</span><span>' + inStore + '</span></div><a href="' + link + '" class="sb-button"><span>' + this.options.button + '</span></a></div></div>')
-          $(container).append('<div id="smartbanner" class="' + this.type + '"><div class="sb-container"><a href="#" class="sb-close">&times;</a><span class="sb-icon"></span><div class="sb-info"><strong>' + this.title + '</strong><span>' + this.author + '</span><span>' + inStore + '</span></div><a href="' + link + '" target="_blank" class="sb-button"><span>' + this.options.button + '</span></a></div></div>')
+          $(container).append(
+            '<div id="smartbanner" class="' + this.type + '">' +
+              '<div class="sb-container">' +
+                '<a href="#" class="sb-close">&times;</a><span class="sb-icon"></span>' +
+                '<div class="sb-info"><strong>' + this.title + '</strong><span>' + this.author + '</span><span>' + inStore + '</span></div>' +
+                '<a href="' + link + '" target="_blank" class="sb-button"><span>' + this.options.button + '</span></a>' +
+              '</div>' +
+            '</div>'
+          );
+
+          var ejqSmartBanner = $('#smartbanner');
 
           if (this.options.icon) {
               iconURL = this.options.icon
           } else if ($('link[rel="apple-touch-icon-precomposed"]').length > 0) {
-              iconURL = $('link[rel="apple-touch-icon-precomposed"]').attr('href')
-              if (this.options.iconGloss === null) gloss = false
+              iconURL = $('link[rel="apple-touch-icon-precomposed"]').attr('href');
           } else if ($('link[rel="apple-touch-icon"]').length > 0) {
-              iconURL = $('link[rel="apple-touch-icon"]').attr('href')
+              iconURL = $('link[rel="apple-touch-icon"]').attr('href');
           } else if ($('meta[name="msApplication-TileImage"]').length > 0) {
-              iconURL = $('meta[name="msApplication-TileImage"]').attr('content')
+              iconURL = $('meta[name="msApplication-TileImage"]').attr('content');
           } else if ($('meta[name="msapplication-TileImage"]').length > 0) { /* redundant because ms docs show two case usages */
-              iconURL = $('meta[name="msapplication-TileImage"]').attr('content')
+              iconURL = $('meta[name="msapplication-TileImage"]').attr('content');
           }
           if (iconURL) {
-              $('#smartbanner .sb-icon').css('background-image', 'url(' + iconURL + ')');
-              if (gloss) $('#smartbanner .sb-icon').addClass('gloss');
+              var eSbIcon = $('#smartbanner .sb-icon');
+              eSbIcon.css('background-image', 'url(' + iconURL + ')');
+              if (gloss) eSbIcon.addClass('gloss');
           } else {
-              $('#smartbanner').addClass('no-icon');
+            ejqSmartBanner.addClass('no-icon');
           }
 
-          this.bannerHeight = $('#smartbanner').outerHeight() + 2;
-
           if (this.scale > 1) {
-              $('#smartbanner')
-                  .css('top', parseFloat($('#smartbanner').css('top')) * this.scale)
-                  .css('height', parseFloat($('#smartbanner').css('height')) * this.scale)
+            ejqSmartBanner
+                  .css('top', parseFloat(ejqSmartBanner.css('top')) * this.scale)
+                  .css('height', parseFloat(ejqSmartBanner.css('height')) * this.scale);
               $('#smartbanner .sb-container')
                   .css('-webkit-transform', 'scale(' + this.scale + ')')
                   .css('-msie-transform', 'scale(' + this.scale + ')')
@@ -159,50 +164,42 @@
       }
 
       , show: function (callback) {
-          //$('#smartbanner').stop().animate({ top: 0 }, this.options.speedIn).addClass('shown')
-          //$('html').animate({ marginTop: this.origHtmlMargin + (this.bannerHeight * this.scale) }, this.options.speedIn, 'swing', callback)
-
-          //$('#smartbanner').addClass('shown')
-          //$('html').addClass('smartBannerHey');
-          $('html').get(0).className = $('html').get(0).className+' smartBanner ';
+        var ejqHtml = $('html');
+        ejqHtml.get(0).className = ejqHtml.get(0).className+' smartBanner ';
         if(callback)  callback();
       }
 
       , hide: function (callback) {
-          //$('#smartbanner').stop().animate({ top: 0 }, this.options.speedIn).addClass('shown')
-          //$('html').animate({ marginTop: this.origHtmlMargin }, this.options.speedOut, 'swing', callback)
-
-          //$('#smartbanner').addClass('shown')
           $('html').removeClass('smartBanner');
           if(callback)  callback();
       }
 
       , close: function (e) {
-          e.preventDefault()
-          this.hide()
-          this.setCookie('sb-closed', 'true', this.options.daysHidden)
+          e.preventDefault();
+          this.hide();
+          this.setCookie('sb-closed', 'true', this.options.daysHidden);
       }
 
       , install: function (e) {
-          this.hide()
-          this.setCookie('sb-installed', 'true', this.options.daysReminder)
+          this.hide();
+          this.setCookie('sb-installed', 'true', this.options.daysReminder);
       }
 
       , setCookie: function (name, value, exdays) {
-          var exdate = new Date()
-          exdate.setDate(exdate.getDate() + exdays)
-          value = escape(value) + ((exdays == null) ? '' : '; expires=' + exdate.toUTCString())
-          document.cookie = name + '=' + value + '; path=/;'
+          var exdate = new Date();
+          exdate.setDate(exdate.getDate() + exdays);
+          value = encodeURIComponent(value) + ((exdays == null) ? '' : '; expires=' + exdate.toUTCString());
+          document.cookie = name + '=' + value + '; path=/;';
       }
 
       , getCookie: function (name) {
-          var i, x, y, ARRcookies = document.cookie.split(";")
+          var i, x, y, ARRcookies = document.cookie.split(";");
           for (i = 0; i < ARRcookies.length; i++) {
-              x = ARRcookies[i].substr(0, ARRcookies[i].indexOf("="))
-              y = ARRcookies[i].substr(ARRcookies[i].indexOf("=") + 1)
-              x = x.replace(/^\s+|\s+$/g, "")
+              x = ARRcookies[i].substr(0, ARRcookies[i].indexOf("="));
+              y = ARRcookies[i].substr(ARRcookies[i].indexOf("=") + 1);
+              x = x.replace(/^\s+|\s+$/g, "");
               if (x == name) {
-                  return unescape(y)
+                  return decodeURIComponent(y);
               }
           }
           return null
@@ -210,9 +207,6 @@
 
         // Demo only
       , switchType: function () {
-          var that = this
-          var a_format = ['ios', 'android', 'windows', 'windows-phone'];
-
           // Array.indexOf polyfill from mozilla : https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf
           if (!Array.prototype.indexOf) {
             Array.prototype.indexOf = function (searchElement, fromIndex) {
@@ -227,27 +221,30 @@
           }
 
           this.hide(function () {
-              //that.type = that.type == 'android' ? 'ios' : 'android';
-              var newIndex = a_format.indexOf(that.type)+1
-              that.type = (!a_format[newIndex]) ? a_format[0] : a_format[newIndex];
-              var meta = $(that.type == 'android' ? 'meta[name="google-play-app"]' : 'meta[name="apple-itunes-app"]').attr('content')
-              that.appId = /app-id=([^\s,]+)/.exec(meta)[1]
+              var that = this;
+              var a_format = ['ios', 'android', 'windows', 'windows-phone'];
 
-              $('#smartbanner').detach()
-              that.create()
-              that.show()
+              //that.type = that.type == 'android' ? 'ios' : 'android';
+              var newIndex = a_format.indexOf(that.type)+1;
+              that.type = (!a_format[newIndex]) ? a_format[0] : a_format[newIndex];
+              var meta = $(that.type == 'android' ? 'meta[name="google-play-app"]' : 'meta[name="apple-itunes-app"]').attr('content');
+              that.appId = /app-id=([^\s,]+)/.exec(meta)[1];
+
+              $('#smartbanner').detach();
+              that.create();
+              that.show();
               if(window.console && console.log) console.log(that.type);
           })
       }
-    }
+    };
 
     $.smartbanner = function (option) {
       var $window = $(window)
         , data = $window.data('typeahead')
-        , options = typeof option == 'object' && option
-        if (!data) $window.data('typeahead', (data = new SmartBanner(options)))
-        if (typeof option == 'string') data[option]()
-    }
+        , options = typeof option == 'object' && option;
+        if (!data) $window.data('typeahead', (data = new SmartBanner(options)));
+        if (typeof option == 'string') data[option]();
+    };
 
     // override these globally if you like (they are all optional)
     $.smartbanner.defaults = {
@@ -262,13 +259,11 @@
         iconGloss: null, // Force gloss effect for iOS even for precomposed
         button: 'View in Store', // Text for the install button
         scale: 'auto', // Scale based on viewport size (set to 1 to disable)
-        //speedIn: 300, // Show animation speed of the banner
-        //speedOut: 400, // Close animation speed of the banner
         daysHidden: 15, // Duration to hide the banner after being closed (0 = always show banner)
         daysReminder: 90, // Duration to hide the banner after "VIEW" is clicked *separate from when the close button is clicked* (0 = always show banner)
         container: 'body', // Container where the banner will be injected
         force: null // Choose 'ios', 'android' or 'windows'. Don't do a browser check, just always show this banner
-    }
+    };
 
     $.smartbanner.Constructor = SmartBanner;
 
