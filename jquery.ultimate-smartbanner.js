@@ -37,23 +37,27 @@
     if (this.scale < 1) this.scale = 1;
 
     // Get info from meta data
-    var metaString, metaTrackingString;
+    var metaString, metaTrackingString, specificDeviceOption;
     switch(this.type) {
       case 'windows':
         metaString = 'meta[name="msApplication-ID"]';
         metaTrackingString = 'meta[name="ms-store-rt-tracking"]';
+        specificDeviceOption = this.options.windowsRtConfig || null;
         break;
       case 'windows-phone':
         metaString = 'meta[name="msApplication-WinPhonePackageUrl"]';
         metaTrackingString = 'meta[name="ms-store-phone-tracking"]';
+        specificDeviceOption = this.options.windowsPhoneConfig || null;
         break;
       case 'android':
         metaString = 'meta[name="google-play-app"]';
         metaTrackingString = 'meta[name="google-play-app-tracking"]';
+        specificDeviceOption = this.options.androidConfig || null;
         break;
       case 'ios':
         metaString = 'meta[name="apple-itunes-app"]';
         metaTrackingString = 'meta[name="apple-itunes-app-tracking"]';
+        specificDeviceOption = this.options.iphoneConfig || null;
         break;
     }
     var meta = $(metaString);
@@ -75,6 +79,10 @@
     // Get Tracking URL :
     this.appTracking = metaTracking.attr('content');
 
+    // Get Device Configuration Specific :
+    if(specificDeviceOption)  $.extend(this.options, specificDeviceOption);
+
+    // Get default Title and Author :
     this.title = this.options.title ? this.options.title : $('title').text().replace(/\s*[|\-·].*$/, '');
     this.author = this.options.author ? this.options.author : ($('meta[name="author"]').length ? $('meta[name="author"]').attr('content') : window.location.hostname);
 
@@ -247,21 +255,44 @@
 
   // override these globally if you like (they are all optional)
   $.smartbanner.defaults = {
+    //Smart Banner default config :
     title: null, // What the title of the app should be in the banner (defaults to <title>)
     author: null, // What the author of the app should be in the banner (defaults to <meta name="author"> or hostname)
     price: 'FREE', // Price of the app
-    appStoreLanguage: 'us', // Language code for App Store
-    inAppStore: 'On the App Store', // Text of price for iOS
-    inGooglePlay: 'In Google Play', // Text of price for Android
-    inWindowsStore: 'In the Windows Store', //Text of price for Windows
+    priceText: 'On the store', // Text of price for store
     icon: null, // The URL of the icon (defaults to <meta name="apple-touch-icon">)
-    iconGloss: null, // Force gloss effect for iOS even for precomposed
     button: 'View in Store', // Text for the install button
-    scale: 'auto', // Scale based on viewport size (set to 1 to disable)
+    appStoreLanguage: 'us', // Language code for iOS App Store
+
+    // Deprecated - replaced by 'priceText' and 'Device Configuration Specific' section :
+    inAppStore: 'On the App Store', // Text of price for iOS - iPhone
+    inGooglePlay: 'In Google Play', // Text of price for Android Phone
+    inWindowsStore: 'In the Windows Store', //Text of price for Windows Phone
+    iconGloss: null, // Force gloss CSS effect for iOS even for precomposed
+
+    // Technical config :
     daysHidden: 15, // Duration to hide the banner after being closed (0 = always show banner)
     daysReminder: 90, // Duration to hide the banner after "VIEW" is clicked *separate from when the close button is clicked* (0 = always show banner)
+    scale: 'auto', // Scale based on viewport size (set to 1 to disable)
     container: 'body', // Container where the banner will be injected
-    force: null // Choose 'ios', 'android' or 'windows'. Don't do a browser check, just always show this banner
+    force: null, // Choose 'ios', 'android' or 'windows'. Don't do a browser check, just always show this banner
+
+    // Device Configuration Specific - Use JSON similar to the 'defaultDeviceConfig' variable :
+    iphoneConfig: null,
+    ipadConfig: null,
+    androidConfig: null,
+    androidTabsConfig: null,
+    windowsPhoneConfig: null,
+    windowsRtConfig: null
+  };
+
+  var defaultDeviceConfig = {
+    title: null, // What the title of the app should be in the banner (defaults to <title>)
+    author: null, // What the author of the app should be in the banner (defaults to <meta name="author"> or hostname)
+    price: 'FREE', // Price of the app
+    icon: null, // The URL of the icon (defaults to <meta name="apple-touch-icon">)
+    button: 'View in Store', // Text for the install button
+    storeLanguage: 'us' // iOS Only : Language code for App Store
   };
 
   $.smartbanner.Constructor = SmartBanner;
