@@ -79,14 +79,12 @@
     // Get Tracking URL :
     this.appTracking = metaTracking.attr('content');
 
-
     // Get Device Configuration Specific :
     if(specificDeviceOption)  $.extend(this.options, specificDeviceOption);
 
     // Get default Title and Author :
     this.title = this.options.title ? this.options.title : $('title').text().replace(/\s*[|\-·].*$/, '');
     this.author = this.options.author ? this.options.author : ($('meta[name="author"]').length ? $('meta[name="author"]').attr('content') : window.location.hostname);
-
 
     // Create banner
     this.create();
@@ -264,7 +262,7 @@
     priceText: 'On the store', // Text of price for store
     icon: null, // The URL of the icon (defaults to <meta name="apple-touch-icon">)
     button: 'View in Store', // Text for the install button
-    appStoreLanguage: 'us', // Language code for App Store
+    appStoreLanguage: 'us', // Language code for iOS App Store
 
     // Deprecated - replaced by 'priceText' and 'Device Configuration Specific' section :
     inAppStore: 'On the App Store', // Text of price for iOS - iPhone
