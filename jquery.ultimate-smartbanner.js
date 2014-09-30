@@ -6,7 +6,6 @@
  */
 !function ($) {
   var SmartBanner = function (options) {
-    //this.origHtmlMargin = parseFloat($('html').css('margin-top')); // Get the original margin-top of the HTML element so we can take that into account
     this.options = $.extend({}, $.smartbanner.defaults, options);
 
     var standalone = navigator.standalone; // Check if it's already a standalone web app or running within a webui view of an app (not mobile safari)
@@ -215,9 +214,10 @@
       return null
     }
 
-    // Demo only
+    // For demo only
     , switchType: function () {
-      // Array.indexOf polyfill from mozilla : https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf
+      // Array.indexOf polyfill from mozilla :
+      // >> https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf
       if (!Array.prototype.indexOf) {
         Array.prototype.indexOf = function (searchElement, fromIndex) {
           if ( this === undefined || this === null ) throw new TypeError( '"this" is null or not defined' );
@@ -230,11 +230,10 @@
         };
       }
 
-      this.hide(function () {
-        var that = this;
+      var that = this;
+      that.hide(function () {
         var a_format = ['ios', 'android', 'windows', 'windows-phone'];
 
-        //that.type = that.type == 'android' ? 'ios' : 'android';
         var newIndex = a_format.indexOf(that.type)+1;
         that.type = (!a_format[newIndex]) ? a_format[0] : a_format[newIndex];
         var meta = $(that.type == 'android' ? 'meta[name="google-play-app"]' : 'meta[name="apple-itunes-app"]').attr('content');
