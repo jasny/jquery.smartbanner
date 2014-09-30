@@ -6,8 +6,8 @@
  */
 !function ($) {
   var SmartBanner = function (options) {
-    this.origHtmlMargin = parseFloat($('html').css('margin-top')) // Get the original margin-top of the HTML element so we can take that into account
-    this.options = $.extend({}, $.smartbanner.defaults, options)
+    //this.origHtmlMargin = parseFloat($('html').css('margin-top')); // Get the original margin-top of the HTML element so we can take that into account
+    this.options = $.extend({}, $.smartbanner.defaults, options);
 
     var standalone = navigator.standalone; // Check if it's already a standalone web app or running within a webui view of an app (not mobile safari)
 
@@ -36,15 +36,6 @@
     // Calculate scale
     this.scale = this.options.scale == 'auto' ? $(window).width() / window.screen.width : this.options.scale;
     if (this.scale < 1) this.scale = 1;
-
-    /*
-     iphoneConfig: null,
-     ipadConfig: null,
-     androidConfig: null,
-     androidTabsConfig: null,
-     windowsPhoneConfig: null,
-     windowsRtConfig: null
-     */
 
     // Get info from meta data
     var metaString, metaTrackingString, specificDeviceOption;
