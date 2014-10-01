@@ -128,28 +128,28 @@ In the body of your web page :
         author: Société du Figaro,
         price: 'FREE',
         icon: 'https://lh6.ggpht.com/LgbxCFAnb8XOqje6n4-feL-dcgD0awQGouHyfbICIEpy33796s8eqVS96sQRdLBLnUs=w300-rw',
-        button: 'Download', // Text for the install button
-        appStoreLanguage: 'fr', // Language code for iOS App Store
+        button: 'Download',
+        appStoreLanguage: 'fr',
     
         // Technical config :
-        daysHidden: 15, // Duration to hide the banner after being closed (0 = always show banner)
-        daysReminder: 90, // Duration to hide the banner after "VIEW" is clicked *separate from when the close button is clicked* (0 = always show banner)
+        daysHidden: 15,
+        daysReminder: 90,
     
-        // Device Configuration Specific - Use JSON datas who will surcharge the original datas (like this android sample) :
+        // Device Configuration Specific :
         iphoneConfig: {
-            title: 'Figaro Madame', // What the title of the app should be in the banner (defaults to <title>)
+            title: 'Figaro Madame',
             icon: 'https://lh5.ggpht.com/UtmY5cjFDM5YFQ2QJJjYj51zJ2WQ_V1QAHCIbGQBFe7wZkEbM9YIAx17tdOaKFGs96Y=w300-rw',
         },
         ipadConfig: {
-           title: 'i-mad', // What the title of the app should be in the banner (defaults to <title>)
+           title: 'i-mad',
            icon: 'https://lh5.ggpht.com/yNZRuzfM464vReZYy-9ArJPKaloXctGb9RLMJbAmHl4Ah9EDU20H1unOeRevVDeL_qWT=w300-rw',
        },
         androidConfig: {
-            title: 'Figaro Madame', // What the title of the app should be in the banner (defaults to <title>)
+            title: 'Figaro Madame',
             icon: 'https://lh5.ggpht.com/UtmY5cjFDM5YFQ2QJJjYj51zJ2WQ_V1QAHCIbGQBFe7wZkEbM9YIAx17tdOaKFGs96Y=w300-rw',
         },
         androidTabsConfig: {
-           title: 'i-mad', // What the title of the app should be in the banner (defaults to <title>)
+           title: 'i-mad',
            icon: 'https://lh5.ggpht.com/yNZRuzfM464vReZYy-9ArJPKaloXctGb9RLMJbAmHl4Ah9EDU20H1unOeRevVDeL_qWT=w300-rw',
        }
     })
