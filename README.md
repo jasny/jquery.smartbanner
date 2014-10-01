@@ -14,6 +14,8 @@ The differences with the original branch are :
 - Animations of the banner with CSS
 
 ## Usage ##
+```html
+
     <html>
       <head>
         <title>YouTube</title>
@@ -43,23 +45,80 @@ The differences with the original branch are :
       </body>
     </html>
 
+```
+
 ## Options ##
+```javascript
+
     $.smartbanner({
+        //Smart Banner default config :
         title: null, // What the title of the app should be in the banner (defaults to <title>)
         author: null, // What the author of the app should be in the banner (defaults to <meta name="author"> or hostname)
         price: 'FREE', // Price of the app
-        appStoreLanguage: 'us', // Language code for App Store
-        inAppStore: 'On the App Store', // Text of price for iOS
-        inGooglePlay: 'In Google Play', // Text of price for Android
-        inWindowsStore: 'In the Windows Store', // Text of price for Windows
+        priceText: 'On the store', // Text of price for store
         icon: null, // The URL of the icon (defaults to <meta name="apple-touch-icon">)
-        iconGloss: null, // Force gloss effect for iOS even for precomposed
-        button: 'VIEW', // Text for the install button
-        scale: 'auto', // Scale based on viewport size (set to 1 to disable)
+        button: 'View in Store', // Text for the install button
+        appStoreLanguage: 'us', // Language code for iOS App Store
+    
+        // Deprecated - replaced by 'priceText' and 'Device Configuration Specific' section :
+        inAppStore: 'On the App Store', // Text of price for iOS - iPhone
+        inGooglePlay: 'In Google Play', // Text of price for Android Phone
+        inWindowsStore: 'In the Windows Store', //Text of price for Windows Phone
+        iconGloss: null, // Force gloss CSS effect for iOS even for precomposed
+    
+        // Technical config :
         daysHidden: 15, // Duration to hide the banner after being closed (0 = always show banner)
         daysReminder: 90, // Duration to hide the banner after "VIEW" is clicked *separate from when the close button is clicked* (0 = always show banner)
+        scale: 'auto', // Scale based on viewport size (set to 1 to disable)
         container: 'body', // Container where the banner will be injected
-        force: null // Choose 'ios', 'android' or 'windows'. Don't do a browser check, just always show this banner
+        force: null, // Choose 'ios', 'android' or 'windows'. Don't do a browser check, just always show this banner
+    
+        // Device Configuration Specific - Use JSON datas who will surcharge the original datas (like this android sample) :
+        iphoneConfig: null,
+        ipadConfig: null,
+        androidConfig: null,
+        androidTabsConfig: null,
+        windowsPhoneConfig: null,
+        windowsRtConfig: null
+    })
+    
+```
+
+## Call Sample ##
+    $.smartbanner({
+        //Smart Banner default config :
+        title: null, // What the title of the app should be in the banner (defaults to <title>)
+        author: null, // What the author of the app should be in the banner (defaults to <meta name="author"> or hostname)
+        price: 'FREE', // Price of the app
+        priceText: 'On the store', // Text of price for store
+        icon: null, // The URL of the icon (defaults to <meta name="apple-touch-icon">)
+        button: 'View in Store', // Text for the install button
+        appStoreLanguage: 'us', // Language code for iOS App Store
+    
+        // Deprecated - replaced by 'priceText' and 'Device Configuration Specific' section :
+        inAppStore: 'On the App Store', // Text of price for iOS - iPhone
+        inGooglePlay: 'In Google Play', // Text of price for Android Phone
+        inWindowsStore: 'In the Windows Store', //Text of price for Windows Phone
+        iconGloss: null, // Force gloss CSS effect for iOS even for precomposed
+    
+        // Technical config :
+        daysHidden: 15, // Duration to hide the banner after being closed (0 = always show banner)
+        daysReminder: 90, // Duration to hide the banner after "VIEW" is clicked *separate from when the close button is clicked* (0 = always show banner)
+        scale: 'auto', // Scale based on viewport size (set to 1 to disable)
+        container: 'body', // Container where the banner will be injected
+        force: null, // Choose 'ios', 'android' or 'windows'. Don't do a browser check, just always show this banner
+    
+        // Device Configuration Specific - Use JSON datas who will surcharge the original datas (like this android sample) :
+        iphoneConfig: null,
+        ipadConfig: null,
+        androidConfig: {
+          title: null, // What the title of the app should be in the banner (defaults to <title>)
+          price: 'FREE', // Price of the app
+          priceText: 'On the store', // Text of price for store
+        },
+        androidTabsConfig: null,
+        windowsPhoneConfig: null,
+        windowsRtConfig: null
     })
 
   [1]: http://developer.apple.com/library/ios/#documentation/AppleApplications/Reference/SafariWebContent/PromotingAppswithAppBanners/PromotingAppswithAppBanners.html
