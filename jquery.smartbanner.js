@@ -50,9 +50,9 @@
         }
 
         this.title = this.options.title ? this.options.title : meta.data('title') || $('title').text().replace(/\s*[|\-·].*$/, '')
-        this.author = this.options.author ? this.options.author : meta.data('author') || ($('meta[name="author"]').length ? $('meta[name="author"]').attr('content') : window.location.hostname)
+        this.author = this.options.authors[this.type] ? this.options.authors[this.type] : this.options.author ? this.options.author : meta.data('author') || ($('meta[name="author"]').length ? $('meta[name="author"]').attr('content') : window.location.hostname)
         this.iconUrl = meta.data('icon-url');
-        this.price = meta.data('price');
+        this.price = this.options.prices[this.type] ? this.options.prices[this.type] : meta.data('price');
 
         // Create banner
         this.create()
@@ -85,7 +85,9 @@
             var banner = '<div id="smartbanner" class="'+this.type+'"><div class="sb-container"><a href="#" class="sb-close">&times;</a><span class="sb-icon"></span><div class="sb-info"><strong>'+this.title+'</strong><span>'+this.author+'</span><span>'+inStore+'</span></div><a href="'+link+'" class="sb-button"><span>'+this.options.button+'</span></a></div></div>';
             (this.options.layer) ? $(this.options.appendToSelector).append(banner) : $(this.options.appendToSelector).prepend(banner);
 
-            if (this.options.icon) {
+            if (this.options.icons[this.type]) {
+                iconURL = this.options.icons[this.type];
+            } else if (this.options.icon) {
                 iconURL = this.options.icon
             } else if(this.iconUrl) {
                 iconURL = this.iconUrl;
@@ -235,7 +237,9 @@
     $.smartbanner.defaults = {
         title: null, // What the title of the app should be in the banner (defaults to <title>)
         author: null, // What the author of the app should be in the banner (defaults to <meta name="author"> or hostname)
+        authors: {'ios': null, 'android': null}, // Similar to above author, platform-specific
         price: 'FREE', // Price of the app
+        prices: {'ios': null, 'android': null}, // Similar to above price, platform-specific
         appStoreLanguage: 'us', // Language code for App Store
         inAppStore: 'On the App Store', // Text of price for iOS
         inGooglePlay: 'In Google Play', // Text of price for Android
@@ -243,6 +247,7 @@
         inWindowsStore: 'In the Windows Store', //Text of price for Windows
         GooglePlayParams: null, // Aditional parameters for the market
         icon: null, // The URL of the icon (defaults to <meta name="apple-touch-icon">)
+        icons: {'ios': null, 'android': null}, // Similar to above icon, platform-specific
         iconGloss: null, // Force gloss effect for iOS even for precomposed
         button: 'VIEW', // Text for the install button
         url: null, // The URL for the button. Keep null if you want the button to link to the app store.
