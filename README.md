@@ -46,7 +46,8 @@ brings this feature to older iOS versions, Android devices and for Windows Store
       daysReminder: 90, // Duration to hide the banner after "VIEW" is clicked *separate from when the close button is clicked* (0 = always show banner)
       force: null, // Choose 'ios', 'android' or 'windows'. Don't do a browser check, just always show this banner
       hideOnInstall: true, // Hide the banner after "VIEW" is clicked.
-      iOSUniversalApp: true // If the iOS App is a universal app for both iPad and iPhone, display Smart Banner to iPad users, too.      
+      layer: false, // Display as overlay layer or slide down the page
+      iOSUniversalApp: true, // If the iOS App is a universal app for both iPad and iPhone, display Smart Banner to iPad users, too.
       appendToSelector: 'body' //Append the banner to a specific selector
     })
 
