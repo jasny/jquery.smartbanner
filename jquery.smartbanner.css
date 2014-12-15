@@ -26,3 +26,15 @@
 #smartbanner.android .sb-button:active span, #smartbanner.android .sb-button:hover span { background:#2AC7E1; }
 
 #smartbanner.windows .sb-icon { border-radius: 0px; }
+
+#smartbanner.ios { background-color: #f1f1f1; }
+#smartbanner.ios .sb-close { border:0; box-shadow: none; background: none; font-size: 16px; width:17px; height:17px; line-height:17px; top: 30px; color:#666; }
+#smartbanner.ios .sb-close:active { color: #aaa; }
+#smartbanner.ios .sb-icon { box-shadow: none; border: none; }
+#smartbanner.ios .sb-info { width: 50%; }
+#smartbanner.ios .sb-info strong, #smartbanner.ios .sb-info span { color: #333; font-weight: normal; }
+#smartbanner.ios .sb-info strong { font-size: 14px; font-weight: 500; margin-top: 5px; line-height: 1.2; }
+#smartbanner.ios .sb-info span { font-size: 12px; line-height: 1.2; }
+#smartbanner.ios .sb-button { border:none; min-width: 12%; padding:1px; font-size: 16px; color:#2867ce; font-weight: normal; box-shadow: none; text-transform: capitalize; }
+#smartbanner.ios .sb-button span { text-align: center; display: block; padding: 0 10px; text-transform:none; }
+#smartbanner.ios .sb-button:active, #smartbanner.ios .sb-button:hover { background: none; }
