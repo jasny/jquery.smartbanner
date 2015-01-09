@@ -4,7 +4,26 @@
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  * Based on 'jQuery Smart Web App Banner' by Kurt Zenisek @ kzeni.com
  */
-!function ($) {
+;(function(window, document, undefined) {
+
+(function (factory) {
+    'use strict';
+
+    if (typeof define === 'function' && define.amd) {
+        // Define as an AMD module if possible
+        define('jquery.smartbanner', ['jquery'], factory);
+    }
+    else if (typeof exports === 'object') {
+        // Node/CommonJS
+        factory(require('jquery'));
+    }
+    else if (jQuery) {
+        // Define using browser globals otherwise
+        // Prevent multiple instantiations if the script is loaded twice
+        factory(jQuery);
+    }
+}
+(function ($) {
     var SmartBanner = function (options) {
         this.origHtmlMargin = parseFloat($('html').css('margin-top')); // Get the original margin-top of the HTML element so we can take that into account
         var options = $.extend({}, $.smartbanner.defaults, options);
@@ -359,14 +378,12 @@
     }
     
     $.smartbanner.Constructor = SmartBanner;
-}(window.jQuery);
 
-/*!
- * Bootstrap transition
- * Copyright 2011-2014 Twitter, Inc.
- * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
- */
-!function ($) {
+    /*!
+     * Bootstrap transition
+     * Copyright 2011-2014 Twitter, Inc.
+     * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+     */
     function transitionEnd() {
         var el = document.createElement('smartbanner');
         
@@ -403,4 +420,6 @@
     }
 
     $.support.transition = transitionEnd();
-}(window.jQuery);
+}));
+
+}(window, document));
