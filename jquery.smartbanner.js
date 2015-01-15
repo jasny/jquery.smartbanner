@@ -14,6 +14,8 @@
         // Detect banner type (iOS or Android)
         if (this.options.force) {
             this.type = this.options.force
+        } else if (UA.match(/Windows Phone 8/i) != null && UA.match(/Touch/i) !== null) {
+            this.type = 'windows'
         } else if (UA.match(/iPhone|iPod/i) != null || (UA.match(/iPad/) && this.options.iOSUniversalApp)) {
             if (UA.match(/Safari/i) != null &&
                (UA.match(/CriOS/i) != null ||
@@ -22,8 +24,6 @@
             this.type = 'kindle'
         } else if (UA.match(/Android/i) != null) {
             this.type = 'android'
-        } else if (UA.match(/Windows NT 6.2/i) != null && UA.match(/Touch/i) !== null) {
-            this.type = 'windows'
         }
 
         // Don't show banner if device isn't iOS or Android, website is loaded in app or user dismissed banner
