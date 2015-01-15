@@ -70,16 +70,9 @@
               , price = this.price || this.options.price
               , inStore=price ? price + ' - ' + (this.type == 'android' ? this.options.inGooglePlay : this.type == 'kindle' ? this.options.inAmazonAppStore : this.type == 'ios' ? this.options.inAppStore : this.options.inWindowsStore) : ''
               , gloss=this.options.iconGloss === null ? (this.type=='ios') : this.options.iconGloss
-            if(this.options.url)
-              link = this.options.url
-            else {
-              if(this.type=='android') {
-                link = 'market://details?id=' + this.appId
-                if(this.options.GooglePlayParams)
-                  link = link + '&referrer=' + this.options.GooglePlayParams
-              }
-              else
-              link = 'https://itunes.apple.com/' + this.options.appStoreLanguage + '/app/id' + this.appId
+
+            if (this.type == 'android' && this.options.GooglePlayParams) {
+              link = link + '&referrer=' + this.options.GooglePlayParams;
             }
 
             var banner = '<div id="smartbanner" class="'+this.type+'"><div class="sb-container"><a href="#" class="sb-close">&times;</a><span class="sb-icon"></span><div class="sb-info"><strong>'+this.title+'</strong><span>'+this.author+'</span><span>'+inStore+'</span></div><a href="'+link+'" class="sb-button"><span>'+this.options.button+'</span></a></div></div>';
