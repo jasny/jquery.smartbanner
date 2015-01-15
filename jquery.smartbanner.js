@@ -43,8 +43,7 @@
 
         // For Windows Store apps, get the PackageFamilyName for protocol launch
         if (this.type == 'windows') {
-            this.pfn = $('meta[name="msApplication-PackageFamilyName"]').attr('content');
-            this.appId = meta.attr('content')[1]
+            this.appId = $('meta[name="msApplication-PackageFamilyName"]').attr('content');
         } else {
             this.appId = /app-id=([^\s,]+)/.exec(meta.attr('content'))[1]
         }
@@ -66,7 +65,7 @@
 
       , create: function() {
             var iconURL
-              , link=(this.options.url ? this.options.url : (this.type == 'windows' ? 'ms-windows-store:navigate?appid=' + this.pfn : (this.type == 'android' ? 'market://details?id=' : (this.type == 'kindle' ? 'amzn://apps/android?asin=' : 'https://itunes.apple.com/' + this.options.appStoreLanguage + '/app/id'))) + this.appId)
+              , link=(this.options.url ? this.options.url : (this.type == 'windows' ? 'ms-windows-store:navigate?appid=' : (this.type == 'android' ? 'market://details?id=' : (this.type == 'kindle' ? 'amzn://apps/android?asin=' : 'https://itunes.apple.com/' + this.options.appStoreLanguage + '/app/id'))) + this.appId)
               , price = this.price || this.options.price
               , inStore=price ? price + ' - ' + (this.type == 'android' ? this.options.inGooglePlay : this.type == 'kindle' ? this.options.inAmazonAppStore : this.type == 'ios' ? this.options.inAppStore : this.options.inWindowsStore) : ''
               , gloss=this.options.iconGloss === null ? (this.type=='ios') : this.options.iconGloss
