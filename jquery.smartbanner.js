@@ -134,7 +134,7 @@
 
             if (this.options.layer) {
                 banner.animate({top: 0, display: 'block'}, this.options.speedIn).addClass('shown').show();
-                $('html').animate({marginTop: this.origHtmlMargin + (this.bannerHeight * this.scale)}, this.options.speedIn, 'swing', callback);
+                $('.wrapper').animate({paddingTop: this.origHtmlMargin + (this.bannerHeight * this.scale)}, this.options.speedIn, 'swing', callback);
             } else {
                 if ($.support.transition) {
                     banner.animate({top:0},this.options.speedIn).addClass('shown');
@@ -144,7 +144,7 @@
                             callback();
                         }
                     };
-                    $('html').addClass('sb-animation').one($.support.transition.end, transitionCallback).emulateTransitionEnd(this.options.speedIn).css('margin-top', this.origHtmlMargin+(this.bannerHeight*this.scale));
+                    $('.wrapper').addClass('sb-animation').one($.support.transition.end, transitionCallback).emulateTransitionEnd(this.options.speedIn).css('margin-top', this.origHtmlMargin+(this.bannerHeight*this.scale));
                 } else {
                     banner.slideDown(this.options.speedIn).addClass('shown');
                 }
@@ -157,7 +157,7 @@
 
             if (this.options.layer) {
                 banner.animate({top: -1 * this.bannerHeight * this.scale, display: 'block'}, this.options.speedIn).removeClass('shown');
-                $('html').animate({marginTop: this.origHtmlMargin}, this.options.speedIn, 'swing', callback);
+                $('.wrapper').animate({paddingTop: this.origHtmlMargin}, this.options.speedIn, 'swing', callback);
             } else {
                 if ($.support.transition) {
                     banner.css('top', -1*this.bannerHeight*this.scale).removeClass('shown');
@@ -167,7 +167,7 @@
                             callback();
                         }
                     };
-                    $('html').addClass('sb-animation').one($.support.transition.end, transitionCallback).emulateTransitionEnd(this.options.speedOut).css('margin-top', this.origHtmlMargin);
+                    $('.wrapper').addClass('sb-animation').one($.support.transition.end, transitionCallback).emulateTransitionEnd(this.options.speedOut).css('margin-top', this.origHtmlMargin);
                 } else {
                     banner.slideUp(this.options.speedOut).removeClass('shown');
                 }
