@@ -14,6 +14,8 @@
         // Detect banner type (iOS or Android)
         if (this.options.force) {
             this.type = this.options.force
+        } else if (UA.match(/Windows Phone 8/i) != null && UA.match(/Touch/i) !== null) {
+            this.type = 'windows'
         } else if (UA.match(/iPhone|iPod/i) != null || (UA.match(/iPad/) && this.options.iOSUniversalApp)) {
             if (UA.match(/Safari/i) != null &&
                (UA.match(/CriOS/i) != null ||
@@ -22,8 +24,6 @@
             this.type = 'kindle'
         } else if (UA.match(/Android/i) != null) {
             this.type = 'android'
-        } else if (UA.match(/Windows NT 6.2/i) != null && UA.match(/Touch/i) !== null) {
-            this.type = 'windows'
         }
 
         // Don't show banner if device isn't iOS or Android, website is loaded in app or user dismissed banner
@@ -43,8 +43,7 @@
 
         // For Windows Store apps, get the PackageFamilyName for protocol launch
         if (this.type == 'windows') {
-            this.pfn = $('meta[name="msApplication-PackageFamilyName"]').attr('content');
-            this.appId = meta.attr('content')[1]
+            this.appId = $('meta[name="msApplication-PackageFamilyName"]').attr('content');
         } else {
             this.appId = /app-id=([^\s,]+)/.exec(meta.attr('content'))[1]
         }
@@ -66,20 +65,13 @@
 
       , create: function() {
             var iconURL
-              , link=(this.options.url ? this.options.url : (this.type == 'windows' ? 'ms-windows-store:PDP?PFN=' + this.pfn : (this.type == 'android' ? 'market://details?id=' : (this.type == 'kindle' ? 'amzn://apps/android?asin=' : 'https://itunes.apple.com/' + this.options.appStoreLanguage + '/app/id'))) + this.appId)
+              , link=(this.options.url ? this.options.url : (this.type == 'windows' ? 'ms-windows-store:navigate?appid=' : (this.type == 'android' ? 'market://details?id=' : (this.type == 'kindle' ? 'amzn://apps/android?asin=' : 'https://itunes.apple.com/' + this.options.appStoreLanguage + '/app/id'))) + this.appId)
               , price = this.price || this.options.price
               , inStore=price ? price + ' - ' + (this.type == 'android' ? this.options.inGooglePlay : this.type == 'kindle' ? this.options.inAmazonAppStore : this.type == 'ios' ? this.options.inAppStore : this.options.inWindowsStore) : ''
               , gloss=this.options.iconGloss === null ? (this.type=='ios') : this.options.iconGloss
-            if(this.options.url)
-              link = this.options.url
-            else {
-              if(this.type=='android') {
-                link = 'market://details?id=' + this.appId
-                if(this.options.GooglePlayParams)
-                  link = link + '&referrer=' + this.options.GooglePlayParams
-              }
-              else
-              link = 'https://itunes.apple.com/' + this.options.appStoreLanguage + '/app/id' + this.appId
+
+            if (this.type == 'android' && this.options.GooglePlayParams) {
+              link = link + '&referrer=' + this.options.GooglePlayParams;
             }
 
             var banner = '<div id="smartbanner" class="'+this.type+'"><div class="sb-container"><a href="#" class="sb-close">&times;</a><span class="sb-icon"></span><div class="sb-info"><strong>'+this.title+'</strong><span>'+this.author+'</span><span>'+inStore+'</span></div><a href="'+link+'" class="sb-button"><span>'+this.options.button+'</span></a></div></div>';
