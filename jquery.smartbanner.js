@@ -173,9 +173,9 @@
         }
 
       , install: function(e) {
-			if (this.options.hideOnInstall) {
-				this.hide()
-			}
+            if (this.options.hideOnInstall) {
+                this.hide()
+            }
             this.setCookie('sb-installed','true',this.options.daysReminder)
         }
 
