@@ -45,7 +45,14 @@
         if (this.type == 'windows') {
             this.appId = $('meta[name="msApplication-PackageFamilyName"]').attr('content');
         } else {
-            this.appId = /app-id=([^\s,]+)/.exec(meta.attr('content'))[1]
+            // Try to pull the appId out of the meta tag and store the result
+            var parsedMetaContent = /app-id=([^\s,]+)/.exec(meta.attr('content'));
+
+            if(parsedMetaContent) {
+              this.appId = parsedMetaContent[1];
+            } else {
+              return;
+            }
         }
 
         this.title = this.options.title ? this.options.title : meta.data('title') || $('title').text().replace(/\s*[|\-·].*$/, '')
