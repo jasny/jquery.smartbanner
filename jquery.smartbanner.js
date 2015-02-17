@@ -25,7 +25,6 @@
 }
 (function ($) {
     var SmartBanner = function (options) {
-        this.origHtmlMargin = parseFloat($('html').css('margin-top')); // Get the original margin-top of the HTML element so we can take that into account
         var options = $.extend({}, $.smartbanner.defaults, options);
         
         this.os = options.force || this.detectOS();
@@ -178,8 +177,8 @@
                 .append('<a href="#" class="sb-close">&times;</a>')
                 .append($('<span class="sb-icon"></span>'))
                 .append($('<div class="sb-info">')
-                    .append($('<strong>').text(this.title))
-                    .append($('<span>').text(this.author))
+                    .append($('<strong>').text(this.options.title))
+                    .append($('<span>').text(this.options.author))
                     .append($('<span>').text(inStore))
                 )
                 .append($('<a class="sb-button">').attr('href', url)
@@ -195,12 +194,11 @@
         } else{
             $('#smartbanner').addClass('no-icon');
         }
-        
+
         this.bannerHeight = $('#smartbanner').outerHeight() + 2;
 
         if (this.scale > 1) {
             $('#smartbanner')
-                .css('top', parseFloat($('#smartbanner').css('top')) * this.scale)
                 .css('height', parseFloat($('#smartbanner').css('height')) * this.scale)
                 .hide();
             $('#smartbanner .sb-container')
@@ -209,7 +207,6 @@
                 .css('-moz-transform', 'scale('+this.scale+')')
                 .css('width', $(window).width() / this.scale);
         }
-        $('#smartbanner').css('position', (this.options.layer) ? 'absolute' : 'static');
     }
     
     // Listen for click events
@@ -221,7 +218,6 @@
     // Show smartbanner
     SmartBanner.prototype.show = function() {
         var banner = $('#smartbanner');
-        var top = this.origHtmlMargin + (this.bannerHeight * this.scale);
         var speed = parseFloat(banner.css('transition-duration')) * 1000;
 
         banner.stop();
@@ -229,28 +225,18 @@
         if ($.support.transition) {
             banner
                 .one($.support.transition.end, function() { 
-                    banner.addClass('shown');
+                    banner.addClass('shown').removeClass('showing');
                 })
                 .emulateTransitionEnd(speed)
-                .css('top', 0);
-            
-            $('html')
-                .addClass('sb-animation')
-                .one($.support.transition.end, function() {
-                    $('html').removeClass('sb-animation');
-                })
-                .emulateTransitionEnd(speed)
-                .css('margin-top', top);
+                .addClass('showing');
         } else {
-            banner.animate({top: 0}, { duration: speed, easing: 'swing' }).addClass('shown');
-            $('html').animate({marginTop: top}, { duration: speed, easing: 'swing' });
+            banner.animate({height: '78' * this.scale}, { duration: speed, easing: 'swing' }).addClass('shown');
         }
     }
     
     // Hide smartbanner
     SmartBanner.prototype.hide = function() {
         var banner = $('#smartbanner');
-        var top = -1 * this.bannerHeight * this.scale;
         var speed = parseFloat(banner.css('transition-duration')) * 1000;
 
         banner.stop();
@@ -261,19 +247,9 @@
                     $('#smartbanner').remove();
                 })
                 .emulateTransitionEnd(speed)
-                .removeClass('shown')
-                .css('top', top);
-            
-            $('html')
-                .addClass('sb-animation')
-                .one($.support.transition.end, function() {
-                    $('html').css('margin-top', "").removeClass('sb-animation');
-                })
-                .emulateTransitionEnd(speed)
-                .css('margin-top', this.origHtmlMargin);
+                .removeClass('shown');
         } else {
-            banner.animate({top: top}, { duration: speed, easing: 'swing' }).addClass('shown');
-            $('html').animate({marginTop: this.origHtmlMargin}, { duration: speed, easing: 'swing' });
+            banner.animate({height: 0}, { duration: speed, easing: 'swing' }).removeClass('shown');
         }
     }
 
@@ -386,7 +362,7 @@
      */
     function transitionEnd() {
         var el = document.createElement('smartbanner');
-        
+
         var transEndEventNames = {
             WebkitTransition: 'webkitTransitionEnd',
             MozTransition: 'transitionend',

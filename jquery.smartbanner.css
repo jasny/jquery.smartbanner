@@ -1,6 +1,8 @@
-#smartbanner { display: block; position: absolute; left: 0; right: 0; top:-82px; border-bottom: 1px solid #000; width: 100%; height: 78px; font-family: 'Helvetica Neue',sans-serif; z-index: 9998; -webkit-font-smoothing: antialiased; overflow: hidden; -webkit-text-size-adjust: none; }
-#smartbanner, html.sb-animation { -webkit-transition: all 0.3s ease; transition: all 0.3s ease; }
-#smartbanner .sb-container { margin: 0 auto; }
+#smartbanner { display: block; border-bottom: 1px solid #000; width: 100%; height: 0; font-family: 'Helvetica Neue',sans-serif; z-index: 9998; -webkit-font-smoothing: antialiased; overflow: hidden; -webkit-text-size-adjust: none; }
+#smartbanner { -webkit-transition: height 0.3s ease; transition: height 0.3s ease; }
+#smartbanner.showing { overflow: hidden; height: 78px;}
+#smartbanner.shown { height: 78px; }
+#smartbanner .sb-container { margin: 0 auto; height: 100%; position: relative; overflow: hidden;}
 #smartbanner .sb-close { position: absolute; left: 5px; top: 5px; display: block; width: 17px; height: 17px; font-family: 'ArialRoundedMTBold', Arial; font-size: 17px; line-height: 17px; text-align: center; color: #fff; background: #000; text-decoration: none; text-shadow: none; border-radius: 17px; -webkit-font-smoothing: subpixel-antialiased; }
 #smartbanner .sb-icon { position: absolute; left: 30px; top: 10px; display: block; width: 57px; height: 57px; background: rgba(0,0,0,0.6); background-size: cover; border-radius: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.3); }
 #smartbanner.no-icon .sb-icon { display: none; }
