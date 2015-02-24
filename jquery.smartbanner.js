@@ -8,21 +8,21 @@
         this.origHtmlMargin = parseFloat($('html').css('margin-top')); // Get the original margin-top of the HTML element so we can take that into account
         this.options = $.extend({}, $.smartbanner.defaults, options);
 
-        var standalone = navigator.standalone // Check if it's already a standalone web app or running within a webui view of an app (not mobile safari)
-          , UA = navigator.userAgent;
+        var standalone = navigator.standalone; // Check if it's already a standalone web app or running within a webui view of an app (not mobile safari)
+        var UA = navigator.userAgent;
 
         // Detect banner type (iOS or Android)
         if (this.options.force) {
             this.type = this.options.force;
-        } else if (UA.match(/Windows Phone 8/i) != null && UA.match(/Touch/i) !== null) {
+        } else if (UA.match(/Windows Phone 8/i) !== null && UA.match(/Touch/i) !== null) {
             this.type = 'windows';
-        } else if (UA.match(/iPhone|iPod/i) != null || (UA.match(/iPad/) && this.options.iOSUniversalApp)) {
-            if (UA.match(/Safari/i) != null &&
-               (UA.match(/CriOS/i) != null ||
+        } else if (UA.match(/iPhone|iPod/i) !== null || (UA.match(/iPad/) && this.options.iOSUniversalApp)) {
+            if (UA.match(/Safari/i) !== null &&
+               (UA.match(/CriOS/i) !== null ||
                window.Number(UA.substr(UA.indexOf('OS ') + 3, 3).replace('_', '.')) < 6)) this.type = 'ios'; // Check webview and native smart banner support (iOS 6+)
         } else if (UA.match(/\bSilk\/(.*\bMobile Safari\b)?/) || UA.match(/\bKF\w/) || UA.match('Kindle Fire')) {
             this.type = 'kindle';
-        } else if (UA.match(/Android/i) != null) {
+        } else if (UA.match(/Android/i) !== null) {
             this.type = 'android';
         }
 
@@ -39,7 +39,7 @@
         var meta = $(this.type == 'android' ? 'meta[name="google-play-app"]' :
             this.type == 'ios' ? 'meta[name="apple-itunes-app"]' :
             this.type == 'kindle' ? 'meta[name="kindle-fire-app"]' : 'meta[name="msApplication-ID"]');
-        if (meta.length == 0) return;
+        if (meta.length === 0) return;
 
         // For Windows Store apps, get the PackageFamilyName for protocol launch
         if (this.type == 'windows') {
@@ -68,14 +68,14 @@
 
     SmartBanner.prototype = {
 
-        constructor: SmartBanner
+        constructor: SmartBanner,
 
-      , create: function() {
-            var iconURL
-              , link=(this.options.url ? this.options.url : (this.type == 'windows' ? 'ms-windows-store:navigate?appid=' : (this.type == 'android' ? 'market://details?id=' : (this.type == 'kindle' ? 'amzn://apps/android?asin=' : 'https://itunes.apple.com/' + this.options.appStoreLanguage + '/app/id'))) + this.appId)
-              , price = this.price || this.options.price
-              , inStore=price ? price + ' - ' + (this.type == 'android' ? this.options.inGooglePlay : this.type == 'kindle' ? this.options.inAmazonAppStore : this.type == 'ios' ? this.options.inAppStore : this.options.inWindowsStore) : ''
-              , gloss=this.options.iconGloss === null ? (this.type=='ios') : this.options.iconGloss;
+        create: function() {
+            var iconURL;
+            var link=(this.options.url ? this.options.url : (this.type == 'windows' ? 'ms-windows-store:navigate?appid=' : (this.type == 'android' ? 'market://details?id=' : (this.type == 'kindle' ? 'amzn://apps/android?asin=' : 'https://itunes.apple.com/' + this.options.appStoreLanguage + '/app/id'))) + this.appId);
+            var price = this.price || this.options.price;
+            var inStore=price ? price + ' - ' + (this.type == 'android' ? this.options.inGooglePlay : this.type == 'kindle' ? this.options.inAmazonAppStore : this.type == 'ios' ? this.options.inAppStore : this.options.inWindowsStore) : '';
+            var gloss=this.options.iconGloss === null ? (this.type=='ios') : this.options.iconGloss;
 
             if (this.type == 'android' && this.options.GooglePlayParams) {
               link = link + '&referrer=' + this.options.GooglePlayParams;
@@ -120,14 +120,14 @@
                     .css('width', $(window).width() / this.scale);
             }
             $('#smartbanner').css('position', (this.options.layer) ? 'absolute' : 'static');
-        }
+        },
 
-      , listen: function () {
+        listen: function () {
             $('#smartbanner .sb-close').on('click',$.proxy(this.close, this));
             $('#smartbanner .sb-button').on('click',$.proxy(this.install, this));
-        }
+        },
 
-      , show: function(callback) {
+        show: function(callback) {
             var banner = $('#smartbanner');
             banner.stop();
 
@@ -148,9 +148,9 @@
                     banner.slideDown(this.options.speedIn).addClass('shown');
                 }
             }
-        }
+        },
 
-      , hide: function(callback) {
+        hide: function(callback) {
             var banner = $('#smartbanner');
             banner.stop();
 
@@ -171,29 +171,29 @@
                     banner.slideUp(this.options.speedOut).removeClass('shown');
                 }
             }
-        }
+        },
 
-      , close: function(e) {
+        close: function(e) {
             e.preventDefault();
             this.hide();
             this.setCookie('sb-closed','true',this.options.daysHidden);
-        }
+        },
 
-      , install: function(e) {
+        install: function(e) {
 			if (this.options.hideOnInstall) {
 				this.hide();
 			}
             this.setCookie('sb-installed','true',this.options.daysReminder);
-        }
+        },
 
-      , setCookie: function(name, value, exdays) {
+        setCookie: function(name, value, exdays) {
             var exdate = new Date();
             exdate.setDate(exdate.getDate()+exdays);
-            value=encodeURI(value)+((exdays==null)?'':'; expires='+exdate.toUTCString());
+            value=encodeURI(value)+((exdays===null)?'':'; expires='+exdate.toUTCString());
             document.cookie=name+'='+value+'; path=/;';
-        }
+        },
 
-      , getCookie: function(name) {
+        getCookie: function(name) {
             var i,x,y,ARRcookies = document.cookie.split(";");
             for(i=0;i<ARRcookies.length;i++) {
                 x = ARRcookies[i].substr(0,ARRcookies[i].indexOf("="));
@@ -204,10 +204,10 @@
                 }
             }
             return null;
-        }
+        },
 
       // Demo only
-      , switchType: function() {
+        switchType: function() {
           var that = this;
 
           this.hide(function () {
@@ -223,9 +223,9 @@
     };
 
     $.smartbanner = function (option) {
-        var $window = $(window)
-        , data = $window.data('smartbanner')
-        , options = typeof option == 'object' && option;
+        var $window = $(window);
+        var data = $window.data('smartbanner');
+        var options = typeof option == 'object' && option;
         if (!data) $window.data('smartbanner', (data = new SmartBanner(options)));
         if (typeof option == 'string') data[option]();
     };
