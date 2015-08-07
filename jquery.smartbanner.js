@@ -60,6 +60,20 @@
         this.iconUrl = meta.data('icon-url');
         this.price = meta.data('price');
 
+        // Set default onInstall callback if not set in options
+        if (typeof this.options.onInstall === 'function') {
+            this.options.onInstall = this.options.onInstall;
+        } else {
+            this.options.onInstall = function() {};
+        }
+
+        // Set default onClose callback if not set in options
+        if (typeof this.options.onClose === 'function') {
+            this.options.onClose = this.options.onClose;
+        } else {
+            this.options.onClose = function() {};
+        }
+
         // Create banner
         this.create()
         this.show()
@@ -180,6 +194,7 @@
             e.preventDefault()
             this.hide()
             this.setCookie('sb-closed','true',this.options.daysHidden);
+            this.options.onClose();
         }
 
       , install: function(e) {
@@ -187,6 +202,7 @@
 				this.hide()
 			}
             this.setCookie('sb-installed','true',this.options.daysReminder)
+            this.options.onInstall();
         }
 
       , setCookie: function(name, value, exdays) {
