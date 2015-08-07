@@ -194,7 +194,7 @@
             e.preventDefault()
             this.hide()
             this.setCookie('sb-closed','true',this.options.daysHidden);
-            this.options.onClose();
+            this.options.onClose(e);
         }
 
       , install: function(e) {
@@ -202,7 +202,7 @@
 				this.hide()
 			}
             this.setCookie('sb-installed','true',this.options.daysReminder)
-            this.options.onInstall();
+            this.options.onInstall(e);
         }
 
       , setCookie: function(name, value, exdays) {
