@@ -56,6 +56,9 @@ brings this feature to older iOS versions, Android devices and for Windows Store
       },
       onClose: function() {
         // alert('Click close');
+      },
+      onShow: function() {
+        // alert('Banner shown');
       }
     })
 
