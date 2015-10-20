@@ -147,17 +147,18 @@
 
             if (this.options.layer) {
                 banner.animate({top: 0, display: 'block'}, this.options.speedIn).addClass('shown').show();
-                $(this.pushSelector).animate({paddingTop: this.origHtmlMargin + (this.bannerHeight * this.scale)}, this.options.speedIn, 'swing', callback);
+                $(this.options.pushSelector).animate({paddingTop: this.origHtmlMargin + (this.bannerHeight * this.scale)}, this.options.speedIn, 'swing', callback);
             } else {
                 if ($.support.transition) {
                     banner.animate({top:0},this.options.speedIn).addClass('shown');
+                    var pushSelector = this.options.pushSelector;
                     var transitionCallback = function() {
-                        $('html').removeClass('sb-animation');
+                        $(pushSelector).removeClass('sb-animation');
                         if (callback) {
                             callback();
                         }
                     };
-                    $(this.pushSelector).addClass('sb-animation').one($.support.transition.end, transitionCallback).emulateTransitionEnd(this.options.speedIn).css('margin-top', this.origHtmlMargin+(this.bannerHeight*this.scale));
+                    $(this.options.pushSelector).addClass('sb-animation').one($.support.transition.end, transitionCallback).emulateTransitionEnd(this.options.speedIn).css('margin-top', this.origHtmlMargin+(this.bannerHeight*this.scale));
                 } else {
                     banner.slideDown(this.options.speedIn).addClass('shown');
                 }
@@ -170,20 +171,22 @@
 
             if (this.options.layer) {
                 banner.animate({top: -1 * this.bannerHeight * this.scale, display: 'block'}, this.options.speedIn).removeClass('shown');
-                $(this.pushSelector).animate({paddingTop: this.origHtmlMargin}, this.options.speedIn, 'swing', callback);
+                $(this.options.pushSelector).animate({paddingTop: this.origHtmlMargin}, this.options.speedIn, 'swing', callback);
             } else {
                 if ($.support.transition) {
                     if ( this.type !== 'android' )
                       banner.css('top', -1*this.bannerHeight*this.scale).removeClass('shown');
                     else
                       banner.css({display:'none'}).removeClass('shown');
+
+                    var pushSelector = this.options.pushSelector;
                     var transitionCallback = function() {
-                        $('html').removeClass('sb-animation');
+                        $(pushSelector).removeClass('sb-animation');
                         if (callback) {
                             callback();
                         }
                     };
-                    $(this.pushSelector).addClass('sb-animation').one($.support.transition.end, transitionCallback).emulateTransitionEnd(this.options.speedOut).css('margin-top', this.origHtmlMargin);
+                    $(this.options.pushSelector).addClass('sb-animation').one($.support.transition.end, transitionCallback).emulateTransitionEnd(this.options.speedOut).css('margin-top', this.origHtmlMargin);
                 } else {
                     banner.slideUp(this.options.speedOut).removeClass('shown');
                 }
