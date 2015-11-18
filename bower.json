@@ -1,0 +1,21 @@
+{
+  "name": "jquery.smartbanner",
+  "main": "jquery.smartbanner.js",
+  "version": "1.0.0",
+  "homepage": "http://jasny.github.com/jquery.smartbanner",
+  "authors": [
+    "Arnold Daniels <arnold@jasny.net>"
+  ],
+  "description": "Smart Banner support for iOS 4/5 and Android",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+	"dependencies": {
+		"jquery": "~1||~2"
+	}
+}
