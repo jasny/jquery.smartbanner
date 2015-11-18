@@ -6,6 +6,9 @@
   "authors": [
     "Arnold Daniels <arnold@jasny.net>"
   ],
+	"moduleType": [
+		"amd"
+	],
   "description": "Smart Banner support for iOS 4/5 and Android",
   "license": "MIT",
   "ignore": [
