@@ -16,6 +16,8 @@
             this.type = this.options.force
         } else if (UA.match(/Windows Phone 8/i) != null && UA.match(/Touch/i) !== null) {
             this.type = 'windows'
+        } else if ((UA.match(/FBAN/) || UA.match(/FBAV/) || UA.match(/FB_IAB/)) && UA.match(/iPhone/)) {
+          this.type = 'ios';
         } else if (UA.match(/iPhone|iPod/i) != null || (UA.match(/iPad/) && this.options.iOSUniversalApp)) {
             if (UA.match(/Safari/i) != null &&
                (UA.match(/CriOS/i) != null ||
