@@ -4,6 +4,20 @@
  * Based on 'jQuery Smart Web App Banner' by Kurt Zenisek @ kzeni.com
  */
 !function ($) {
+	
+    // http://blog.alexmaccaw.com/css-transitions
+    $.fn.emulateTransitionEnd = function(duration) {
+        var called = false, $el = this
+        $(this).one($.support.transition.end, function() {
+            called = true
+        })
+        var callback = function() {
+            if (!called) $($el).trigger($.support.transition.end)
+        }
+        setTimeout(callback, duration)
+        return this
+    }
+	
     var SmartBanner = function (options) {
         this.origHtmlMargin = parseFloat($('html').css('margin-top')) // Get the original margin-top of the HTML element so we can take that into account
         this.options = $.extend({}, $.smartbanner.defaults, options)
@@ -306,20 +320,7 @@
 
     if ($.support.transition !== undefined)
         return  // Prevent conflict with Twitter Bootstrap
-
-    // http://blog.alexmaccaw.com/css-transitions
-    $.fn.emulateTransitionEnd = function(duration) {
-        var called = false, $el = this
-        $(this).one($.support.transition.end, function() {
-            called = true
-        })
-        var callback = function() {
-            if (!called) $($el).trigger($.support.transition.end)
-        }
-        setTimeout(callback, duration)
-        return this
-    }
-
+        
     $(function() {
         $.support.transition = transitionEnd()
     })
