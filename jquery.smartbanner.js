@@ -11,7 +11,6 @@
   }
 }(this, function($) {
     var SmartBanner = function (options) {
-        this.origHtmlMargin = parseFloat($('html').css('margin-top')) // Get the original margin-top of the HTML element so we can take that into account
         this.options = $.extend({}, $.smartbanner.defaults, options)
 
         var standalone = navigator.standalone // Check if it's already a standalone web app or running within a webui view of an app (not mobile safari)
@@ -37,15 +36,17 @@
             return
         }
 
-        // Calculate scale
-        this.scale = this.options.scale == 'auto' ? $(window).width() / window.screen.width : this.options.scale
-        if (this.scale < 1) this.scale = 1
-
         // Get info from meta data
         var meta = $(this.type == 'android' ? 'meta[name="google-play-app"]' :
             this.type == 'ios' ? 'meta[name="apple-itunes-app"]' :
             this.type == 'kindle' ? 'meta[name="kindle-fire-app"]' : 'meta[name="msApplication-ID"]');
         if (meta.length == 0) return
+        
+        this.origHtmlMargin = parseFloat($('html').css('margin-top')) // Get the original margin-top of the HTML element so we can take that into account
+
+        // Calculate scale
+        this.scale = this.options.scale == 'auto' ? $(window).width() / window.screen.width : this.options.scale
+        if (this.scale < 1) this.scale = 1
 
         // For Windows Store apps, get the PackageFamilyName for protocol launch
         if (this.type == 'windows') {
