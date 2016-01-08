@@ -33,7 +33,7 @@
         }
 
         // Don't show banner if device isn't iOS or Android, website is loaded in app or user dismissed banner
-        if (!this.type || standalone || this.getCookie('sb-closed') || this.getCookie('sb-installed')) {
+        if (!this.type || $.inArray(this.type, this.options.platforms) === -1 || standalone || this.getCookie('sb-closed') || this.getCookie('sb-installed')) {
             return
         }
 
@@ -280,7 +280,8 @@
         layer: false, // Display as overlay layer or slide down the page
         iOSUniversalApp: true, // If the iOS App is a universal app for both iPad and iPhone, display Smart Banner to iPad users, too.
         appendToSelector: 'body', //Append the banner to a specific selector
-		pushSelector: 'html' // What element is going to push the site content down; this is where the banner append animation will start.
+	pushSelector: 'html', // What element is going to push the site content down; this is where the banner append animation will start.
+	platforms: ['ios', 'android', 'windows', 'kindle'] // The platforms where the Smart banner will be displayed
     }
 
     $.smartbanner.Constructor = SmartBanner;
