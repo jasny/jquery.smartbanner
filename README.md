@@ -67,6 +67,6 @@ _jQuery smartbanner is currently not being maintained. If you like to take over 
 
 [![Arnold Daniels](https://avatars3.githubusercontent.com/u/100821?v=2&s=64)](https://github.com/jasny)
 [![Thomas De Laet](https://avatars1.githubusercontent.com/u/5644283?v=2&s=64)](https://github.com/delaetthomas)
-[![John-David Dalton](https://avatars2.githubusercontent.com/u/4303?v=3&s=96)](https://github.com/jdalton)
+[![John-David Dalton](https://avatars2.githubusercontent.com/u/4303?v=3&s=64)](https://github.com/jdalton)
 
   [1]: http://developer.apple.com/library/ios/#documentation/AppleApplications/Reference/SafariWebContent/PromotingAppswithAppBanners/PromotingAppswithAppBanners.html
