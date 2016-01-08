@@ -53,7 +53,7 @@ _jQuery smartbanner is currently not being maintained. If you like to take over 
       force: null, // Choose 'ios', 'android' or 'windows'. Don't do a browser check, just always show this banner
       hideOnInstall: true, // Hide the banner after "VIEW" is clicked.
       layer: false, // Display as overlay layer or slide down the page
-      iOSUniversalApp: true, // If the iOS App is a universal app for both iPad and iPhone, display Smart Banner to iPad users, too.      
+      iOSUniversalApp: true, // If the iOS App is a universal app for both iPad and iPhone, display Smart Banner to iPad users, too.
       appendToSelector: 'body', //Append the banner to a specific selector
       onInstall: function() {
         // alert('Click install');
@@ -65,7 +65,8 @@ _jQuery smartbanner is currently not being maintained. If you like to take over 
 
 ## Contributors
 
-[![Arnold Daniels](https://avatars3.githubusercontent.com/u/100821?v=2&s=64)](https://github.com/jasny)
-[![Thomas De Laet](https://avatars1.githubusercontent.com/u/5644283?v=2&s=64)](https://github.com/delaetthomas)
+[![Arnold Daniels](https://avatars3.githubusercontent.com/u/100821?v=2&s=48)](https://github.com/jasny)
+[![Thomas De Laet](https://avatars1.githubusercontent.com/u/5644283?v=2&s=48)](https://github.com/delaetthomas)
+[![Shivani Thakur](https://avatars1.githubusercontent.com/u/1167588?v=3&s=48)](https://github.com/shivanibhanwal)
 
-  [1]: http://developer.apple.com/library/ios/#documentation/AppleApplications/Reference/SafariWebContent/PromotingAppswithAppBanners/PromotingAppswithAppBanners.html
+[1]: http://developer.apple.com/library/ios/#documentation/AppleApplications/Reference/SafariWebContent/PromotingAppswithAppBanners/PromotingAppswithAppBanners.html
