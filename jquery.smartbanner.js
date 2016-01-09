@@ -206,38 +206,36 @@
             this.options.onInstall(e);
         },
         setCookie: function(name, value, exdays) {
-            var exdate = new Date()
-            exdate.setDate(exdate.getDate()+exdays)
-            value=encodeURI(value)+((exdays==null)?'':'; expires='+exdate.toUTCString())
-            document.cookie=name+'='+value+'; path=/;'
+            var exdate = new Date();
+            exdate.setDate(exdate.getDate()+exdays);
+            value=encodeURI(value)+((exdays==null)?'':'; expires='+exdate.toUTCString());
+            document.cookie=name+'='+value+'; path=/;';
         },
         getCookie: function(name) {
-            var i,x,y,ARRcookies = document.cookie.split(";")
-            for(i=0;i<ARRcookies.length;i++) {
-                x = ARRcookies[i].substr(0,ARRcookies[i].indexOf("="))
-                y = ARRcookies[i].substr(ARRcookies[i].indexOf("=")+1)
-                x = x.replace(/^\s+|\s+$/g,"")
+            var i,x,y,ARRcookies = document.cookie.split(";");
+            for(i = 0; i < ARRcookies.length; i++) {
+                x = ARRcookies[i].substr(0,ARRcookies[i].indexOf("="));
+                y = ARRcookies[i].substr(ARRcookies[i].indexOf("=")+1);
+                x = x.replace(/^\s+|\s+$/g,"");
                 if (x==name) {
-                    return decodeURI(y)
+                    return decodeURI(y);
                 }
             }
-            return null
+            return null;
         },
+        // Demo only
+        switchType: function() {
+            var that = this;
 
-      // Demo only
-      switchType: function() {
-          var that = this
-
-          this.hide(function () {
-              that.type = that.type == 'android' ? 'ios' : 'android'
-              var meta = $(that.type == 'android' ? 'meta[name="google-play-app"]' : 'meta[name="apple-itunes-app"]').attr('content')
-              that.appId = /app-id=([^\s,]+)/.exec(meta)[1]
-
-              $('#smartbanner').detach()
-              that.create()
-              that.show()
-          })
-      }
+            this.hide(function () {
+                that.type = that.type == 'android' ? 'ios' : 'android';
+                var meta = $(that.type == 'android' ? 'meta[name="google-play-app"]' : 'meta[name="apple-itunes-app"]').attr('content');
+                that.appId = /app-id=([^\s,]+)/.exec(meta)[1];
+                $('#smartbanner').detach();
+                that.create();
+                that.show();
+            });
+        }
     };
 
 
@@ -291,20 +289,19 @@
         var el = document.createElement('smartbanner');
 
         var transEndEventNames = {
-            WebkitTransition: 'webkitTransitionEnd',
-            MozTransition: 'transitionend',
-            OTransition: 'oTransitionEnd otransitionend',
-            transition: 'transitionend'
-        };
+                WebkitTransition: 'webkitTransitionEnd',
+                MozTransition: 'transitionend',
+                OTransition: 'oTransitionEnd otransitionend',
+                transition: 'transitionend'
+            };
 
         for (var name in transEndEventNames) {
             if (el.style[name] !== undefined) {
                 return {end: transEndEventNames[name]};
             }
         }
-
         return false // explicit for ie8 (  ._.)
-    }
+    };
 
     if ($.support.transition !== undefined) return;  // Prevent conflict with Twitter Bootstrap
 
@@ -322,7 +319,6 @@
         };
 
         setTimeout(callback, duration);
-
         return this;
     }
 
