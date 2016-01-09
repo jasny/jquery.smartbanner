@@ -11,91 +11,90 @@
   }
 }(this, function($) {
     var SmartBanner = function (options) {
-        this.origHtmlMargin = parseFloat($('html').css('margin-top')) // Get the original margin-top of the HTML element so we can take that into account
-        this.options = $.extend({}, $.smartbanner.defaults, options)
+            this.origHtmlMargin = parseFloat($('html').css('margin-top')) // Get the original margin-top of the HTML element so we can take that into account
+            this.options = $.extend({}, 
+            $.smartbanner.defaults, options);
 
-        var standalone = navigator.standalone // Check if it's already a standalone web app or running within a webui view of an app (not mobile safari)
-          , UA = navigator.userAgent
+            var standalone = navigator.standalone, // Check if it's already a standalone web app or running within a webui view of an app (not mobile safari)
+                UA = navigator.userAgent;
 
-        // Detect banner type (iOS or Android)
-        if (this.options.force) {
-            this.type = this.options.force
-        } else if (UA.match(/Windows Phone/i) != null && UA.match(/Edge|Touch/i) !== null) {
-            this.type = 'windows'
-        } else if (UA.match(/iPhone|iPod/i) != null || (UA.match(/iPad/) && this.options.iOSUniversalApp)) {
-            if (UA.match(/Safari/i) != null &&
-               (UA.match(/CriOS/i) != null ||
-               window.Number(UA.substr(UA.indexOf('OS ') + 3, 3).replace('_', '.')) < 6)) this.type = 'ios' // Check webview and native smart banner support (iOS 6+)
-        } else if (UA.match(/\bSilk\/(.*\bMobile Safari\b)?/) || UA.match(/\bKF\w/) || UA.match('Kindle Fire')) {
-            this.type = 'kindle'
-        } else if (UA.match(/Android/i) != null) {
-            this.type = 'android'
-        }
-
-        // Don't show banner if device isn't iOS or Android, website is loaded in app or user dismissed banner
-        if (!this.type || standalone || this.getCookie('sb-closed') || this.getCookie('sb-installed')) {
-            return
-        }
-
-        // Calculate scale
-        this.scale = this.options.scale == 'auto' ? $(window).width() / window.screen.width : this.options.scale
-        if (this.scale < 1) this.scale = 1
-
-        // Get info from meta data
-        var meta = $(this.type == 'android' ? 'meta[name="google-play-app"]' :
-            this.type == 'ios' ? 'meta[name="apple-itunes-app"]' :
-            this.type == 'kindle' ? 'meta[name="kindle-fire-app"]' : 'meta[name="msApplication-ID"]');
-        if (meta.length == 0) return
-
-        // For Windows Store apps, get the PackageFamilyName for protocol launch
-        if (this.type == 'windows') {
-            this.appId = $('meta[name="msApplication-PackageFamilyName"]').attr('content');
-        } else {
-            // Try to pull the appId out of the meta tag and store the result
-            var parsedMetaContent = /app-id=([^\s,]+)/.exec(meta.attr('content'));
-
-            if(parsedMetaContent) {
-              this.appId = parsedMetaContent[1];
-            } else {
-              return;
+            // Detect banner type (iOS or Android)
+            if (this.options.force) {
+                this.type = this.options.force;
+            } else if (UA.match(/Windows Phone/i) != null && UA.match(/Edge|Touch/i) !== null) {
+                this.type = 'windows';
+            } else if (UA.match(/iPhone|iPod/i) != null || (UA.match(/iPad/) && this.options.iOSUniversalApp)) {
+                if (UA.match(/Safari/i) != null &&
+                   (UA.match(/CriOS/i) != null ||
+                   window.Number(UA.substr(UA.indexOf('OS ') + 3, 3).replace('_', '.')) < 6)) this.type = 'ios'; // Check webview and native smart banner support (iOS 6+)
+            } else if (UA.match(/\bSilk\/(.*\bMobile Safari\b)?/) || UA.match(/\bKF\w/) || UA.match('Kindle Fire')) {
+                this.type = 'kindle';
+            } else if (UA.match(/Android/i) != null) {
+                this.type = 'android';
             }
-        }
 
-        this.title = this.options.title ? this.options.title : meta.data('title') || $('title').text().replace(/\s*[|\-·].*$/, '')
-        this.author = this.options.author ? this.options.author : meta.data('author') || ($('meta[name="author"]').length ? $('meta[name="author"]').attr('content') : window.location.hostname)
-        this.iconUrl = meta.data('icon-url');
-        this.price = meta.data('price');
+            // Don't show banner if device isn't iOS or Android, website is loaded in app or user dismissed banner
+            if (!this.type || standalone || this.getCookie('sb-closed') || this.getCookie('sb-installed')) {
+                return;
+            }
 
-        // Set default onInstall callback if not set in options
-        if (typeof this.options.onInstall === 'function') {
-            this.options.onInstall = this.options.onInstall;
-        } else {
-            this.options.onInstall = function() {};
-        }
+            // Calculate scale
+            this.scale = this.options.scale == 'auto' ? $(window).width() / window.screen.width : this.options.scale;
+            if (this.scale < 1) this.scale = 1;
 
-        // Set default onClose callback if not set in options
-        if (typeof this.options.onClose === 'function') {
-            this.options.onClose = this.options.onClose;
-        } else {
-            this.options.onClose = function() {};
-        }
+            // Get info from meta data
+            var meta = $(this.type == 'android' ? 'meta[name="google-play-app"]' :
+                this.type == 'ios' ? 'meta[name="apple-itunes-app"]' :
+                this.type == 'kindle' ? 'meta[name="kindle-fire-app"]' : 'meta[name="msApplication-ID"]');
+            if (meta.length == 0) return;
 
-        // Create banner
-        this.create()
-        this.show()
-        this.listen()
-    }
+            // For Windows Store apps, get the PackageFamilyName for protocol launch
+            if (this.type == 'windows') {
+                this.appId = $('meta[name="msApplication-PackageFamilyName"]').attr('content');
+            } else {
+                // Try to pull the appId out of the meta tag and store the result
+                var parsedMetaContent = /app-id=([^\s,]+)/.exec(meta.attr('content'));
+
+                if(parsedMetaContent) {
+                  this.appId = parsedMetaContent[1];
+                } else {
+                  return;
+                }
+            }
+
+            this.title = this.options.title ? this.options.title : meta.data('title') || $('title').text().replace(/\s*[|\-·].*$/, '');
+            this.author = this.options.author ? this.options.author : meta.data('author') || ($('meta[name="author"]').length ? $('meta[name="author"]').attr('content') : window.location.hostname);
+            this.iconUrl = meta.data('icon-url');
+            this.price = meta.data('price');
+
+            // Set default onInstall callback if not set in options
+            if (typeof this.options.onInstall === 'function') {
+                this.options.onInstall = this.options.onInstall;
+            } else {
+                this.options.onInstall = function() {};
+            }
+
+            // Set default onClose callback if not set in options
+            if (typeof this.options.onClose === 'function') {
+                this.options.onClose = this.options.onClose;
+            } else {
+                this.options.onClose = function() {};
+            }
+
+            // Create banner
+            this.create();
+            this.show();
+            this.listen();
+        };
 
     SmartBanner.prototype = {
-
-        constructor: SmartBanner
-
-      , create: function() {
-            var iconURL
-              , link=(this.options.url ? this.options.url : (this.type == 'windows' ? 'ms-windows-store:navigate?appid=' : (this.type == 'android' ? 'market://details?id=' : (this.type == 'kindle' ? 'amzn://apps/android?asin=' : 'https://itunes.apple.com/' + this.options.appStoreLanguage + '/app/id'))) + this.appId)
-              , price = this.price || this.options.price
-              , inStore=price ? price + ' - ' + (this.type == 'android' ? this.options.inGooglePlay : this.type == 'kindle' ? this.options.inAmazonAppStore : this.type == 'ios' ? this.options.inAppStore : this.options.inWindowsStore) : ''
-              , gloss=this.options.iconGloss === null ? (this.type=='ios') : this.options.iconGloss
+        constructor: SmartBanner,
+        create: function() {
+            var iconURL,
+                link=(this.options.url ? this.options.url : (this.type == 'windows' ? 'ms-windows-store:navigate?appid=' : (this.type == 'android' ? 'market://details?id=' : (this.type == 'kindle' ? 'amzn://apps/android?asin=' : 'https://itunes.apple.com/' + this.options.appStoreLanguage + '/app/id'))) + this.appId),
+                price = this.price || this.options.price;
+                inStore=price ? price + ' - ' + (this.type == 'android' ? this.options.inGooglePlay : this.type == 'kindle' ? this.options.inAmazonAppStore : this.type == 'ios' ? this.options.inAppStore : this.options.inWindowsStore) : '',
+                gloss=this.options.iconGloss === null ? (this.type=='ios') : this.options.iconGloss;
 
             if (this.type == 'android' && this.options.GooglePlayParams) {
               link = link + '&referrer=' + this.options.GooglePlayParams;
@@ -105,49 +104,48 @@
             (this.options.layer) ? $(this.options.appendToSelector).append(banner) : $(this.options.appendToSelector).prepend(banner);
 
             if (this.options.icon) {
-                iconURL = this.options.icon
+                iconURL = this.options.icon;
             } else if(this.iconUrl) {
                 iconURL = this.iconUrl;
             } else if ($('link[rel="apple-touch-icon-precomposed"]').length > 0) {
-                iconURL = $('link[rel="apple-touch-icon-precomposed"]').attr('href')
-                if (this.options.iconGloss === null) gloss = false
+                iconURL = $('link[rel="apple-touch-icon-precomposed"]').attr('href');
+                if (this.options.iconGloss === null) gloss = false;
             } else if ($('link[rel="apple-touch-icon"]').length > 0) {
-                iconURL = $('link[rel="apple-touch-icon"]').attr('href')
+                iconURL = $('link[rel="apple-touch-icon"]').attr('href');
             } else if ($('meta[name="msApplication-TileImage"]').length > 0) {
-              iconURL = $('meta[name="msApplication-TileImage"]').attr('content')
+              iconURL = $('meta[name="msApplication-TileImage"]').attr('content');
             } else if ($('meta[name="msapplication-TileImage"]').length > 0) { /* redundant because ms docs show two case usages */
-              iconURL = $('meta[name="msapplication-TileImage"]').attr('content')
+              iconURL = $('meta[name="msapplication-TileImage"]').attr('content');
             }
 
             if (iconURL) {
-                $('#smartbanner .sb-icon').css('background-image','url('+iconURL+')')
-                if (gloss) $('#smartbanner .sb-icon').addClass('gloss')
+                $('#smartbanner .sb-icon').css('background-image','url('+iconURL+')');
+                if (gloss) $('#smartbanner .sb-icon').addClass('gloss');
             } else{
-                $('#smartbanner').addClass('no-icon')
+                $('#smartbanner').addClass('no-icon');
             }
 
-            this.bannerHeight = $('#smartbanner').outerHeight() + 2
+            this.bannerHeight = $('#smartbanner').outerHeight() + 2;
 
             if (this.scale > 1) {
                 $('#smartbanner')
                     .css('top', parseFloat($('#smartbanner').css('top')) * this.scale)
                     .css('height', parseFloat($('#smartbanner').css('height')) * this.scale)
-                    .hide()
+                    .hide();
                 $('#smartbanner .sb-container')
                     .css('-webkit-transform', 'scale('+this.scale+')')
                     .css('-msie-transform', 'scale('+this.scale+')')
                     .css('-moz-transform', 'scale('+this.scale+')')
-                    .css('width', $(window).width() / this.scale)
+                    .css('width', $(window).width() / this.scale);
             }
-            $('#smartbanner').css('position', (this.options.layer) ? 'absolute' : 'static')
-        }
 
-      , listen: function () {
-            $('#smartbanner .sb-close').on('click',$.proxy(this.close, this))
-            $('#smartbanner .sb-button').on('click',$.proxy(this.install, this))
-        }
-
-      , show: function(callback) {
+            $('#smartbanner').css('position', (this.options.layer) ? 'absolute' : 'static');
+        },
+        listen: function () {
+            $('#smartbanner .sb-close').on('click',$.proxy(this.close, this));
+            $('#smartbanner .sb-button').on('click',$.proxy(this.install, this));
+        },
+        show: function(callback) {
             var banner = $('#smartbanner');
             banner.stop();
 
@@ -168,9 +166,8 @@
                     banner.slideDown(this.options.speedIn).addClass('shown');
                 }
             }
-        }
-
-      , hide: function(callback) {
+        },
+        hide: function(callback) {
             var banner = $('#smartbanner');
             banner.stop();
 
@@ -194,31 +191,27 @@
                     banner.slideUp(this.options.speedOut).removeClass('shown');
                 }
             }
-        }
-
-      , close: function(e) {
-            e.preventDefault()
-            this.hide()
+        },
+        close: function(e) {
+            e.preventDefault();
+            this.hide();
             this.setCookie('sb-closed','true',this.options.daysHidden);
             this.options.onClose(e);
-        }
-
-      , install: function(e) {
+        },
+        install: function(e) {
 			if (this.options.hideOnInstall) {
-				this.hide()
+				this.hide();
 			}
-            this.setCookie('sb-installed','true',this.options.daysReminder)
+            this.setCookie('sb-installed','true',this.options.daysReminder);
             this.options.onInstall(e);
-        }
-
-      , setCookie: function(name, value, exdays) {
+        },
+        setCookie: function(name, value, exdays) {
             var exdate = new Date()
             exdate.setDate(exdate.getDate()+exdays)
             value=encodeURI(value)+((exdays==null)?'':'; expires='+exdate.toUTCString())
             document.cookie=name+'='+value+'; path=/;'
-        }
-
-      , getCookie: function(name) {
+        },
+        getCookie: function(name) {
             var i,x,y,ARRcookies = document.cookie.split(";")
             for(i=0;i<ARRcookies.length;i++) {
                 x = ARRcookies[i].substr(0,ARRcookies[i].indexOf("="))
@@ -229,10 +222,10 @@
                 }
             }
             return null
-        }
+        },
 
       // Demo only
-      , switchType: function() {
+      switchType: function() {
           var that = this
 
           this.hide(function () {
@@ -245,14 +238,17 @@
               that.show()
           })
       }
-    }
+    };
+
 
     $.smartbanner = function (option) {
-        var $window = $(window)
-        , data = $window.data('smartbanner')
-        , options = typeof option == 'object' && option
-        if (!data) $window.data('smartbanner', (data = new SmartBanner(options)))
-        if (typeof option == 'string') data[option]()
+        var $window = $(window),
+            data = $window.data('smartbanner'),
+            options = typeof option == 'object' && option;
+
+        if (!data) $window.data('smartbanner', (data = new SmartBanner(options)));
+
+        if (typeof option == 'string') data[option]();
     }
 
     // override these globally if you like (they are all optional)
@@ -281,7 +277,7 @@
         iOSUniversalApp: true, // If the iOS App is a universal app for both iPad and iPhone, display Smart Banner to iPad users, too.
         appendToSelector: 'body', //Append the banner to a specific selector
 		pushSelector: 'html' // What element is going to push the site content down; this is where the banner append animation will start.
-    }
+    };
 
     $.smartbanner.Constructor = SmartBanner;
 
@@ -292,43 +288,46 @@
     // Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
 
     function transitionEnd() {
-        var el = document.createElement('smartbanner')
+        var el = document.createElement('smartbanner');
 
         var transEndEventNames = {
             WebkitTransition: 'webkitTransitionEnd',
             MozTransition: 'transitionend',
             OTransition: 'oTransitionEnd otransitionend',
             transition: 'transitionend'
-        }
+        };
 
         for (var name in transEndEventNames) {
             if (el.style[name] !== undefined) {
-                return {end: transEndEventNames[name]}
+                return {end: transEndEventNames[name]};
             }
         }
 
         return false // explicit for ie8 (  ._.)
     }
 
-    if ($.support.transition !== undefined)
-        return  // Prevent conflict with Twitter Bootstrap
+    if ($.support.transition !== undefined) return;  // Prevent conflict with Twitter Bootstrap
 
     // http://blog.alexmaccaw.com/css-transitions
     $.fn.emulateTransitionEnd = function(duration) {
-        var called = false, $el = this
+        var called = false, 
+            $el = this;
+        
         $(this).one($.support.transition.end, function() {
-            called = true
-        })
+            called = true;
+        });
+        
         var callback = function() {
-            if (!called) $($el).trigger($.support.transition.end)
-        }
-        setTimeout(callback, duration)
-        return this
+            if (!called) $($el).trigger($.support.transition.end);
+        };
+
+        setTimeout(callback, duration);
+
+        return this;
     }
 
     $(function() {
-        $.support.transition = transitionEnd()
-    })
+        $.support.transition = transitionEnd();
+    });
     // ============================================================
-
 });
