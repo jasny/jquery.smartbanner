@@ -151,7 +151,9 @@
             var banner = $('#smartbanner');
             banner.stop();
 
-            if (this.options.layer) {
+            if (this.options.disableAnimation) {
+                banner.addClass('shown').css("display", "block");
+            } else if (this.options.layer) {
                 banner.animate({top: 0, display: 'block'}, this.options.speedIn).addClass('shown').show();
                 $(this.pushSelector).animate({paddingTop: this.origHtmlMargin + (this.bannerHeight * this.scale)}, this.options.speedIn, 'swing', callback);
             } else {
@@ -174,7 +176,9 @@
             var banner = $('#smartbanner');
             banner.stop();
 
-            if (this.options.layer) {
+            if (this.options.disableAnimation) {
+                banner.removeClass('shown').css("display", "none");
+            } else if (this.options.layer) {
                 banner.animate({top: -1 * this.bannerHeight * this.scale, display: 'block'}, this.options.speedIn).removeClass('shown');
                 $(this.pushSelector).animate({paddingTop: this.origHtmlMargin}, this.options.speedIn, 'swing', callback);
             } else {
@@ -273,6 +277,7 @@
         scale: 'auto', // Scale based on viewport size (set to 1 to disable)
         speedIn: 300, // Show animation speed of the banner
         speedOut: 400, // Close animation speed of the banner
+        disableAnimation: false, // Disable animation effects
         daysHidden: 15, // Duration to hide the banner after being closed (0 = always show banner)
         daysReminder: 90, // Duration to hide the banner after "VIEW" is clicked *separate from when the close button is clicked* (0 = always show banner)
         force: null, // Choose 'ios', 'android' or 'windows'. Don't do a browser check, just always show this banner
