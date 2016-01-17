@@ -60,6 +60,9 @@ _jQuery Smart Banner is currently not being actively maintained. Issues will not
       },
       onClose: function() {
         // alert('Click close');
+      },
+      onShow: function() {
+        // alert('Banner shown');
       }
     })
 
