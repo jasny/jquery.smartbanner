@@ -1,0 +1,36 @@
+{
+  "name": "jquery.smartbanner",
+  "version": "1.0.0",
+  "description": "Smart Banners are a new feature in iOS 6 to promote apps on the App Store from a website. This jQuery plugin brings this feature to older iOS versions, Android devices and for Windows Store apps.",
+  "main": "jquery.smartbanner.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/jasny/jquery.smartbanner.git"
+  },
+  "dependencies": {
+    "jquery": ">=1.2.2"
+  },
+  "keywords": [
+    "jquery",
+    "smartbanner"
+  ],
+  "author": {
+    "name": "Arnold Daniels",
+    "url": "http://www.jasny.net/"
+  },
+  "contributors": [
+    {
+      "name": "John-David Dalton",
+      "url": "https://github.com/jdalton"
+    }, 
+    {
+      "name": "Thomas De Laet",
+      "url": "https://github.com/delaetthomas"
+    } 
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jasny/jquery.smartbanner/issues"
+  },
+  "homepage": "https://github.com/jasny/jquery.smartbanner#readme"
+}
