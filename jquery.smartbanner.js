@@ -33,7 +33,7 @@
         }
 
         // Don't show banner if device isn't iOS or Android, website is loaded in app or user dismissed banner
-        if (!this.type || standalone || this.getCookie('sb-closed') || this.getCookie('sb-installed')) {
+        if (!this.type || standalone || this.getCookie(this.options.cookiePrefix + '-closed') || this.getCookie(this.options.cookiePrefix + '-installed')) {
             return;
         }
 
@@ -199,7 +199,7 @@
       , close: function (e) {
             e.preventDefault();
             this.hide();
-            this.setCookie('sb-closed','true',this.options.daysHidden);
+            this.setCookie(this.options.cookiePrefix + '-closed','true',this.options.daysHidden);
             this.options.onClose(e);
         }
 
@@ -207,7 +207,7 @@
             if (this.options.hideOnInstall) {
                 this.hide();
             }
-            this.setCookie('sb-installed','true',this.options.daysReminder);
+            this.setCookie(this.options.cookiePrefix + '-installed','true',this.options.daysReminder);
             this.options.onInstall(e);
         }
 
@@ -280,7 +280,8 @@
         layer: false, // Display as overlay layer or slide down the page
         iOSUniversalApp: true, // If the iOS App is a universal app for both iPad and iPhone, display Smart Banner to iPad users, too.
         appendToSelector: 'body', //Append the banner to a specific selector
-        pushSelector: 'html' // What element is going to push the site content down; this is where the banner append animation will start.
+        pushSelector: 'html', // What element is going to push the site content down; this is where the banner append animation will start.
+        cookiePrefix: "sb" // The prefix used in the cookies used (default is sb)
     };
 
     $.smartbanner.Constructor = SmartBanner;
