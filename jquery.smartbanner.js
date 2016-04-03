@@ -213,7 +213,7 @@
 
       , setCookie: function (name, value, exdays) {
             var exdate = new Date();
-            var domain = (this.options.domain) ? "domain=" + this.options.domain + ";" : "";
+            var domain = (this.options.domain) ? 'domain=' + this.options.domain + ';' : '';
             exdate.setDate(exdate.getDate() + exdays);
             value = encodeURI(value) + ((exdays === null) ? '' : '; expires=' + exdate.toUTCString());
             document.cookie = name + '=' + value + '; path=/;' + domain;
