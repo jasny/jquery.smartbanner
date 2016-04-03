@@ -281,7 +281,7 @@
         iOSUniversalApp: true, // If the iOS App is a universal app for both iPad and iPhone, display Smart Banner to iPad users, too.
         appendToSelector: 'body', //Append the banner to a specific selector
         pushSelector: 'html', // What element is going to push the site content down; this is where the banner append animation will start.
-        cookiePrefix: "sb" // The prefix used in the cookies used (default is sb)
+        cookiePrefix: 'sb' // The prefix used in the cookies used (default is sb)
     };
 
     $.smartbanner.Constructor = SmartBanner;
