@@ -213,9 +213,10 @@
 
       , setCookie: function (name, value, exdays) {
             var exdate = new Date();
+            var domain = (this.options.domain) ? 'domain=' + this.options.domain + ';' : '';
             exdate.setDate(exdate.getDate() + exdays);
             value = encodeURI(value) + ((exdays === null) ? '' : '; expires=' + exdate.toUTCString());
-            document.cookie = name + '=' + value + '; path=/;';
+            document.cookie = name + '=' + value + '; path=/;' + domain;
         }
 
       , getCookie: function (name) {
@@ -280,7 +281,8 @@
         layer: false, // Display as overlay layer or slide down the page
         iOSUniversalApp: true, // If the iOS App is a universal app for both iPad and iPhone, display Smart Banner to iPad users, too.
         appendToSelector: 'body', //Append the banner to a specific selector
-        pushSelector: 'html' // What element is going to push the site content down; this is where the banner append animation will start.
+        pushSelector: 'html', // What element is going to push the site content down; this is where the banner append animation will start.
+        domain: null // Sets the domain (subdomain) used when setting the cookie.
     };
 
     $.smartbanner.Constructor = SmartBanner;
