@@ -215,7 +215,7 @@
             var exdate = new Date();
             exdate.setDate(exdate.getDate() + exdays);
             value = encodeURI(value) + ((exdays === null) ? '' : '; expires=' + exdate.toUTCString());
-            document.cookie = name + '=' + value + '; path=/;';
+            document.cookie = name + '=' + value + '; path=/;' + domain;
         }
 
       , getCookie: function (name) {
