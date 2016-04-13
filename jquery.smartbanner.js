@@ -31,7 +31,6 @@
         } else if (UA.match(/Android/i) !== null) {
             this.type = 'android';
         }
-
         // Don't show banner if device isn't iOS or Android, website is loaded in app or user dismissed banner
         if (!this.type || standalone || this.getCookie('sb-closed') || this.getCookie('sb-installed')) {
             return;
@@ -92,38 +91,69 @@
 
       , create: function () {
             var iconURL;
-            var link = (this.options.url ? this.options.url : (this.type == 'windows' ? 'ms-windows-store:navigate?appid=' : (this.type == 'android' ? 'market://details?id=' : (this.type == 'kindle' ? 'amzn://apps/android?asin=' : 'https://itunes.apple.com/' + this.options.appStoreLanguage + '/app/id'))) + this.appId);
             var price = this.price || this.options.price;
-            var inStore = price ? price + ' - ' + (this.type == 'android' ? this.options.inGooglePlay : this.type == 'kindle' ? this.options.inAmazonAppStore : this.type == 'ios' ? this.options.inAppStore : this.options.inWindowsStore) : '';
-            var gloss = this.options.iconGloss === null ? (this.type=='ios') : this.options.iconGloss;
+
+            var link = this.options.url || (function() {
+              switch (this.type) {
+                case 'android':
+                  return 'market://details?id=';
+                case 'kindle':
+                  return 'amzn://apps/android?asin=';
+                case 'windows':
+                  return /Edge/i.test(navigator.userAgent)
+                    ? 'ms-windows-store://pdp/?productid='
+                    : 'ms-windows-store:navigate?appid=';
+              }
+              return 'https://itunes.apple.com/' + this.options.appStoreLanguage + '/app/id';
+            }.call(this) + this.appId);
+
+            var inStore = !price ? '' : (function() {
+              var result = price + ' - ';
+              switch (this.type) {
+                case 'android':
+                  return result + this.options.inGooglePlay;
+                case 'kindle':
+                  return result + this.options.inAmazonAppStore;
+                case 'windows':
+                  return result + this.options.inWindowsStore;
+              }
+              return result + this.options.inAppStore
+            }.call(this));
+
+            var gloss = this.options.iconGloss == null
+              ? (this.type=='ios')
+              : this.options.iconGloss;
 
             if (this.type == 'android' && this.options.GooglePlayParams) {
-              link = link + '&referrer=' + this.options.GooglePlayParams;
+              link += '&referrer=' + this.options.GooglePlayParams;
             }
-
             var banner = '<div id="smartbanner" class="' + this.type + '"><div class="sb-container"><a href="#" class="sb-close">&times;</a><span class="sb-icon"></span><div class="sb-info"><strong>' + this.title + '</strong><span>' + this.author + '</span><span>' + inStore + '</span></div><a href="' + link + '" class="sb-button"><span>' + this.options.button + '</span></a></div></div>';
-            (this.options.layer) ? $(this.options.appendToSelector).append(banner) : $(this.options.appendToSelector).prepend(banner);
-
+            if (this.options.layer) {
+              $(this.options.appendToSelector).append(banner);
+            } else {
+              $(this.options.appendToSelector).prepend(banner);
+            }
             if (this.options.icon) {
-                iconURL = this.options.icon;
+              iconURL = this.options.icon;
             } else if(this.iconUrl) {
-                iconURL = this.iconUrl;
+              iconURL = this.iconUrl;
             } else if ($('link[rel="apple-touch-icon-precomposed"]').length > 0) {
-                iconURL = $('link[rel="apple-touch-icon-precomposed"]').attr('href');
-                if (this.options.iconGloss === null) gloss = false;
+              iconURL = $('link[rel="apple-touch-icon-precomposed"]').attr('href');
+              if (this.options.iconGloss === null) {
+                gloss = false;
+              }
             } else if ($('link[rel="apple-touch-icon"]').length > 0) {
-                iconURL = $('link[rel="apple-touch-icon"]').attr('href');
+              iconURL = $('link[rel="apple-touch-icon"]').attr('href');
             } else if ($('meta[name="msApplication-TileImage"]').length > 0) {
               iconURL = $('meta[name="msApplication-TileImage"]').attr('content');
             } else if ($('meta[name="msapplication-TileImage"]').length > 0) { /* redundant because ms docs show two case usages */
               iconURL = $('meta[name="msapplication-TileImage"]').attr('content');
             }
-
             if (iconURL) {
-                $('#smartbanner .sb-icon').css('background-image','url(' + iconURL + ')');
-                if (gloss) $('#smartbanner .sb-icon').addClass('gloss');
+              $('#smartbanner .sb-icon').css('background-image','url(' + iconURL + ')');
+              if (gloss) $('#smartbanner .sb-icon').addClass('gloss');
             } else{
-                $('#smartbanner').addClass('no-icon');
+              $('#smartbanner').addClass('no-icon');
             }
 
             this.bannerHeight = $('#smartbanner').outerHeight() + 2;
