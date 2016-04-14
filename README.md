@@ -5,7 +5,7 @@ jQuery Smart Banner
 brings this feature to older iOS versions, Android devices and for Windows Store apps.
 
 # _Low maintanace_
- 
+
 _jQuery Smart Banner is currently not being actively maintained. Issues will not be solved, but pull requests **might** be merged. If you like to collaborate or take over this project, please contact me at arnold@jasny.net._
 
 ## Usage ##
@@ -16,7 +16,7 @@ _jQuery Smart Banner is currently not being actively maintained. Issues will not
         <meta name="apple-itunes-app" content="app-id=544007664">
         <meta name="google-play-app" content="app-id=com.google.android.youtube">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        
+
         <link rel="stylesheet" href="jquery.smartbanner.css" type="text/css" media="screen">
         <link rel="apple-touch-icon" href="apple-touch-icon.png">
       </head>
@@ -55,6 +55,7 @@ _jQuery Smart Banner is currently not being actively maintained. Issues will not
       layer: false, // Display as overlay layer or slide down the page
       iOSUniversalApp: true, // If the iOS App is a universal app for both iPad and iPhone, display Smart Banner to iPad users, too.      
       appendToSelector: 'body', //Append the banner to a specific selector
+      cookiePrefix: 'sb', // The prefix used in the cookies used (default is sb)
       onInstall: function() {
         // alert('Click install');
       },
