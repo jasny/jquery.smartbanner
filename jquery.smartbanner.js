@@ -4,7 +4,7 @@
  * Based on 'jQuery Smart Web App Banner' by Kurt Zenisek @ kzeni.com
  */
 (function(root, factory) {
-  if (typeof define === 'function' && define.amd) {
+  if (typeof define == 'function' && define.amd) {
     define(['jquery'], factory);
   } else {
     factory(root.jQuery);
@@ -64,7 +64,7 @@
           )
     );
 
-    if (meta.length === 0) {
+    if (!meta.length) {
       return;
     }
     // For Windows Store apps, get the PackageFamilyName for protocol launch.
@@ -80,19 +80,25 @@
         return;
       }
     }
-    this.title = this.options.title ? this.options.title : meta.data('title') || $('title').text().replace(/\s*[|\-·].*$/, '');
-    this.author = this.options.author ? this.options.author : meta.data('author') || ($('meta[name="author"]').length ? $('meta[name="author"]').attr('content') : window.location.hostname);
+    this.title = this.options.title
+      ? this.options.title
+      : (meta.data('title') || $('title').text().replace(/\s*[|\-·].*$/, ''));
+
+    this.author = this.options.author
+      ? this.options.author
+      : (meta.data('author') || ($('meta[name="author"]').length ? $('meta[name="author"]').attr('content') : window.location.hostname));
+
     this.iconUrl = meta.data('icon-url');
     this.price = meta.data('price');
 
     // Set default onInstall callback if not set in options.
-    if (typeof this.options.onInstall === 'function') {
+    if (typeof this.options.onInstall == 'function') {
       this.options.onInstall = this.options.onInstall;
     } else {
       this.options.onInstall = function() {};
     }
     // Set default onClose callback if not set in options.
-    if (typeof this.options.onClose === 'function') {
+    if (typeof this.options.onClose == 'function') {
       this.options.onClose = this.options.onClose;
     } else {
       this.options.onClose = function() {};
@@ -145,7 +151,22 @@
       if (this.type == 'android' && this.options.GooglePlayParams) {
         link += '&referrer=' + this.options.GooglePlayParams;
       }
-      var banner = '<div id="smartbanner" class="' + this.type + '"><div class="sb-container"><a href="#" class="sb-close">&times;</a><span class="sb-icon"></span><div class="sb-info"><strong>' + this.title + '</strong><span>' + this.author + '</span><span>' + inStore + '</span></div><a href="' + link + '" class="sb-button"><span>' + this.options.button + '</span></a></div></div>';
+      var banner = (
+        '<div id="smartbanner" class="' + this.type + '">' +
+          '<div class="sb-container">' +
+            '<a href="#" class="sb-close">&times;</a>' +
+            '<span class="sb-icon"></span>' +
+            '<div class="sb-info">' +
+              '<strong>' + this.title + '</strong>' +
+              '<span>' + this.author + '</span>' +
+              '<span>' + inStore + '</span>' +
+            '</div>' +
+            '<a href="' + link + '" class="sb-button">' +
+              '<span>' + this.options.button + '</span>' +
+            '</a>' +
+          '</div>' +
+        '</div>'
+      );
       if (this.options.layer) {
         $(this.options.appendToSelector).append(banner);
       } else {
@@ -157,23 +178,25 @@
         iconURL = this.iconUrl;
       } else if ($('link[rel="apple-touch-icon-precomposed"]').length > 0) {
         iconURL = $('link[rel="apple-touch-icon-precomposed"]').attr('href');
-        if (this.options.iconGloss === null) {
+        if (this.options.iconGloss == null) {
           gloss = false;
         }
       } else if ($('link[rel="apple-touch-icon"]').length > 0) {
         iconURL = $('link[rel="apple-touch-icon"]').attr('href');
       } else if ($('meta[name="msApplication-TileImage"]').length > 0) {
         iconURL = $('meta[name="msApplication-TileImage"]').attr('content');
-      } else if ($('meta[name="msapplication-TileImage"]').length > 0) { /* redundant because ms docs show two case usages */
+      } else if ($('meta[name="msapplication-TileImage"]').length > 0) {
+        // Redundant because ms docs show two case usages.
         iconURL = $('meta[name="msapplication-TileImage"]').attr('content');
       }
       if (iconURL) {
-        $('#smartbanner .sb-icon').css('background-image','url(' + iconURL + ')');
-        if (gloss) $('#smartbanner .sb-icon').addClass('gloss');
+        $('#smartbanner .sb-icon').css('background-image', 'url(' + iconURL + ')');
+        if (gloss) {
+          $('#smartbanner .sb-icon').addClass('gloss');
+        }
       } else{
         $('#smartbanner').addClass('no-icon');
       }
-
       this.bannerHeight = $('#smartbanner').outerHeight() + 2;
 
       if (this.scale > 1) {
@@ -187,12 +210,13 @@
           .css('-moz-transform', 'scale(' + this.scale + ')')
           .css('width', $(window).width() / this.scale);
       }
-      $('#smartbanner').css('position', (this.options.layer) ? 'absolute' : 'static');
+      $('#smartbanner')
+        .css('position', this.options.layer ? 'absolute' : 'static');
     },
 
     listen: function() {
-      $('#smartbanner .sb-close').on('click',$.proxy(this.close, this));
-      $('#smartbanner .sb-button').on('click',$.proxy(this.install, this));
+      $('#smartbanner .sb-close').on('click', $.proxy(this.close, this));
+      $('#smartbanner .sb-button').on('click', $.proxy(this.install, this));
     },
 
     show: function(callback) {
@@ -200,11 +224,18 @@
       banner.stop();
 
       if (this.options.layer) {
-        banner.animate({top: 0, display: 'block'}, this.options.speedIn).addClass('shown').show();
-        $(this.pushSelector).animate({paddingTop: this.origHtmlMargin + (this.bannerHeight * this.scale)}, this.options.speedIn, 'swing', callback);
-      } else {
+        banner
+          .animate({ top: 0, display: 'block' }, this.options.speedIn)
+          .addClass('shown')
+          .show();
+        $(this.pushSelector)
+          .animate({
+            paddingTop: this.origHtmlMargin + (this.bannerHeight * this.scale)
+          }, this.options.speedIn, 'swing', callback);
+      }
+      else {
         if ($.support.transition) {
-          banner.animate({top:0},this.options.speedIn).addClass('shown');
+          banner.animate({ top: 0 }, this.options.speedIn).addClass('shown');
           var transitionCallback = function() {
             $('html').removeClass('sb-animation');
             if (callback) {
@@ -230,15 +261,28 @@
       banner.stop();
 
       if (this.options.layer) {
-        banner.animate({top: -1 * this.bannerHeight * this.scale, display: 'block'}, this.options.speedIn).removeClass('shown');
-        $(this.pushSelector).animate({paddingTop: this.origHtmlMargin}, this.options.speedIn, 'swing', callback);
+        banner.animate({
+          top: -1 * this.bannerHeight * this.scale,
+          display: 'block'
+        }, this.options.speedIn)
+        .removeClass('shown');
+
+        $(this.pushSelector)
+          .animate({
+            paddingTop: this.origHtmlMargin
+          }, this.options.speedIn, 'swing', callback);
       }
       else {
         if ($.support.transition) {
           if (this.type !== 'android') {
-            banner.css('top', -1 * this.bannerHeight * this.scale).removeClass('shown');
-          } else {
-            banner.css({display:'none'}).removeClass('shown');
+            banner
+              .css('top', -1 * this.bannerHeight * this.scale)
+              .removeClass('shown');
+          }
+          else {
+            banner
+              .css({display:'none'})
+              .removeClass('shown');
           }
           var transitionCallback = function() {
             $('html').removeClass('sb-animation');
@@ -261,7 +305,7 @@
     close: function(e) {
       e.preventDefault();
       this.hide();
-      this.setCookie('sb-closed','true',this.options.daysHidden);
+      this.setCookie('sb-closed', 'true', this.options.daysHidden);
       this.options.onClose(e);
     },
 
@@ -269,23 +313,23 @@
       if (this.options.hideOnInstall) {
         this.hide();
       }
-      this.setCookie('sb-installed','true',this.options.daysReminder);
+      this.setCookie('sb-installed', 'true', this.options.daysReminder);
       this.options.onInstall(e);
     },
 
     setCookie: function(name, value, exdays) {
       var exdate = new Date();
       exdate.setDate(exdate.getDate() + exdays);
-      value = encodeURI(value) + ((exdays === null) ? '' : '; expires=' + exdate.toUTCString());
+      value = encodeURI(value) + ((exdays == null) ? '' : '; expires=' + exdate.toUTCString());
       document.cookie = name + '=' + value + '; path=/;';
     },
 
     getCookie: function(name) {
-      var i,x,y,ARRcookies = document.cookie.split(";");
+      var i, x, y, ARRcookies = document.cookie.split(';');
       for (i = 0; i < ARRcookies.length; i++) {
-        x = ARRcookies[i].substr(0,ARRcookies[i].indexOf("="));
-        y = ARRcookies[i].substr(ARRcookies[i].indexOf("=") + 1);
-        x = x.replace(/^\s+|\s+$/g,"");
+        x = ARRcookies[i].substr(0, ARRcookies[i].indexOf('='));
+        y = ARRcookies[i].substr(ARRcookies[i].indexOf('=') + 1);
+        x = x.replace(/^\s+|\s+$/g, '');
         if (x == name) {
           return decodeURI(y);
         }
