@@ -11,30 +11,34 @@
   }
 })(this, function ($) {
     var SmartBanner = function (options) {
-        this.origHtmlMargin = parseFloat($('html').css('margin-top')); // Get the original margin-top of the HTML element so we can take that into account
-        this.options = $.extend({}, $.smartbanner.defaults, options);
+      this.origHtmlMargin = parseFloat($('html').css('margin-top')); // Get the original margin-top of the HTML element so we can take that into account
+      this.options = $.extend({}, $.smartbanner.defaults, options);
 
-        var standalone = navigator.standalone; // Check if it's already a standalone web app or running within a webui view of an app (not mobile safari)
-        var UA = navigator.userAgent;
+      var standalone = navigator.standalone; // Check if it's already a standalone web app or running within a webui view of an app (not mobile safari)
+      var UA = navigator.userAgent;
+      var isEdge = false;
 
-        // Detect banner type (iOS or Android)
-        if (this.options.force) {
-            this.type = this.options.force;
-        } else if (UA.match(/Windows Phone/i) !== null && UA.match(/Edge|Touch/i) !== null) {
-            this.type = 'windows';
-        } else if (UA.match(/iPhone|iPod/i) !== null || (UA.match(/iPad/) && this.options.iOSUniversalApp)) {
-            if (UA.match(/Safari/i) !== null &&
-               (UA.match(/CriOS/i) !== null ||
-               window.Number(UA.substr(UA.indexOf('OS ') + 3, 3).replace('_', '.')) < 6)) this.type = 'ios'; // Check webview and native smart banner support (iOS 6+)
-        } else if (UA.match(/\bSilk\/(.*\bMobile Safari\b)?/) || UA.match(/\bKF\w/) || UA.match('Kindle Fire')) {
-            this.type = 'kindle';
-        } else if (UA.match(/Android/i) !== null) {
-            this.type = 'android';
+      // Detect banner type (iOS or Android)
+      if (this.options.force) {
+        this.type = this.options.force;
+      } else if (UA.match(/Windows Phone/i) !== null && UA.match(/Edge|Touch/i) !== null) {
+        isEdge = /Edge/i.test(navigator.userAgent);
+        this.type = 'windows';
+      } else if (UA.match(/iPhone|iPod/i) !== null || (UA.match(/iPad/) && this.options.iOSUniversalApp)) {
+        if (UA.match(/Safari/i) !== null &&
+            (UA.match(/CriOS/i) !== null ||
+              window.Number(UA.substr(UA.indexOf('OS ') + 3, 3).replace('_', '.')) < 6)) {
+          this.type = 'ios'; // Check webview and native smart banner support (iOS 6+)
         }
-        // Don't show banner if device isn't iOS or Android, website is loaded in app or user dismissed banner
-        if (!this.type || standalone || this.getCookie('sb-closed') || this.getCookie('sb-installed')) {
-            return;
-        }
+      } else if (UA.match(/\bSilk\/(.*\bMobile Safari\b)?/) || UA.match(/\bKF\w/) || UA.match('Kindle Fire')) {
+        this.type = 'kindle';
+      } else if (UA.match(/Android/i) !== null) {
+        this.type = 'android';
+      }
+      // Don't show banner if device isn't iOS or Android, website is loaded in app or user dismissed banner
+      if (!this.type || standalone || this.getCookie('sb-closed') || this.getCookie('sb-installed')) {
+        return;
+      }
 
         // Calculate scale
         this.scale = this.options.scale == 'auto' ? $(window).width() / window.screen.width : this.options.scale;
@@ -47,7 +51,7 @@
         if (meta.length === 0) return;
 
         // For Windows Store apps, get the PackageFamilyName for protocol launch
-        if (this.type == 'windows') {
+        if (this.type == 'windows' && !isEdge) {
             this.appId = $('meta[name="msApplication-PackageFamilyName"]').attr('content');
         } else {
             // Try to pull the appId out of the meta tag and store the result
@@ -100,7 +104,7 @@
                 case 'kindle':
                   return 'amzn://apps/android?asin=';
                 case 'windows':
-                  return /Edge/i.test(navigator.userAgent)
+                  return isEdge
                     ? 'ms-windows-store://pdp/?productid='
                     : 'ms-windows-store:navigate?appid=';
               }
