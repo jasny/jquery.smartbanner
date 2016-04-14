@@ -186,7 +186,7 @@
                 $(this.pushSelector).animate({paddingTop: this.origHtmlMargin + (this.bannerHeight * this.scale)}, this.options.speedIn, 'swing', callback);
             } else {
                 if ($.support.transition) {
-                    banner.animate({top:0},this.options.speedIn).addClass('shown');
+                    banner.animate({top:0},this.options.speedIn).addClass('shown').show();
                     var transitionCallback = function () {
                         $('html').removeClass('sb-animation');
                         if (callback) {
