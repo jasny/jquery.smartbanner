@@ -10,6 +10,9 @@
     factory(root.jQuery);
   }
 })(this, function($) {
+  var UA = navigator.userAgent;
+  var isEdge = /Edge/i.test(UA);
+
   var SmartBanner = function(options) {
     // Get the original margin-top of the HTML element so we can take that into account.
     this.origHtmlMargin = parseFloat($('html').css('margin-top'));
@@ -17,15 +20,12 @@
 
     // Check if it's already a standalone web app or running within a webui view of an app (not mobile safari).
     var standalone = navigator.standalone;
-    var UA = navigator.userAgent;
-    var isEdge = false;
 
     // Detect banner type (iOS or Android).
     if (this.options.force) {
       this.type = this.options.force;
     }
     else if (UA.match(/Windows Phone/i) !== null && UA.match(/Edge|Touch/i) !== null) {
-      isEdge = /Edge/i.test(navigator.userAgent);
       this.type = 'windows';
     }
     else if (UA.match(/iPhone|iPod/i) !== null || (UA.match(/iPad/) && this.options.iOSUniversalApp)) {
