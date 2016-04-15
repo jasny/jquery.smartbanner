@@ -68,8 +68,13 @@
       return;
     }
     // For Windows Store apps, get the PackageFamilyName for protocol launch.
-    if (this.type == 'windows' && !isEdge) {
-      this.appId = $('meta[name="msApplication-PackageFamilyName"]').attr('content');
+    if (this.type == 'windows') {
+      if (isEdge) {
+        this.appId = $('meta[name="msApplication-PackageEdgeName"]').attr('content');
+      }
+      if (!this.appId) {
+        this.appId = $('meta[name="msApplication-PackageFamilyName"]').attr('content');
+      }
     }
     else {
       // Try to pull the appId out of the meta tag and store the result.
