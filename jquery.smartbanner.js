@@ -281,7 +281,7 @@
         if ($.support.transition) {
           if (this.type !== 'android') {
             banner
-              .css('top', -1 * this.bannerHeight * this.scale)
+              .animate({marginTop: -1 * this.bannerHeight * this.scale}, this.options.speedOut, 'swing', callback)
               .removeClass('shown');
           }
           else {
