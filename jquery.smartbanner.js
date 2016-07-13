@@ -31,6 +31,7 @@
     else if (UA.match(/iPhone|iPod/i) !== null || (UA.match(/iPad/) && this.options.iOSUniversalApp)) {
       if (UA.match(/Safari/i) !== null &&
           (UA.match(/CriOS/i) !== null ||
+           UA.match(/FxiOS/i) != null ||
             window.Number(UA.substr(UA.indexOf('OS ') + 3, 3).replace('_', '.')) < 6)) {
         // Check webview and native smart banner support (iOS 6+).
         this.type = 'ios';
