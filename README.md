@@ -4,7 +4,7 @@ jQuery Smart Banner
 [Smart Banners][1] are a new feature in iOS 6 to promote apps on the App Store from a website. This jQuery plugin
 brings this feature to older iOS versions, Android devices and for Windows Store apps.
 
-# _Low maintanace_
+# _Low maintenance_
  
 _jQuery Smart Banner is currently not being actively maintained. Issues will not be solved, but pull requests **might** be merged. If you like to collaborate or take over this project, please contact me at arnold@jasny.net._
 
