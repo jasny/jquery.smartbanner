@@ -29,7 +29,7 @@
       this.type = 'windows';
     }
     else if (UA.match(/iPhone|iPod/i) !== null || (UA.match(/iPad/) && this.options.iOSUniversalApp)) {
-      if (UA.match(/Safari/i) !== null &&
+      if (UA.match(/Safari/i) !== null ||
           (UA.match(/CriOS/i) !== null ||
            UA.match(/FxiOS/i) != null ||
             window.Number(UA.substr(UA.indexOf('OS ') + 3, 3).replace('_', '.')) < 6)) {
