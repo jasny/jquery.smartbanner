@@ -4,7 +4,7 @@
     top: 0;
     background: #f1f4f9;
     width: 100%;
-    height: 78px;
+    padding: 3vh 0;
     font-family: 'Arial', sans-serif;
     z-index: 9998;
     -webkit-font-smoothing: antialiased;
@@ -20,36 +20,37 @@ html.sb-animation {
 }
 
 #smartbanner .sb-container {
-    position: relative;
-    margin: 0 auto;
-    height: 100%;
-    width: 92%;
+    width: 70vw;
     display: flex;
+    margin-left: 3vw;
     align-items: center;
     justify-content: flex-start;
 }
 
 #smartbanner .sb-close {
     cursor: pointer;
-    font-size: 32px;
-    padding-top: 4px;
+    font-size: 7vw;
+    padding-top: 1vh;
     text-decoration: none;
     color: #4d4d4d;
 }
 
 #smartbanner .sb-close:active {
-    font-size: 13px;
+    font-size: 3.5vw;
 }
 
 #smartbanner .sb-icon {
-    margin-left: 10px;
-    margin-right: 15px;
+    position: relative;
+    margin-left: 2vw;
+    margin-right: 3vw;
     display: block;
-    width: 57px;
-    height: 57px;
+    width: 16vw;
+    min-width: 16vw;
+    min-height: 16vw;
+    height: 16vw;
     background: rgba(0, 0, 0, 0.6);
     background-size: cover;
-    border-radius: 10px;
+    border-radius: 3vw;
 }
 
 #smartbanner.no-icon .sb-icon {
@@ -57,19 +58,15 @@ html.sb-animation {
 }
 
 #smartbanner .sb-info {
-    font-size: 12px;
+    font-size: 3.5vw;
     line-height: 1.2em;
-}
-
-#smartbanner #smartbanner.no-icon .sb-info {
-    left: 34px;
 }
 
 #smartbanner .sb-info strong {
     display: block;
-    font-size: 15px;
-    line-height: 18px;
-    margin-bottom: 4px;
+    font-size: 5vw;
+    line-height: 1;
+    margin-bottom: 1vh;
 }
 
 #smartbanner .sb-info>span {
@@ -84,19 +81,18 @@ html.sb-animation {
 #smartbanner .sb-button {
     color: #fff;
     position: absolute;
-    right: 0px;
-    top: 24px;
-    padding: 4px 14px;
-    min-width: 10%;
-    height: 24px;
-    font-size: 14px;
-    line-height: 24px;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 3vw;
+    padding: 1.5vh 2vw;
+    min-width: 18vw;
+    max-width: 18vw;
+    font-size: 4vw;
     text-align: center;
     font-weight: bold;
-    background: -webkit-linear-gradient(top, #efefef 0%, #dcdcdc 100%);
     text-transform: uppercase;
     text-decoration: none;
-    border-radius: 3px;
+    border-radius: 1vw;
     background: #999fc7;
 }
 
@@ -109,14 +105,14 @@ html.sb-animation {
     content: '';
     position: absolute;
     left: 0;
-    top: -1px;
+    top: 0;
     border-top: 1px solid rgba(255, 255, 255, 0.8);
     width: 100%;
     height: 50%;
     background: -webkit-linear-gradient(top, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0.2) 100%);
-    border-radius: 10px 10px 12px 12px;
+    border-radius: 3vw 3vw 3.5vw 3.5vw;
 }
 
 #smartbanner.windows .sb-icon {
-    border-radius: 0px;
+    border-radius: 0;
 }
